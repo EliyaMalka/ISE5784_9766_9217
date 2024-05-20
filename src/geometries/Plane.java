@@ -3,11 +3,29 @@ package geometries;
 import primitives.Point;
 import primitives.Vector;
 
+/**
+ * The Plane class represents a plane in a 3D space.
+ */
 public class Plane implements Geometry {
 
+
+    /**
+     * A point on the plane.
+     */
 	private final Point q;
+	
+    /**
+     * The normal vector to the plane.
+     */
 	private final Vector normal;
 	
+    /**
+     * Constructs a new Plane passing through three given points.
+     * 
+     * @param P1 The first point on the plane.
+     * @param P2 The second point on the plane.
+     * @param P3 The third point on the plane.
+     */
 	public Plane(Point P1 ,Point P2 ,Point P3 ) {
 	
 	this.normal = null;
@@ -15,6 +33,12 @@ public class Plane implements Geometry {
 		
 	}
 	
+    /**
+     * Constructs a new Plane with the given point and normal vector.
+     * 
+     * @param P The reference point on the plane.
+     * @param V The normal vector to the plane.
+     */
 	public Plane(Point P ,Vector V ) {
 		
 	this.q = P;	
@@ -31,7 +55,11 @@ public class Plane implements Geometry {
 		return null;
 	}
 	
-	// לא מימשנו !!!
+    /**
+     * Gets the normal vector to the plane.
+     * 
+     * @return The normal vector.
+     */
 	public Vector getNormal() {
 		
 		return this.normal;
