@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import primitives.Point;
+import primitives.Vector;
+
 /**
  * 
  */
@@ -17,7 +20,8 @@ class TubeTests {
 	 */
 	@Test
 	void testGetNormal() {
-		fail("Not yet implemented");
+		Vector myNormalVector = new Vector(0,0,);
+		assertTrue(false);
 	}
 
 }
