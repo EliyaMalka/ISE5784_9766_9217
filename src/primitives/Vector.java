@@ -18,7 +18,7 @@ public class Vector extends Point {
      */
 	public Vector(double x ,double y , double z) {
 		super(x,y,z);
-		if(x == 0 && y == 0 && z == 0)	{		
+		if (x == 0 && y == 0 && z == 0)	{		
 			throw new IllegalArgumentException("can't build the zero vector");
 		}
 	}
@@ -36,15 +36,14 @@ public class Vector extends Point {
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
-	      if (this == obj) return true;
-	      return (obj instanceof Vector other)
-	            && ZERO.equals(new Point(this.xyz.subtract(other.xyz) ) ) ;
+	public boolean equals(Object obj) { 
+		if (this == obj) return true;
+	      return (obj instanceof Vector other) &&   super.equals(other);
 		}
 	
 	@Override
 	public String toString() {
-		return "<" + this.xyz.d1 + " , " + this.xyz.d2 + " , " + this.xyz.d3 + ">";
+		return "<" + super.toString() +">";
 	}
 	
     /**
