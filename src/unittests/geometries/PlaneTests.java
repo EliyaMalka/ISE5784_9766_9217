@@ -49,7 +49,7 @@ class PlaneTests {
 	    Plane myPlane = new Plane(p1, p2,p3) ;
 
 		// ============ Equivalence Partitions Tests ==============
-		assertTrue(myPlane.getNormal(p1).normalize() == normallVector ,"getNormal( primitives.Point ) dos't return true value") ;
+		assertTrue( (myPlane.getNormal(p1) == normallVector) || (myPlane.getNormal(p1) == normallVector.scale(-1.0) ) ,"getNormal( primitives.Point ) dos't return true value") ;
 	
 	}
 

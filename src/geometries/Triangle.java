@@ -9,12 +9,12 @@ import primitives.Vector;
  */
 public class Triangle extends Polygon {
 
-	public Triangle(Point... vertices) {
-	super(vertices);
+	public Triangle(Point  vert1 , Point  vert2 ,Point  vert3) {
+	super(vert1 ,vert2 ,vert3);
 	}
 	
 	@Override
-	public Vector getNormal(Point point) {
+	public Vector getNormal(Point p) {
 		return null;
 	}
 }

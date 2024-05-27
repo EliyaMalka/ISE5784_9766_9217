@@ -103,8 +103,8 @@ public class Vector extends Point {
      * @return A new vector that is the result of the cross product.
      */
 	public Vector crossProduct(Vector V) {
-		
-		return new Vector(this.xyz.d2*V.xyz.d3 -this.xyz.d3*V.xyz.d2,this.xyz.d3*V.xyz.d1 -this.xyz.d1*V.xyz.d3,this.xyz.d1*V.xyz.d2 -this.xyz.d2*V.xyz.d1);
+		Vector crossVector = new Vector(this.xyz.d2*V.xyz.d3 -this.xyz.d3*V.xyz.d2,this.xyz.d3*V.xyz.d1 -this.xyz.d1*V.xyz.d3,this.xyz.d1*V.xyz.d2 -this.xyz.d2*V.xyz.d1);
+		return crossVector.normalize();
 	}
 	
     /**

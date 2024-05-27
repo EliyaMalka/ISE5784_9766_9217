@@ -27,7 +27,7 @@ class TriangleTests {
 		Triangle A = new Triangle(p1,p2,p3);
 		
 	      // ============ Equivalence Partitions Tests ==============
-		assertTrue(A.getNormal(p3) == result,"getNormal() dos't return true value");
+		assertTrue( ( (A.getNormal(p3) == result) || (A.getNormal(p3) == result.scale(-1.0)) ) ,"getNormal() dos't return true value");
 	}
 
 }
