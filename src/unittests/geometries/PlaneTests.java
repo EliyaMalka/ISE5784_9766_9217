@@ -15,10 +15,7 @@ import org.junit.jupiter.api.Test;
 /**
  * 
  */
-class PlaneTests {
-	
-	   private final double DELTA = 0.000001;
-	   
+class PlaneTests {	   
 	    @Test
 	    public void testConstructorPlane() {
 	    

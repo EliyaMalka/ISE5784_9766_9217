@@ -21,8 +21,7 @@ import org.junit.jupiter.api.Test;
 class VectorTests {
 	
 	   private final double DELTA = 0.000001;
-
-
+	   
 	/**
 	 * Test method for {@link primitives.Vector#lengthSquared()}.
 	 */
