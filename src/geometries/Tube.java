@@ -26,10 +26,18 @@ public class Tube extends RadialGeometry {
 		this.axis = ax;
 	}
 	
+    /**
+     * Returns the normal vector to the tube at a given point.
+     * 
+     * @param P The point on the tube where the normal is to be calculated.
+     * @return The normal vector to the tube at point P.
+     */
 	@Override
 	public Vector getNormal(Point P) {
-		// TODO Auto-generated method stub
-		return null;
+		
+        // Calculate the projection of P onto the axis ray
+		Point frontPoint =  axis.getHead() .add( axis.getDirection().scale(axis.getDirection().dotProduct(P.subtract(axis.getHead()))));
+		return P.subtract(frontPoint).normalize();
 	}
 
 }

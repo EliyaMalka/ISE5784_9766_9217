@@ -1,5 +1,7 @@
 package geometries;
 
+import java.util.Iterator;
+
 import primitives.Point;
 import primitives.Vector;
 
@@ -13,8 +15,4 @@ public class Triangle extends Polygon {
 	super(vert1 ,vert2 ,vert3);
 	}
 	
-	@Override
-	public Vector getNormal(Point p) {
-		return null;
-	}
 }
