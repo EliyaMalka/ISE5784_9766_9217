@@ -16,6 +16,9 @@ import primitives.Vector;
 */
 
 class PointTests {
+	
+	   private final double DELTA = 0.000001;
+
 
 	/**
 	 * Test method for {@link primitives.Point#add(primitives.Vector)}.
@@ -72,12 +75,12 @@ assertThrows(IllegalAccessException.class, ()->p1.subtract(vecSamePoint) , "subt
 		Point nagativPoint3 = new Point(-2,-1,-3);
 		
 // ============ Equivalence Partitions Tests ==============
-assertEquals(p1.distanceSquared(p2), 26.0,"distanceSquared() dosn't return correct values");
+assertEquals(p1.distanceSquared(p2), 26.0, DELTA,"distanceSquared() dosn't return correct values");
 
 //=============== Boundary Values Tests ==================
-assertEquals(p1.distanceSquared(p2.ZERO), 14.0,"distanceSquared() dosn't return correct values with zero point");
-assertEquals(p1.distanceSquared(p1), 0.0 ,"distanceSquared() dosn't return correct values with same point");
-assertEquals(p1.distanceSquared(nagativPoint3), 63.0,"distanceSquared() dosn't return correct values with nagativ point");
+assertEquals(p1.distanceSquared(p2.ZERO), 14.0, DELTA,"distanceSquared() dosn't return correct values with zero point");
+assertEquals(p1.distanceSquared(p1), 0.0 , DELTA,"distanceSquared() dosn't return correct values with same point");
+assertEquals(p1.distanceSquared(nagativPoint3), 63.0, DELTA,"distanceSquared() dosn't return correct values with nagativ point");
 
 	}
 
@@ -91,12 +94,12 @@ assertEquals(p1.distanceSquared(nagativPoint3), 63.0,"distanceSquared() dosn't r
 		Point nagativPoint3 = new Point(-2,-1,-3);
 		
 // ============ Equivalence Partitions Tests ==============
-assertEquals(p1.distance(p2), Math.sqrt(26),"distance() dosn't return correct values");
+assertEquals(p1.distance(p2), Math.sqrt(26), DELTA,"distance() dosn't return correct values");
 
 //=============== Boundary Values Tests ==================
-assertEquals(p1.distance(p2.ZERO), Math.sqrt(14),"distance() dosn't return correct values with zero point");
-assertEquals(p1.distance(p1), 0.0 ,"distance() dosn't return correct values with same point");
-assertEquals(p1.distance(nagativPoint3), Math.sqrt(63),"distance() dosn't return correct values with nagativ point");
+assertEquals(p1.distance(p2.ZERO), Math.sqrt(14), DELTA ,"distance() dosn't return correct values with zero point");
+assertEquals(p1.distance(p1), 0.0 , DELTA ,"distance() dosn't return correct values with same point");
+assertEquals(p1.distance(nagativPoint3), Math.sqrt(63), DELTA ,"distance() dosn't return correct values with nagativ point");
 	}
 
 }

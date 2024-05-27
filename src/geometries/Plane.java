@@ -3,6 +3,9 @@ package geometries;
 import primitives.Point;
 import primitives.Vector;
 
+
+
+
 /**
  * The Plane class represents a plane in a 3D space.
  */
@@ -27,6 +30,14 @@ public class Plane implements Geometry {
      * @param P3 The third point on the plane.
      */
 	public Plane(Point P1 ,Point P2 ,Point P3 ) {
+		
+		/*
+		 * 
+	    Vector v1 = p3.subtract(p1);
+	    Vector v2 = p3.subtract(p2);
+	    
+	   this.normal = v1.crossProduct(v2);
+	 * */	
 	
 	this.normal = null;
 	this.q = P1;

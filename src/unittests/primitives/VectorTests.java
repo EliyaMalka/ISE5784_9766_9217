@@ -11,7 +11,6 @@ import java.lang.classfile.instruction.NewMultiArrayInstruction;
 import javax.naming.spi.DirStateFactory.Result;
 
 import primitives.Double3;
-//import java.util.Vector;
 import primitives.Vector;
 
 import org.junit.jupiter.api.Test;
@@ -20,6 +19,9 @@ import org.junit.jupiter.api.Test;
  * 
  */
 class VectorTests {
+	
+	   private final double DELTA = 0.000001;
+
 
 	/**
 	 * Test method for {@link primitives.Vector#lengthSquared()}.
@@ -30,7 +32,7 @@ class VectorTests {
 		
 		// check if lengthSquared() return correct value
 		Vector v = new Vector(2,4,-4);
-		assertEquals(36, v.lengthSquared(), "lengthSquared() is not return correct value");
+		assertEquals(36, v.lengthSquared(), DELTA ,"lengthSquared() is not return correct value");
 	}
 	
 	/**
@@ -38,11 +40,7 @@ class VectorTests {
 	 */
 	@Test
 	void testVector() {
-	      // =============== Boundary Values Tests ==================
-
-		Double3 xyz = new Double3(0,0,0);
-		assertThrows(IllegalAccessException.class, () -> new Vector(0,0,0), "constractor does't throw Ilegal exception to zero vector");
-		assertThrows(IllegalAccessException.class, () -> new Vector(xyz), "constractor does't throw Ilegal exception to zero vector");
+		
 		
 	      // ============ Equivalence Partitions Tests ==============
 		Vector v = new Vector(1,2,3);
@@ -51,6 +49,13 @@ class VectorTests {
 		assertDoesNotThrow(()-> new Vector(0,0,1), "constractor throw exception with correct values");
 		assertDoesNotThrow(()-> new Vector(0,1,0), "constractor throw exception with correct values");
 		assertDoesNotThrow(()-> new Vector(1,0,0), "constractor throw exception with correct values");
+		
+	      // =============== Boundary Values Tests ==================
+
+		Double3 xyz = new Double3(0,0,0);
+		assertThrows(IllegalAccessException.class, () -> new Vector(0,0,0), "constractor does't throw Ilegal exception to zero vector");
+		assertThrows(IllegalAccessException.class, () -> new Vector(xyz), "constractor does't throw Ilegal exception to zero vector");
+
 	}
 
 	/**
@@ -61,7 +66,7 @@ class VectorTests {
 	      // ============ Equivalence Partitions Tests ==============
 		// check if length() return correct value
 		Vector v = new Vector(2,4,-4);
-		assertEquals(6, v.length(), "length() is not return correct value");
+		assertEquals(6, v.length(),DELTA , "length() is not return correct value");
 	}
 
 	/**
@@ -110,10 +115,10 @@ class VectorTests {
 		Vector vertical = new Vector(-1,-1,1);
 
 		// ============ Equivalence Partitions Tests ==============
-		assertEquals(result,v1.dotProduct(v2),"dotProduct() dosn't return correct values");
+		assertEquals(result,v1.dotProduct(v2),DELTA ,"dotProduct() dosn't return correct values");
 	      // =============== Boundary Values Tests ==================
-		assertEquals(0, v1.dotProduct(vertical),"dotProduct() dosn't return correct values with verticals vectors");
-		assertEquals(3, v1.dotProduct(unitVector),"dotProduct() dosn't return correct values with unit vector");
+		assertEquals(0, v1.dotProduct(vertical),DELTA ,"dotProduct() dosn't return correct values with verticals vectors");
+		assertEquals(3, v1.dotProduct(unitVector),DELTA ,"dotProduct() dosn't return correct values with unit vector");
 	}
 
 	/**
@@ -151,4 +156,10 @@ class VectorTests {
 		assertTrue(unitVector1.normalize().length() == 1, "normalize() dosn't return correct values with unit vector");
 		assertTrue(unitVector2.normalize().length() == 1, "normalize() dosn't return correct values with unit vector");
 		assertTrue(unitVector3.normalize().length() == 1, "normalize() dosn't return correct values with unit vector");
+      }
+	
+
 }
+
+
+
