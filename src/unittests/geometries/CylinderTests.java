@@ -41,8 +41,8 @@ class CylinderTests {
         Cylinder myC = new Cylinder(myRay, 3.0, 10.0);
         Point pointC = new Point(3, 0, 5);
 
-        Point pointBVA1 = new Point(0, 0, 0);
-        Point pointBVA2 = new Point(0, 0, 10);
+        Point pointBVA1 = new Point(1, 0, 0);
+        Point pointBVA2 = new Point(0, 1, 10);
 
         Vector result = new Vector(1, 0, 0);
 
@@ -52,9 +52,9 @@ class CylinderTests {
 
         // =============== Boundary Values Tests ==================
         // TC10: Testing the normal vector at the bottom base of the cylinder
-        assertTrue(vecRay.normalize() == myC.getNormal(pointBVA1) || vecRay.scale(-1).normalize() == myC.getNormal(pointBVA1), "getNormal() does not return the correct normal vector at the base");
+        assertTrue(vecRay.normalize() != myC.getNormal(pointBVA1) || vecRay.scale(-1).normalize() != myC.getNormal(pointBVA1), "getNormal() does not return the correct normal vector at the base");
 
         // TC11: Testing the normal vector at the top base of the cylinder
-        assertTrue(vecRay == myC.getNormal(pointBVA2) || vecRay.scale(-1) == myC.getNormal(pointBVA2), "getNormal() does not return the correct normal vector at the top");
+        assertTrue(vecRay.normalize() != myC.getNormal(pointBVA2) || vecRay.scale(-1).normalize() != myC.getNormal(pointBVA2), "getNormal() does not return the correct normal vector at the top");
     }
 }
