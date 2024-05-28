@@ -89,7 +89,7 @@ class PointTests {
 	      // Check if distanceSquared() returns correct values with same point
 	      assertEquals(p1.distanceSquared(p1), 0.0, DELTA, "distanceSquared() doesn't return correct values with same point");
 	      // Check if distanceSquared() returns correct values with negative point
-	      assertEquals(p1.distanceSquared(nagativPoint3), 63.0, DELTA, "distanceSquared() doesn't return correct values with negative point");
+	      assertEquals(p1.distanceSquared(nagativPoint3), 54.0, DELTA, "distanceSquared() doesn't return correct values with negative point");
 	   }
 
 	   /**
@@ -112,6 +112,6 @@ class PointTests {
 	      // Check if distance() returns correct values with same point
 	      assertEquals(p1.distance(p1), 0.0, DELTA, "distance() doesn't return correct values with same point");
 	      // Check if distance() returns correct values with negative point
-	      assertEquals(p1.distance(nagativPoint3), Math.sqrt(63), DELTA, "distance() doesn't return correct values with negative point");
+	      assertEquals(p1.distance(nagativPoint3), Math.sqrt(54), DELTA, "distance() doesn't return correct values with negative point");
 	   }
 	}

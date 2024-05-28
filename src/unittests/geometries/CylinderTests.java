@@ -21,6 +21,13 @@ import primitives.Vector;
  * Unit tests for geometries.Cylinder class.
  */
 class CylinderTests {
+	
+	   /**
+	    * Delta value for accuracy when comparing the numbers of type 'double' in
+	    * assertEquals
+	    */
+	   private final double DELTA = 0.000001;
+
 
     /**
      * Test method for {@link geometries.Cylinder#getNormal(primitives.Point)}.
@@ -45,9 +52,9 @@ class CylinderTests {
 
         // =============== Boundary Values Tests ==================
         // TC10: Testing the normal vector at the bottom base of the cylinder
-        assertEquals(new Vector(0, 0, 1), myC.getNormal(pointBVA1), "getNormal() does not return the correct normal vector at the base");
+        assertTrue(vecRay.normalize() == myC.getNormal(pointBVA1) || vecRay.scale(-1).normalize() == myC.getNormal(pointBVA1), "getNormal() does not return the correct normal vector at the base");
 
         // TC11: Testing the normal vector at the top base of the cylinder
-        assertEquals(new Vector(0, 0, 1), myC.getNormal(pointBVA2), "getNormal() does not return the correct normal vector at the top");
+        assertTrue(vecRay == myC.getNormal(pointBVA2) || vecRay.scale(-1) == myC.getNormal(pointBVA2), "getNormal() does not return the correct normal vector at the top");
     }
 }

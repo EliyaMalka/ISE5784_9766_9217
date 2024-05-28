@@ -39,13 +39,21 @@ public class Cylinder extends Tube {
 		//assumption: the ray head point is the center point of the lower base of the cylinder.
 		
 		// factor is project vector onto the direction of the axis
-		double factor = axis.getDirection().dotProduct(P.subtract(axis.getHead()) ) / (axis.getDirection().lengthSquared()) ;
-		
+		double factor;
+
         // Define a small epsilon value to represent the acceptable error margin
         double epsilon = 0.000001;
+		
+		if ( P.equals(axis.getHead()) ) {// we dont want to make zero vector
+			factor = 0; // more small from epsilon
+		}
+		else {
+			factor = axis.getDirection().dotProduct(P.subtract(axis.getHead()) ) / (axis.getDirection().lengthSquared()) ;
 
+		}
+		
         // Check if the point is at the top or bottom of the cylinder
-        if (Math.abs(factor - this.height) < epsilon || Math.abs(factor) < epsilon) {
+        if ( Math.abs(factor) < epsilon || Math.abs(factor - this.height) < epsilon )  {
             // Return the normalized axis direction as the normal vector
             return axis.getDirection().normalize();
         } else {
