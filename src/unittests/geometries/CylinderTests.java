@@ -37,24 +37,41 @@ class CylinderTests {
 
 		Point pointBVA1 = new Point(1, 0, 0);
 		Point pointBVA2 = new Point(0, 1, 10);
+		Point pointBVA3 = new Point(0, 0, 0);
+		Point pointBVA4 = new Point(0, 0, 10);
 
 		Vector result = new Vector(1, 0, 0);
 
 		// ============ Equivalence Partitions Tests ==============
-		// TC01: Testing the normal vector on the side surface of the cylinder
+		// TC1: Testing the normal vector on the side surface of the cylinder
 		assertEquals(result, Cyl.getNormal(pointC), "getNormal() does not return the correct normal vector");
 
 		// =============== Boundary Values Tests ==================
-		// TC10: Testing the normal vector at the bottom base of the cylinder
+		// TC2: Testing the normal vector at the bottom base of the cylinder
 		assertTrue(
 				vecOfRy.normalize() != Cyl.getNormal(pointBVA1)
 						|| vecOfRy.scale(-1).normalize() != Cyl.getNormal(pointBVA1),
-				"getNormal() does not return the correct normal vector at the base");
+				"getNormal() does not return the correct normal vector at the bottom base");
 
-		// TC11: Testing the normal vector at the top base of the cylinder
+		// TC3: Testing the normal vector at the top base of the cylinder
 		assertTrue(
 				vecOfRy.normalize() != Cyl.getNormal(pointBVA2)
 						|| vecOfRy.scale(-1).normalize() != Cyl.getNormal(pointBVA2),
-				"getNormal() does not return the correct normal vector at the top");
+				"getNormal() does not return the correct normal vector at the top base");
+
+		// TC4: Testing the normal vector at the center point on the top base of the cylinder
+		 
+		assertTrue(
+				vecOfRy.normalize() != Cyl.getNormal(pointBVA3)
+						|| vecOfRy.scale(-1).normalize() != Cyl.getNormal(pointBVA1),
+				"getNormal() does not return the correct normal vector at the center piont on the top base");
+
+		// TC5: Testing the normal vector at the center point on the bottom base of the cylinder
+		
+		assertTrue(
+				vecOfRy.normalize() != Cyl.getNormal(pointBVA4)
+						|| vecOfRy.scale(-1).normalize() != Cyl.getNormal(pointBVA1),
+				"getNormal() does not return the correct normal vector at the center point on the bottom base of the cylinder base");
+
 	}
 }

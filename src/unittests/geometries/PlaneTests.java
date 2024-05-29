@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package unittests.geometries;
 
 import primitives.Point;
@@ -31,7 +34,7 @@ class PlaneTests {
 		assertThrows(IllegalArgumentException.class, () -> new Plane(p1, p2, p3),
 				"The constructor does not throw an IllegalArgumentException when given two identical points");
 
-		// Test for constructing a plane with three points
+		// Test for constructing a plane with three collinear points
 		assertThrows(IllegalArgumentException.class, () -> new Plane(p3, sameRayP3_1, sameRayP3_2),
 				"The constructor does not throw an IllegalArgumentException when given three collinear points");
 	}
