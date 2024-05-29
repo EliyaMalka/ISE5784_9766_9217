@@ -1,5 +1,5 @@
 /**
- * 
+ * ***********bonus**************
  */
 package unittests.geometries;
 
@@ -13,48 +13,48 @@ import primitives.Ray;
 import primitives.Vector;
 
 /**
- * ***********bonus**************
- */
-
-
-/**
  * Unit tests for geometries.Cylinder class.
  */
 class CylinderTests {
-	
-	   /**
-	    * Delta value for accuracy when comparing the numbers of type 'double' in
-	    * assertEquals
-	    */
-	   private final double DELTA = 0.000001;
 
+	/**
+	 * Delta value for accuracy when comparing the numbers of type 'double' in
+	 * assertEquals
+	 */
+	private final double DELTA = 0.000001;
 
-    /**
-     * Test method for {@link geometries.Cylinder#getNormal(primitives.Point)}.
-     * This test checks the functionality of the getNormal method for the Cylinder class.
-     */
-    @Test
-    void testGetNormal() {
-        Point pointRay = new Point(0, 0, 0);
-        Vector vecRay = new Vector(0, 0, 1);
-        Ray myRay = new Ray(pointRay, vecRay);
-        Cylinder myC = new Cylinder(myRay, 3.0, 10.0);
-        Point pointC = new Point(3, 0, 5);
+	/**
+	 * Test method for {@link geometries.Cylinder#getNormal(primitives.Point)}. This
+	 * test checks the functionality of the getNormal method for the Cylinder class.
+	 */
+	@Test
+	void testGetNormal() {
+		Point pointOfRy = new Point(0, 0, 0);
+		Vector vecOfRy = new Vector(0, 0, 1);
+		Ray Ry = new Ray(pointOfRy, vecOfRy);
+		Cylinder Cyl = new Cylinder(Ry, 3.0, 10.0);
+		Point pointC = new Point(3, 0, 5);
 
-        Point pointBVA1 = new Point(1, 0, 0);
-        Point pointBVA2 = new Point(0, 1, 10);
+		Point pointBVA1 = new Point(1, 0, 0);
+		Point pointBVA2 = new Point(0, 1, 10);
 
-        Vector result = new Vector(1, 0, 0);
+		Vector result = new Vector(1, 0, 0);
 
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: Testing the normal vector on the side surface of the cylinder
-        assertEquals(result, myC.getNormal(pointC), "getNormal() does not return the correct normal vector");
+		// ============ Equivalence Partitions Tests ==============
+		// TC01: Testing the normal vector on the side surface of the cylinder
+		assertEquals(result, Cyl.getNormal(pointC), "getNormal() does not return the correct normal vector");
 
-        // =============== Boundary Values Tests ==================
-        // TC10: Testing the normal vector at the bottom base of the cylinder
-        assertTrue(vecRay.normalize() != myC.getNormal(pointBVA1) || vecRay.scale(-1).normalize() != myC.getNormal(pointBVA1), "getNormal() does not return the correct normal vector at the base");
+		// =============== Boundary Values Tests ==================
+		// TC10: Testing the normal vector at the bottom base of the cylinder
+		assertTrue(
+				vecOfRy.normalize() != Cyl.getNormal(pointBVA1)
+						|| vecOfRy.scale(-1).normalize() != Cyl.getNormal(pointBVA1),
+				"getNormal() does not return the correct normal vector at the base");
 
-        // TC11: Testing the normal vector at the top base of the cylinder
-        assertTrue(vecRay.normalize() != myC.getNormal(pointBVA2) || vecRay.scale(-1).normalize() != myC.getNormal(pointBVA2), "getNormal() does not return the correct normal vector at the top");
-    }
+		// TC11: Testing the normal vector at the top base of the cylinder
+		assertTrue(
+				vecOfRy.normalize() != Cyl.getNormal(pointBVA2)
+						|| vecOfRy.scale(-1).normalize() != Cyl.getNormal(pointBVA2),
+				"getNormal() does not return the correct normal vector at the top");
+	}
 }
