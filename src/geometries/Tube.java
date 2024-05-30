@@ -39,7 +39,7 @@ public class Tube extends RadialGeometry {
 		} else {
 			// Calculate the projection of P onto the axis ray
 			Point frontPoint = axis.getHead()
-					.add(axis.getDirection().scale(axis.getDirection().dotProduct(P.subtract(axis.getHead()))));
+					.add(axis.getDirection().normalize().scale(axis.getDirection().normalize().dotProduct(P.subtract(axis.getHead()))));
 			return P.subtract(frontPoint).normalize();
 		}
 	}
