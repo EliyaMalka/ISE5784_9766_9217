@@ -49,28 +49,30 @@ class CylinderTests {
 		// =============== Boundary Values Tests ==================
 		// TC2: Testing the normal vector at the bottom base of the cylinder
 		assertTrue(
-				vecOfRy.normalize() != Cyl.getNormal(pointBVA1)
-						|| vecOfRy.scale(-1).normalize() != Cyl.getNormal(pointBVA1),
+				vecOfRy.normalize().equals(Cyl.getNormal(pointBVA1))
+						|| vecOfRy.scale(-1).normalize().equals(Cyl.getNormal(pointBVA1)),
 				"getNormal() does not return the correct normal vector at the bottom base");
 
 		// TC3: Testing the normal vector at the top base of the cylinder
 		assertTrue(
-				vecOfRy.normalize() != Cyl.getNormal(pointBVA2)
-						|| vecOfRy.scale(-1).normalize() != Cyl.getNormal(pointBVA2),
+				vecOfRy.normalize().equals(Cyl.getNormal(pointBVA2))
+						|| vecOfRy.scale(-1).normalize().equals(Cyl.getNormal(pointBVA2)),
 				"getNormal() does not return the correct normal vector at the top base");
 
-		// TC4: Testing the normal vector at the center point on the top base of the cylinder
-		 
+		// TC4: Testing the normal vector at the center point on the top base of the
+		// cylinder
+
 		assertTrue(
-				vecOfRy.normalize() != Cyl.getNormal(pointBVA3)
-						|| vecOfRy.scale(-1).normalize() != Cyl.getNormal(pointBVA1),
+				vecOfRy.normalize().equals(Cyl.getNormal(pointBVA3))
+						|| vecOfRy.scale(-1).normalize().equals(Cyl.getNormal(pointBVA1)),
 				"getNormal() does not return the correct normal vector at the center piont on the top base");
 
-		// TC5: Testing the normal vector at the center point on the bottom base of the cylinder
-		
+		// TC5: Testing the normal vector at the center point on the bottom base of the
+		// cylinder
+
 		assertTrue(
-				vecOfRy.normalize() != Cyl.getNormal(pointBVA4)
-						|| vecOfRy.scale(-1).normalize() != Cyl.getNormal(pointBVA1),
+				vecOfRy.normalize().equals(Cyl.getNormal(pointBVA4))
+						|| vecOfRy.scale(-1).normalize().equals(Cyl.getNormal(pointBVA1)),
 				"getNormal() does not return the correct normal vector at the center point on the bottom base of the cylinder base");
 
 	}
