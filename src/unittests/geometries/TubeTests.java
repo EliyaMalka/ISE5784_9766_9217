@@ -23,7 +23,7 @@ class TubeTests {
 	@Test
 	void testGetNormal() {
 		Point pointRay = new Point(0, 0, 0);
-		Vector vecRay = new Vector(0, 0, 1);
+		Vector vecRay = new Vector(0, 0, 8);
 		Ray myRay = new Ray(pointRay, vecRay);
 		Tube myTube = new Tube(myRay, 3);
 		Point pointTube = new Point(3, 0, 5);
