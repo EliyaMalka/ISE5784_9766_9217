@@ -59,4 +59,9 @@ class PlaneTests {
 						|| (myPlane.getNormal(p1).equals(normalVector.scale(-1.0))),
 				"getNormal(Point) does not return the correct normal vector");
 	}
+	
+	void testFindIntsersections() {
+		
+	}
+	
 }

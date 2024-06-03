@@ -1,6 +1,9 @@
 package geometries;
 
+import java.util.List;
+
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /**
@@ -62,4 +65,8 @@ public class Plane implements Geometry {
 		return this.normal;
 	}
 
+	@Override
+	public List<Point> findIntsersections(Ray ray){
+		return null;
+	}
 }

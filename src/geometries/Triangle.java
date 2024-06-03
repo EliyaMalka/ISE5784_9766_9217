@@ -1,8 +1,10 @@
 package geometries;
 
 import java.util.Iterator;
+import java.util.List;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /**
@@ -15,4 +17,8 @@ public class Triangle extends Polygon {
 		super(vert1, vert2, vert3);
 	}
 
+	@Override
+	public List<Point> findIntsersections(Ray ray){
+		return null;
+	}
 }
