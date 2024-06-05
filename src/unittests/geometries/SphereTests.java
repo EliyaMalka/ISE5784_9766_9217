@@ -4,10 +4,11 @@
 package unittests.geometries;
 
 import static org.junit.jupiter.api.Assertions.*;
-import primitives.Point;
-import primitives.Vector;
-import geometries.RadialGeometry;
-import geometries.Sphere;
+
+import java.util.List;
+
+import primitives.*;
+import geometries.*;
 
 import org.junit.jupiter.api.Test;
 
