@@ -1,8 +1,12 @@
 package geometries;
 
+import java.util.Iterator;
 import java.util.List;
 
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
+import static primitives.Util.*;
 
 /**
  * The Triangle class represents a triangle in a 3D space. It extends the
@@ -15,7 +19,7 @@ public class Triangle extends Polygon {
 	}
 
 	@Override
-	public List<Point> findIntersections(Ray ray) {
+	public List<Point> findIntsersections(Ray ray){
 		return null;
 	}
 }

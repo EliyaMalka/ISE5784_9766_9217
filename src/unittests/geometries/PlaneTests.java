@@ -6,6 +6,8 @@ package unittests.geometries;
 import primitives.Point;
 import primitives.Vector;
 import geometries.Plane;
+import static primitives.Util.*;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,9 +61,9 @@ class PlaneTests {
 						|| (myPlane.getNormal(p1).equals(normalVector.scale(-1.0))),
 				"getNormal(Point) does not return the correct normal vector");
 	}
-
+	
 	void testFindIntsersections() {
-
+		
 	}
-
+	
 }

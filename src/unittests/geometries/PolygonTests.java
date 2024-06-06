@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import geometries.Polygon;
 import primitives.Point;
 import primitives.Vector;
+import static primitives.Util.*;
+
 
 /**
  * Testing Polygons
