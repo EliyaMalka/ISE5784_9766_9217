@@ -7,6 +7,6 @@ import primitives.Ray;
 
 public interface Intersectable {
 
-	// להוסיף תיעוד
-	public List<Point> findIntersections(Ray ray); 
+	// TODO
+	public List<Point> findIntersections(Ray ray);
 }

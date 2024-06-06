@@ -27,12 +27,12 @@ public class Plane implements Geometry {
 	 * @param P1 The first point on the plane.
 	 * @param P2 The second point on the plane.
 	 * @param P3 The third point on the plane.
+	 * 
+	 * @throws IllegalArgumentException when there are convergent points or the points are co-linear
 	 */
 	public Plane(Point P1, Point P2, Point P3) {
-
 		this.normal = ((P2.subtract(P1)).crossProduct(P3.subtract(P1))).normalize();
 		this.q = P1;
-
 	}
 
 	/**
@@ -42,17 +42,13 @@ public class Plane implements Geometry {
 	 * @param V The normal vector to the plane.
 	 */
 	public Plane(Point P, Vector V) {
-
 		this.q = P;
 		this.normal = V.normalize();
-
 	}
 
 	@Override
 	public Vector getNormal(Point P) {
-
 		return this.normal;
-
 	}
 
 	/**
@@ -61,12 +57,11 @@ public class Plane implements Geometry {
 	 * @return The normal vector.
 	 */
 	public Vector getNormal() {
-
 		return this.normal;
 	}
 
 	@Override
-	public List<Point> findIntersections(Ray ray){
+	public List<Point> findIntersections(Ray ray) {
 		return null;
 	}
 }

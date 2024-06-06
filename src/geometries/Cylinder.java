@@ -1,8 +1,7 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
+import static primitives.Util.*;
 
 /**
  * The Cylinder class represents a cylinder in a 3D space. It extends the Tube
@@ -30,23 +29,21 @@ public class Cylinder extends Tube {
 	/**
 	 * Computes the normal vector at a given point on the surface of the cylinder.
 	 * 
-	 * @param point The point on the surface of the cylinder.
+	 * @param P The point on the surface of the cylinder.
 	 * @return The normal vector at the given point.
 	 */
 	@Override
 	public Vector getNormal(Point P) {
-		// center points on the bases
-		if (P.equals(axis.getHead()) || P.equals(axis.getHead().add(axis.getDirection().normalize().scale(height)))) {
-			return axis.getDirection().normalize();
+		Point head = axis.getHead();
+		Vector direction = axis.getDirection();
+		// center points on the 1st base
+		if (P.equals(axis.getHead())) return direction;
+	
+		// check whether the point is on one of the bases
+		double projection = direction.dotProduct(P.subtract(head));
+		if (isZero(projection) || isZero(projection - this.height)) return direction;
 
-		}
-		// points on the bases
-		if (P.subtract(axis.getHead()).dotProduct(axis.getDirection()) == 0 || axis.getHead()
-				.add(axis.getDirection().normalize().scale(height)).subtract(P).dotProduct(axis.getDirection()) == 0) {
-			return axis.getDirection().normalize();
-		} else { // points on the surface
-			return super.getNormal(P);
-		}
-
+		// points on the side surface
+		return super.getNormal(P);
 	}
 }

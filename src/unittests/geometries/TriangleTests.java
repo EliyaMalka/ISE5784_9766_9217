@@ -39,8 +39,8 @@ class TriangleTests {
 		assertTrue(normal.equals(expectedNormal) || normal.equals(expectedNormal.scale(-1.0)),
 				"getNormal() doesn't return the correct normal vector");
 	}
-	
+
 	void testFindIntsersections() {
-		
+
 	}
 }

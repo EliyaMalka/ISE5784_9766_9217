@@ -5,11 +5,6 @@ package unittests.primitives;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.awt.Checkbox;
-import java.lang.classfile.instruction.NewMultiArrayInstruction;
-
-import javax.naming.spi.DirStateFactory.Result;
-
 import primitives.Double3;
 import primitives.Vector;
 
@@ -42,8 +37,8 @@ class VectorTests {
 	}
 
 	/**
-	 * Test method for {@link primitives.Vector#Vector()}. Tests the constructor of
-	 * the Vector class.
+	 * Test method for {@link primitives.Vector#Vector(double,double,double)}. Tests
+	 * the constructor of the Vector class.
 	 */
 	@Test
 	void testVector() {

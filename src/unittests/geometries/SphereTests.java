@@ -6,6 +6,7 @@ package unittests.geometries;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import java.util.Comparator;
 
 import primitives.*;
 import geometries.*;
@@ -35,12 +36,11 @@ class SphereTests {
 		assertEquals(expectedNormal, mySphere.getNormal(pointOnSphere),
 				"getNormal() doesn't return the correct normal vector");
 	}
-	
-	
-	private final Point p001 = new Point(0, 0, 1); 
-	private final Point p100 = new Point(1, 0, 0); 
+
+	private final Point p001 = new Point(0, 0, 1);
+	private final Point p100 = new Point(1, 0, 0);
 	private final Vector v001 = new Vector(0, 0, 1);
-	
+
 	/**
 	* Test method for {@link geometries.Sphere#findIntersections(primitives.Ray)}.
 	*/
@@ -57,9 +57,14 @@ class SphereTests {
 		final Point p01 = new Point(-1, 0, 0);
 		
 		// ============ Equivalence Partitions Tests ============== 
-		// TC01: Ray's line is outside the sphere (0 points) assertNull(sphere.findIntersections(new Ray(p01, v110)), "Ray's line out of sphere"); 
+		// TC01: Ray's line is outside the sphere (0 points)
+		assertNull(sphere.findIntersections(new Ray(p01, v110)), "Ray's line out of sphere"); 
+		
 		// TC02: Ray starts before and crosses the sphere (2 points) 
-		final var result1 = sphere.findIntersections(new Ray(p01, v310)) .stream().sorted(Comparator.comparingDouble(p) -> p.distance(p01))) .toList(); 
+		final var result1 = sphere.findIntersections(new Ray(p01, v310))
+				.stream()
+				.sorted(Comparator.comparingDouble(p -> p.distance(p01)))
+				.toList(); 
 		assertEquals(2, result1.size(), "Wrong number of points"); 
 		assertEquals(exp, result1, "Ray crosses sphere");
 	

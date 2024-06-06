@@ -1,8 +1,5 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Vector;
-
 /**
  * The RadialGeometry class represents a radial geometry shape in a 3D space. It
  * is an abstract class that provides a common base for various radial
@@ -14,6 +11,10 @@ public abstract class RadialGeometry implements Geometry {
 	 * The radius of the radial geometry shape.
 	 */
 	protected final double radius;
+	/**
+	 * The squared radius of the radial geometry shape.
+	 */
+	protected final double radiusSquared;
 
 	/**
 	 * Constructs a new RadialGeometry with the given radius.
@@ -22,5 +23,6 @@ public abstract class RadialGeometry implements Geometry {
 	 */
 	public RadialGeometry(double R) {
 		this.radius = R;
+		this.radiusSquared = R * R;
 	}
 }

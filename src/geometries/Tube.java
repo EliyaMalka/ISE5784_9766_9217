@@ -1,8 +1,9 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Vector;
-import primitives.Ray;
+import java.util.List;
+
+import primitives.*;
+import static primitives.Util.*;
 
 /**
  * The Tube class represents a tube (cylindrical surface) in a 3D space.
@@ -33,15 +34,18 @@ public class Tube extends RadialGeometry {
 	 */
 	@Override
 	public Vector getNormal(Point P) {
-		// if the point orthogonal to the ray
-		if (P.subtract(axis.getHead()).dotProduct(axis.getDirection()) == 0) {
-			return P.subtract(axis.getHead()).normalize();
-		} else {
-			// Calculate the projection of P onto the axis ray
-			Point frontPoint = axis.getHead()
-					.add(axis.getDirection().normalize().scale(axis.getDirection().normalize().dotProduct(P.subtract(axis.getHead()))));
-			return P.subtract(frontPoint).normalize();
-		}
+		Vector u = P.subtract(axis.getHead());
+		double projection = axis.getDirection().dotProduct(u);
+		Point closestPoint = isZero(projection) //
+				? axis.getHead() //
+				: axis.getHead().add(axis.getDirection().scale(projection));
+		return P.subtract(closestPoint).normalize();
+	}
+
+	@Override
+	public List<Point> findIntersections(Ray ray) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

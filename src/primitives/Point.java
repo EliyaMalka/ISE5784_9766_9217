@@ -11,23 +11,24 @@ public class Point {
 	protected final Double3 xyz;
 
 	/** A static constant representing the origin point (0,0,0). */
-	public static Point ZERO = new Point(0, 0, 0);
+	public static Point ZERO = new Point(Double3.ZERO);
 
 	/**
 	 * Constructor that initializes a point with the given x, y, and z coordinates.
 	 * 
-	 * @param x the x coordinate
-	 * @param y the y coordinate
-	 * @param z the z coordinate
+	 * @param x the x coordinate value
+	 * @param y the y coordinate value
+	 * @param z the z coordinate value
 	 */
 	public Point(double x, double y, double z) {
 		this.xyz = new Double3(x, y, z);
 	}
 
 	/**
-	 * Constructor that initializes a point with a given Double3 object.
+	 * Constructor that initializes a point with a given triad of coordinates'
+	 * values.
 	 * 
-	 * @param XYZ the Double3 object containing the coordinates
+	 * @param xyz the triad of numbers containing the coordinates' values
 	 */
 	public Point(Double3 xyz) {
 		this.xyz = xyz;
@@ -72,9 +73,10 @@ public class Point {
 	 * @return the square of the distance between the points
 	 */
 	public double distanceSquared(Point P) {
-
-		Double3 distansVec = (xyz.subtract(P.xyz)).product(xyz.subtract(P.xyz));
-		return (distansVec.d1 + distansVec.d2 + distansVec.d3);
+		double dx = xyz.d1 - P.xyz.d1;
+		double dy = xyz.d2 - P.xyz.d2;
+		double dz = xyz.d3 - P.xyz.d3;
+		return dx * dx + dy * dy + dz * dz;
 	}
 
 	/**

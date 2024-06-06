@@ -25,7 +25,7 @@ class PointTests {
 		Point p1 = new Point(3, 7, 8);
 		Point result = new Point(5, 11, 13);
 		Vector v1 = new Vector(2, 4, 5);
-		Vector negativVec = new Vector(-3, -7, -8);
+		Vector negativeVector = new Vector(-3, -7, -8);
 
 		// ============ Equivalence Partitions Tests ==============
 		// Check if add() returns correct values
@@ -35,7 +35,7 @@ class PointTests {
 		// Check if add() returns correct values with zero point
 		assertTrue(Point.ZERO.add(v1).equals(v1), "add() doesn't return correct values with zero point");
 		// Check if add() returns correct values with negative vector to point
-		assertTrue(p1.add(negativVec).equals(Point.ZERO),
+		assertTrue(p1.add(negativeVector).equals(Point.ZERO),
 				"add() doesn't return correct values with negative vector to point");
 
 	}
