@@ -47,27 +47,27 @@ class SphereTests {
 	*/
 	@Test
 	public void testFindIntersections() { 
-		
+		Sphere sphere = new Sphere(p100, 1.0); 
+
 		final Point p000 = new Point(0, 0, 0);
 		final Point p200 = new Point(2, 0, 0);
-		Sphere sphere = new Sphere(p100, 1.0); 
-		final Point gp1 = new Point(0.0651530771650466, 0.355051025721682, 0); 
-		final Point gp2 = new Point(1.53484692283495, 0.844948974278318, 0); 
-		final var exp = List.of(gp1, gp2); 
-		final Vector v310 = new Vector(3, 1, 0); 
-		final Vector v110 = new Vector(1, 1, 0); 
-		final Vector v100 = new Vector(1, 0, 0); 
-		final Vector v100Negativ = new Vector(-1, 0, 0); 
 		final Point p101 = new Point(1, 0, 1);
+		final Point p300 = new Point(3, 0, 0);
 		final Point p01 = new Point(-1, 0, 0);
 		final Point pTC15 = new Point(0.5, 0, 0);
-		final var expTC13 = List.of(p000, p200); 
-
+		final Point gp1 = new Point(0.0651530771650466, 0.355051025721682, 0); 
+		final Point gp2 = new Point(1.53484692283495, 0.844948974278318, 0); 
 		final Point pointInSphere = new Point(1, 0.5, 0.5);
 		final Point exp1 = new Point(1.3090169943749475,1.0590169943749475, 0.5);
 		final Point pointOutSphere = new Point(6, 5.5, 5.5);
 		
+		final var exp = List.of(gp1, gp2); 
+		final var expTC13 = List.of(p000, p200); 
 
+		final Vector v310 = new Vector(3, 1, 0); 
+		final Vector v110 = new Vector(1, 1, 0); 
+		final Vector v100 = new Vector(1, 0, 0); 
+		final Vector v100Negativ = new Vector(-1, 0, 0); 
 		
 		// ============ Equivalence Partitions Tests ============== 
 		// TC01: Ray's line is outside the sphere (0 points)
@@ -93,6 +93,7 @@ class SphereTests {
 		assertEquals(new Point(1,0,-1),sphere.findIntersections(new Ray(p200, new Vector(-1,0,-1))));
 	// TC12: Ray starts at sphere and goes outside (0 points)
 		assertNull(sphere.findIntersections(new Ray(p200, new Vector(1,0,1))));
+		
 	// **** Group: Ray's line goes through the center
 	// TC13: Ray starts before the sphere (2 points)
 		assertEquals(expTC13,sphere.findIntersections(new Ray(p01, v100)).stream()
@@ -104,7 +105,6 @@ class SphereTests {
 		assertEquals(p000,sphere.findIntersections(new Ray(pTC15, v100Negativ)));
 	// TC16: Ray starts at the center (1 points)
 		assertEquals(p200,sphere.findIntersections(new Ray(p100, v100)));
-
 	// TC17: Ray starts at sphere and goes outside (0 points)
 		assertNull(sphere.findIntersections(new Ray(p000,v100Negativ)));
 	// TC18: Ray starts after sphere (0 points)
@@ -113,8 +113,13 @@ class SphereTests {
 	// TC19: Ray starts before the tangent point
 		assertEquals(p101,sphere.findIntersections(new Ray(p001, v100)));
 	// TC20: Ray starts at the tangent point
+		assertNull(sphere.findIntersections(new Ray(p101,v100)));
 	// TC21: Ray starts after the tangent point
+		assertNull(sphere.findIntersections(new Ray(p101,v100Negativ)));
+		
 	// **** Group: Special cases
 	// TC22: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
+		assertNull(sphere.findIntersections(new Ray(p300,v001)));
+
 	}
 }

@@ -4,10 +4,16 @@
 package unittests.geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 import geometries.Plane;
+import geometries.Sphere;
+
 import static primitives.Util.*;
 
+import java.awt.TrayIcon;
+import java.util.Comparator;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,8 +68,36 @@ class PlaneTests {
 				"getNormal(Point) does not return the correct normal vector");
 	}
 	
-	void testFindIntsersections() {
+	private final Point p200 = new Point(2, 0, 0);
+	private final Point p002 = new Point(0, 0, 2);
+	private final Point p100 = new Point(1, 0, 0);
+	
+	/**
+	* Test method for {@link geometries.plane#findIntersections(primitives.Ray)}.
+	*/
+	@Test
+	public void testFindIntersections() { 
 		
+		Plane plane = new Plane(p200, p002,p100); 
+
+		final Point p010Negativ = new Point(0, -1, 0);
+		final Vector v011 = new Vector(0, 1, 1); 
+        final Ray ray = new Ray(p010Negativ,v011);
+        
+		final Point p001 = new Point(0, 0, 1);
+
+
+
+	// ============ Equivalence Partitions Tests ============== 
+		assertEquals(p001 ,plane.findIntersections(ray));
+
+		
+		
+		
+
+	// =============== Boundary Values Tests ==================
+
+
 	}
 	
 }
