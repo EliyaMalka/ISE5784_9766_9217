@@ -74,27 +74,32 @@ class PlaneTests {
 	
 	/**
 	* Test method for {@link geometries.plane#findIntersections(primitives.Ray)}.
+	* link to GeoGebra model : https://www.geogebra.org/calculator/kjc6u59j
 	*/
 	@Test
 	public void testFindIntersections() { 
 		
+		
+		
 		Plane plane = new Plane(p200, p002,p100); 
 
 		final Point p010Negativ = new Point(0, -1, 0);
-		final Point p001 = new Point(0, 0, 1);
-		final Point p010 = new Point(0, 1, 0);
-		final Point p300 = new Point(3, 0, 0);
-		final Point p033 = new Point(0, 3, 3);
-		final Point p003 = new Point(0, 0, 3);
+		final Point p042 = new Point(0, 4, 2);
 
-		final Vector v011 = new Vector(0, 1, 1); 
+		final Vector v012 = new Vector(0, 1, 2); 
+		final Vector v011Negativ = new Vector(0, -1, -1); 
 		final Vector v001 = new Vector(0, 0, 1); 
+		final Vector v010 = new Vector(0, 1, 0); 
 		final Vector v010Negativ = new Vector(0, -1, 0); 
 		
-		final Ray rayTC01 = new Ray(p010Negativ,v011);
-		final Ray rayTC11 = new Ray(p010,v001);
-		final Ray rayTC12 = new Ray(p300,v001);
-        final Ray rayTC21 = new Ray(p033,v010Negativ);
+		final Ray rayTC01 = new Ray(p010Negativ,v012);
+		final Ray rayTC11 = new Ray(p010Negativ,v001);
+		final Ray rayTC12 = new Ray(p100,v001);
+		final Ray rayTC21 = new Ray(p042,v010Negativ);
+		final Ray rayTC22 = new Ray(p042,v010);
+		final Ray rayTC23 = new Ray(p002,v010);
+		final Ray rayTC31 = new Ray(p002,v011Negativ);
+        final Ray rayTC41 = new Ray(p200,v011Negativ);
         
 
 
@@ -102,22 +107,41 @@ class PlaneTests {
 	// ============ Equivalence Partitions Tests ============== 
 	// TC01 A ray that starts outside the plane, not parallel to the plane,
 	//makes a non-right angle with the plane, and cuts the plane.
-		assertEquals(p001 ,plane.findIntersections(rayTC01));
+		assertEquals(p002 ,plane.findIntersections(rayTC01));
 
 		
 		
 		
 
 	// =============== Boundary Values Tests ==================
-		// **** Group:ray parallel to the plane, inside the plane and outside. ****
+		// **** Group: ray parallel to the plane, inside the plane and outside. ****
+		
 		// TC11 A ray out of the plane and parallel to it. (0 points)
 		assertNull(plane.findIntersections(rayTC11));
 		//TC12 ray inside the plane (0 points)
 		assertNull(plane.findIntersections(rayTC12));
 		
-		// **** Group: A ray is perpendicular to the plane
-		// A perpendicular ray before the plane (1 points)
-		assertEquals(p003 ,plane.findIntersections(rayTC21));
+		// **** Group: A ray is perpendicular to the plane ****
+		
+		// TC21 A perpendicular ray **before the plane (1 points)
+		assertEquals(p002 ,plane.findIntersections(rayTC21));
+		// TC22 A perpendicular ray **after the plane (0 points)
+		assertNull(plane.findIntersections(rayTC22));
+		// TC23 perpendicular ray **in the plane (0 points)
+		assertNull(plane.findIntersections(rayTC23));
+		
+		//  **** Group: One case of a ray neither parallel nor perpendicular to the plane 
+		//        but starting from inside the plane ****
+		//        TC31
+		assertNull(plane.findIntersections(rayTC31));
+		
+        // **** Group: One case similar to the previous case 
+		// but the beginning of the ray starts at the reference point of the plane
+		//        TC41
+
+		assertNull(plane.findIntersections(rayTC41));
+
+
 
 	}
 	
