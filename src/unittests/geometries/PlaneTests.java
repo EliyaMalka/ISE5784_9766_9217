@@ -107,7 +107,8 @@ class PlaneTests {
 	// ============ Equivalence Partitions Tests ============== 
 	// TC01 A ray that starts outside the plane, not parallel to the plane,
 	//makes a non-right angle with the plane, and cuts the plane.
-		assertEquals(p002 ,plane.findIntersections(rayTC01));
+		assertEquals(p002 ,plane.findIntersections(rayTC01),"ERROR TC01 in ray that starts outside the plane, not parallel to the plane,"
+				+ "	makes a non-right angle with the plane, and cuts the plane." );
 
 		
 		
@@ -117,29 +118,31 @@ class PlaneTests {
 		// **** Group: ray parallel to the plane, inside the plane and outside. ****
 		
 		// TC11 A ray out of the plane and parallel to it. (0 points)
-		assertNull(plane.findIntersections(rayTC11));
+		assertNull(plane.findIntersections(rayTC11),"ERROR TC11 in ray ***out of the plane and parallel to it.");
 		//TC12 ray inside the plane (0 points)
-		assertNull(plane.findIntersections(rayTC12));
+		assertNull(plane.findIntersections(rayTC12),"ERROR TC12 in ray ***inside of the plane and parallel to it.");
 		
 		// **** Group: A ray is perpendicular to the plane ****
 		
 		// TC21 A perpendicular ray **before the plane (1 points)
-		assertEquals(p002 ,plane.findIntersections(rayTC21));
+		assertEquals(p002 ,plane.findIntersections(rayTC21),"ERROR TC21 in perpendicular ray **before the plane");
 		// TC22 A perpendicular ray **after the plane (0 points)
-		assertNull(plane.findIntersections(rayTC22));
+		assertNull(plane.findIntersections(rayTC22),"ERROR TC22 in perpendicular ray **after the plane");
 		// TC23 perpendicular ray **in the plane (0 points)
-		assertNull(plane.findIntersections(rayTC23));
+		assertNull(plane.findIntersections(rayTC23),"ERROR TC23 in perpendicular ray **in the plane");
 		
 		//  **** Group: One case of a ray neither parallel nor perpendicular to the plane 
 		//        but starting from inside the plane ****
 		//        TC31
-		assertNull(plane.findIntersections(rayTC31));
+		assertNull(plane.findIntersections(rayTC31),"ERROR TC31 ray neither parallel nor perpendicular to the plane"
+				+ "	but starting from inside the plane");
 		
         // **** Group: One case similar to the previous case 
 		// but the beginning of the ray starts at the reference point of the plane
 		//        TC41
 
-		assertNull(plane.findIntersections(rayTC41));
+		assertNull(plane.findIntersections(rayTC41),"ERROR TC41 in ERROR TC31 ray neither parallel nor perpendicular to the plane"
+				+ "	but the beginning of the ray starts at the reference point of the plane");
 
 
 

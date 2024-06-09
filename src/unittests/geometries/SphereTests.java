@@ -82,17 +82,17 @@ class SphereTests {
 		assertEquals(exp, result1, "Ray crosses sphere");
 	
 	// TC03: Ray starts inside the sphere (1 point)
-		assertEquals(exp1, sphere.findIntersections(new Ray(pointInSphere, v110)));
+		assertEquals(exp1, sphere.findIntersections(new Ray(pointInSphere, v110)), "ERROR TC03: Ray starts **inside the sphere (1 point)");
 
 	// TC04: Ray starts after the sphere (0 points)
-		assertNull(sphere.findIntersections(new Ray(pointOutSphere, v110)));
+		assertNull(sphere.findIntersections(new Ray(pointOutSphere, v110)), "ERROR TC04: Ray starts **after the sphere (0 point)");
 
 	// =============== Boundary Values Tests ==================
 	// **** Group: Ray's line crosses the sphere (but not the center)
 	// TC11: Ray starts at sphere and goes inside (1 points)
-		assertEquals(new Point(1,0,-1),sphere.findIntersections(new Ray(p200, new Vector(-1,0,-1))));
+		assertEquals(new Point(1,0,-1),sphere.findIntersections(new Ray(p200, new Vector(-1,0,-1))), "ERROR TC11: Ray starts at sphere and goes **inside (not the throw the center) (1 points)");
 	// TC12: Ray starts at sphere and goes outside (0 points)
-		assertNull(sphere.findIntersections(new Ray(p200, new Vector(1,0,1))));
+		assertNull(sphere.findIntersections(new Ray(p200, new Vector(1,0,1))), "ERROR TC11: Ray starts at sphere and goes **outside (not the throw the center) (0 points)");
 		
 	// **** Group: Ray's line goes through the center
 	// TC13: Ray starts before the sphere (2 points)
