@@ -17,5 +17,5 @@ public interface Intersectable {
      * @return a list of points where the ray intersects the geometric object.
      *         If there are no intersections, an empty list or null may be returned.
      */
-    public List<Point> findIntsersections(Ray ray); 
+    public List<Point> findIntersections(Ray ray);
 }

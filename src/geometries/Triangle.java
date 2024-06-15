@@ -7,6 +7,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 import static primitives.Util.*;
+import java.util.List;
 
 /**
  * The Triangle class represents a triangle in a 3D space. It extends the
@@ -19,7 +20,24 @@ public class Triangle extends Polygon {
 	}
 
 	@Override
-	public List<Point> findIntsersections(Ray ray){
+	public List<Point> findIntersections(Ray ray) {
+
+		Point pointOnPlane = super.plane.findIntersections(ray).get(0);
+		Vector v1 = super.vertices.get(0).subtract(pointOnPlane);
+		Vector v2 = super.vertices.get(1).subtract(pointOnPlane);
+		Vector v3 = super.vertices.get(2).subtract(pointOnPlane);
+
+		Vector n1 = v1.crossProduct(v2).normalize();
+		Vector n2 = v2.crossProduct(v3).normalize();
+		Vector n3 = v3.crossProduct(v1).normalize();
+
+		if ((n1.dotProduct(ray.getDirection()) > 0 && n2.dotProduct(ray.getDirection()) > 0
+				&& n3.dotProduct(ray.getDirection()) > 0)
+				|| (n1.dotProduct(ray.getDirection()) < 0 && n2.dotProduct(ray.getDirection()) < 0
+						&& n3.dotProduct(ray.getDirection()) < 0)) {
+			return super.plane.findIntersections(ray);
+		}
+		
 		return null;
 	}
 }

@@ -2,6 +2,11 @@ package geometries;
 
 import java.util.List;
 
+import static primitives.Util.isZero;
+import static primitives.Util.alignZero;
+import java.util.List;
+
+
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -28,7 +33,8 @@ public class Plane implements Geometry {
 	 * @param P2 The second point on the plane.
 	 * @param P3 The third point on the plane.
 	 * 
-	 * @throws IllegalArgumentException when there are convergent points or the points are co-linear
+	 * @throws IllegalArgumentException when there are convergent points or the
+	 *                                  points are co-linear
 	 */
 	public Plane(Point P1, Point P2, Point P3) {
 		this.normal = ((P2.subtract(P1)).crossProduct(P3.subtract(P1))).normalize();
@@ -62,6 +68,10 @@ public class Plane implements Geometry {
 
 	@Override
 	public List<Point> findIntersections(Ray ray) {
-		return null;
+
+		double t = this.normal.dotProduct(ray.getHead().subtract(this.q)) / this.normal.dotProduct(ray.getDirection());
+
+		return List.of(ray.getPointOnAxis(t));
 	}
+
 }

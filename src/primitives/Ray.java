@@ -47,4 +47,14 @@ public class Ray {
 	public Vector getDirection() {
 		return direction;
 	}
+
+	public Point getPointOnAxis(double t) {
+		if (isZero(t)) {
+			return this.getHead();
+		} else {
+			Point pointOnAxisPoint = head.add(direction.scale(t));
+			return pointOnAxisPoint;
+		}
+
+	}
 }
