@@ -6,7 +6,6 @@ import static primitives.Util.isZero;
 import static primitives.Util.alignZero;
 import java.util.List;
 
-
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -69,7 +68,14 @@ public class Plane implements Geometry {
 	@Override
 	public List<Point> findIntersections(Ray ray) {
 
-		double t = this.normal.dotProduct(ray.getHead().subtract(this.q)) / this.normal.dotProduct(ray.getDirection());
+		double numerator = this.normal.dotProduct(ray.getHead().subtract(this.q));
+		double denominator = this.normal.dotProduct(ray.getDirection());
+		if (isZero(denominator)) {
+			return null;
+		}
+
+		double t = numerator / denominator;
+		alignZero(t);
 
 		return List.of(ray.getPointOnAxis(t));
 	}

@@ -47,7 +47,7 @@ class TriangleTests {
 	private final Point p003 = new Point(0, 0, 3);
 	private final Point p_201 = new Point(-2, 0, 1);
 	
-	void testFindIntsersections() {
+	void testFindIntersections() {
 
 		Triangle triangle = new Triangle(p201,p003,p_201);
 		
@@ -82,14 +82,14 @@ class TriangleTests {
 
 		
 		// ============ Equivalence Partitions Tests ============== 
-		assertEquals(p002, triangle.findIntsersections(rayTC01));
-		assertNull(triangle.findIntsersections(rayTC02));
-		assertNull(triangle.findIntsersections(rayTC03));
+		assertEquals(p002, triangle.findIntersections(rayTC01));
+		assertNull(triangle.findIntersections(rayTC02));
+		assertNull(triangle.findIntersections(rayTC03));
 
 		// =============== Boundary Values Tests ==================
-		assertEquals(p003, triangle.findIntsersections(rayTC10));
-		assertEquals(p102, triangle.findIntsersections(rayTC11));
-		assertNull(triangle.findIntsersections(rayTC12));
+		assertEquals(p003, triangle.findIntersections(rayTC10));
+		assertEquals(p102, triangle.findIntersections(rayTC11));
+		assertNull(triangle.findIntersections(rayTC12));
 
 	}
 }
