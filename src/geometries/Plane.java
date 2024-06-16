@@ -75,9 +75,8 @@ public class Plane implements Geometry {
 		}
 
 		double t = numerator / denominator;
-		alignZero(t);
 
-		return List.of(ray.getPointOnAxis(t));
+		return List.of( ray.getPointOnAxis(alignZero(t)) );
 	}
 
 }
