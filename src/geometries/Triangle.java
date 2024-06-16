@@ -21,11 +21,10 @@ public class Triangle extends Polygon {
 
 	@Override
 	public List<Point> findIntersections(Ray ray) {
-
-		Point pointOnPlane = super.plane.findIntersections(ray).get(0);
-		Vector v1 = super.vertices.get(0).subtract(pointOnPlane);
-		Vector v2 = super.vertices.get(1).subtract(pointOnPlane);
-		Vector v3 = super.vertices.get(2).subtract(pointOnPlane);
+		
+		Vector v1 = super.vertices.get(0).subtract(ray.getHead());
+		Vector v2 = super.vertices.get(1).subtract(ray.getHead());
+		Vector v3 = super.vertices.get(2).subtract(ray.getHead());
 
 		Vector n1 = v1.crossProduct(v2).normalize();
 		Vector n2 = v2.crossProduct(v3).normalize();
