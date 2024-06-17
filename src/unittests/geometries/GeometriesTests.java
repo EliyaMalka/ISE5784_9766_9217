@@ -9,11 +9,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 /**
- * 
+ * Unit tests for the Geometries class.
  * link to model in geoGebra: https://www.geogebra.org/calculator/qvqhw6bc
  */
 public class GeometriesTests {
-
+	
+/**
+ * Test method for findIntersections function.
+ * Tests various scenarios of finding intersections between rays and geometries. 
+ * */
 	@Test
 	public void findIntersection() {
 

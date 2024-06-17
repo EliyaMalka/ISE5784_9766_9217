@@ -76,13 +76,19 @@ class TriangleTests {
 		final Ray rayTC12 = new Ray(p0_30RayPoint, v331);
 
 		// ============ Equivalence Partitions Tests ==============
+		//TC01
 		assertEquals(p002, triangle.findIntersections(rayTC01));
+		//TC02
 		assertNull(triangle.findIntersections(rayTC02));
+		//TC03
 		assertNull(triangle.findIntersections(rayTC03));
 
 		// =============== Boundary Values Tests ==================
+		//TC10
 		assertEquals(p003, triangle.findIntersections(rayTC10));
+		//TC11
 		assertEquals(p102, triangle.findIntersections(rayTC11));
+		//TC12
 		assertNull(triangle.findIntersections(rayTC12));
 
 	}
