@@ -110,7 +110,7 @@ class PlaneTests {
 						+ "	makes a non-right angle with the plane, and cuts the plane.");
 
 		// TC02
-		assertNull(plane.findIntersections(rayTC02) , "ERROR TC02 not work");
+		assertNull(plane.findIntersections(rayTC02), "ERROR TC02 not work");
 
 		// =============== Boundary Values Tests ==================
 		// **** Group: ray parallel to the plane, inside the plane and outside. ****
@@ -123,7 +123,8 @@ class PlaneTests {
 		// **** Group: A ray is perpendicular to the plane ****
 
 		// TC21 A perpendicular ray **before the plane (1 points)
-		assertEquals(p002, plane.findIntersections(rayTC21).get(0), "ERROR TC21 in perpendicular ray **before the plane");
+		assertEquals(p002, plane.findIntersections(rayTC21).get(0),
+				"ERROR TC21 in perpendicular ray **before the plane");
 		// TC22 A perpendicular ray **after the plane (0 points)
 		assertNull(plane.findIntersections(rayTC22), "ERROR TC22 in perpendicular ray **after the plane");
 		// TC23 perpendicular ray **in the plane (0 points)
@@ -139,9 +140,8 @@ class PlaneTests {
 		// but the beginning of the ray starts at the reference point of the plane
 		// TC41
 
-		assertNull(plane.findIntersections(rayTC41),
-				"ERROR TC41 in ray neither parallel nor perpendicular to the plane"
-						+ "	but the beginning of the ray starts at the reference point of the plane");
+		assertNull(plane.findIntersections(rayTC41), "ERROR TC41 in ray neither parallel nor perpendicular to the plane"
+				+ "	but the beginning of the ray starts at the reference point of the plane");
 
 	}
 

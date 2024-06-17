@@ -63,7 +63,7 @@ public class Double3 {
 
 	@Override
 	public String toString() {
-		return "" + d1 + "," + d2 + "," + d3 ;
+		return "" + d1 + "," + d2 + "," + d3;
 	}
 
 	/**

@@ -40,21 +40,22 @@ public class Tube extends RadialGeometry {
 			return P.subtract(axis.getHead()).normalize();
 		} else {
 			// Calculate the projection of P onto the axis ray
-			Point frontPoint = axis.getHead()
-					.add(axis.getDirection().normalize().scale(axis.getDirection().normalize().dotProduct(P.subtract(axis.getHead()))));
+			Point frontPoint = axis.getHead().add(axis.getDirection().normalize()
+					.scale(axis.getDirection().normalize().dotProduct(P.subtract(axis.getHead()))));
 			return P.subtract(frontPoint).normalize();
 		}
 	}
 
-    /**
-     * Finds intersection points of a given ray with the tube.
-     * 
-     * @param ray The ray to find intersections with.
-     * @return A list containing the intersection points, or null if no intersection exists.
-     */
-    @Override
-    public List<Point> findIntersections(Ray ray) {
-        return null; // TODO BONUS: be implemented
-    }
-	
+	/**
+	 * Finds intersection points of a given ray with the tube.
+	 * 
+	 * @param ray The ray to find intersections with.
+	 * @return A list containing the intersection points, or null if no intersection
+	 *         exists.
+	 */
+	@Override
+	public List<Point> findIntersections(Ray ray) {
+		return null; // TODO BONUS: be implemented
+	}
+
 }

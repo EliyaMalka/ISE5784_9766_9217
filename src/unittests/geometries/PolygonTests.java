@@ -9,7 +9,6 @@ import primitives.Point;
 import primitives.Vector;
 import static primitives.Util.*;
 
-
 /**
  * Testing Polygons
  * 

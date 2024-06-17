@@ -37,11 +37,13 @@ public class Cylinder extends Tube {
 		Point head = axis.getHead();
 		Vector direction = axis.getDirection();
 		// center points on the 1st base
-		if (P.equals(axis.getHead())) return direction;
-	
+		if (P.equals(axis.getHead()))
+			return direction;
+
 		// check whether the point is on one of the bases
 		double projection = direction.dotProduct(P.subtract(head));
-		if (isZero(projection) || isZero(projection - this.height)) return direction;
+		if (isZero(projection) || isZero(projection - this.height))
+			return direction;
 
 		// points on the side surface
 		return super.getNormal(P);
