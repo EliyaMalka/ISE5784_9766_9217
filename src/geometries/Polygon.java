@@ -82,14 +82,30 @@ public class Polygon implements Geometry {
 		}
 	}
 
-	@Override
-	public Vector getNormal(Point point) {
-		return plane.getNormal();
-	}
-	
-	@Override
-    public List<Point> findIntersections(Ray ray){
-		return null;
-	}
+    /**
+     * Returns the normal vector to the plane of the polygon at any given point on
+     * the polygon (always the same for a planar polygon).
+     * 
+     * @param point Ignored parameter.
+     * @return The normal vector to the polygon's plane.
+     */
+    @Override
+    public Vector getNormal(Point point) {
+        return plane.getNormal();
+    }
+
+    /**
+     * Finds intersection points of a given ray with the polygon (not implemented
+     * yet).
+     * 
+     * @param ray The ray to find intersections with.
+     * @return A list containing the intersection points, or null if not
+     *         implemented.
+     */
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        // TODO: BONUS: Implement intersection calculation for polygon
+        return null;
+    }
 
 }
