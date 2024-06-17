@@ -48,7 +48,7 @@ public class Ray {
 		return direction;
 	}
 
-	public Point getPointOnAxis(double t) {
+	public Point getPoint(double t) {
 		if (isZero(t)) {
 			return this.getHead();
 		} else {

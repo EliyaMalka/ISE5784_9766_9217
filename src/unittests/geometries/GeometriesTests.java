@@ -1,0 +1,48 @@
+package unittests.geometries;
+import geometries.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+
+public class GeometriesTests {
+
+	@Test
+	public void findIntersection() {
+
+		Geometries emptyListObjects = new Geometries();
+		Geometries nonIntersectionList = new Geometries(new Sphere(new Point(2,0,0), 1.0), new Triangle(new Point(0,0,2),new Point(0,-2,0),new Point(0,2,0)));
+		Geometries oneIntersectionList = new Geometries(new Sphere(new Point(2,0,0), 1.0), new Triangle(new Point(0,0,2),new Point(0,-2,0),new Point(0,2,0)));
+		Geometries intersectionList = new Geometries(new Sphere(new Point(2,0,0), 1.0), new Triangle(new Point(0,0,2),new Point(0,-2,0),new Point(0,2,0)),new Sphere(new Point(0,-6,0), 2.0));
+		Geometries allGeometriesIntersaction = new Geometries(new Sphere(new Point(2,0,0), 1.0), new Triangle(new Point(0,0,2),new Point(0,-2,0),new Point(0,2,0)));
+		Ray rayTC00 = new Ray(new Point(2,3,4), new Vector(1,0,0));
+		// =============== Boundary Values Tests ==================
+		// TC00
+		// check if empty list return null (https://www.geogebra.org/calculator/qvqhw6bc)
+		assertNull(emptyListObjects.findIntersections(rayTC00));
+		
+		//TC01
+		// check BVA without intersections (https://www.geogebra.org/calculator/qvqhw6bc)
+		assertEquals(0, nonIntersectionList.findIntersections(new Ray(new Point(0,0,3), new Vector(6,0,-3))).size());
+		
+		//TC02
+		//check BVA with 1 intersection (https://www.geogebra.org/calculator/qvqhw6bc)
+		assertEquals(1, oneIntersectionList.findIntersections(new Ray(new Point(-4,0,0), new Vector(4,0,1))).size());
+		
+		//TC03
+		//check BVA with all geometries intersection (https://www.geogebra.org/calculator/qvqhw6bc)
+		assertEquals(3, allGeometriesIntersaction.findIntersections(new Ray(new Point(-2,0,1), new Vector(5,0,-1))).size());
+
+		
+		// ============ Equivalence Partitions Tests ==============
+
+		//TC04
+		//check EP with 3 intersection (https://www.geogebra.org/calculator/qvqhw6bc)
+		assertEquals(3, intersectionList.findIntersections(new Ray(new Point(-2,0,1), new Vector(5,0,-1))).size());
+	}
+	
+	
+}

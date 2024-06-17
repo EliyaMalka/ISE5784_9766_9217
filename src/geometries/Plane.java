@@ -78,7 +78,7 @@ public class Plane implements Geometry {
 
 		double t = numerator / denominator;
 		if (t > 0) {
-			return List.of(ray.getPointOnAxis(alignZero(t)));
+			return List.of(ray.getPoint(alignZero(t)));
 		}
 		return null;
 	}
