@@ -19,10 +19,10 @@ public abstract class RadialGeometry implements Geometry {
 	/**
 	 * Constructs a new RadialGeometry with the given radius.
 	 * 
-	 * @param R The radius of the radial geometry shape.
+	 * @param radius The radius of the radial geometry shape.
 	 */
-	public RadialGeometry(double R) {
-		this.radius = R;
-		this.radiusSquared = R * R;
+	public RadialGeometry(double radius) {
+		this.radius = radius;
+		this.radiusSquared = radius * radius;
 	}
 }

@@ -19,30 +19,30 @@ public class Tube extends RadialGeometry {
 	/**
 	 * Constructs a new Tube with the given axis ray and radius.
 	 * 
-	 * @param ax The axis ray of the tube.
-	 * @param R  The radius of the tube.
+	 * @param axisRay The axis ray of the tube.
+	 * @param radius  The radius of the tube.
 	 */
-	public Tube(Ray ax, double R) {
-		super(R);
-		this.axis = ax;
+	public Tube(Ray axisRay, double radius) {
+		super(radius);
+		this.axis = axisRay;
 	}
 
 	/**
 	 * Returns the normal vector to the tube at a given point.
 	 * 
-	 * @param P The point on the tube where the normal is to be calculated.
+	 * @param point The point on the tube where the normal is to be calculated.
 	 * @return The normal vector to the tube at point P.
 	 */
 	@Override
-	public Vector getNormal(Point P) {
+	public Vector getNormal(Point point) {
 		// if the point orthogonal to the ray
-		if (P.subtract(axis.getHead()).dotProduct(axis.getDirection()) == 0) {
-			return P.subtract(axis.getHead()).normalize();
+		if (point.subtract(axis.getHead()).dotProduct(axis.getDirection()) == 0) {
+			return point.subtract(axis.getHead()).normalize();
 		} else {
 			// Calculate the projection of P onto the axis ray
 			Point frontPoint = axis.getHead().add(axis.getDirection().normalize()
-					.scale(axis.getDirection().normalize().dotProduct(P.subtract(axis.getHead()))));
-			return P.subtract(frontPoint).normalize();
+					.scale(axis.getDirection().normalize().dotProduct(point.subtract(axis.getHead()))));
+			return point.subtract(frontPoint).normalize();
 		}
 	}
 

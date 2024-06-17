@@ -21,12 +21,12 @@ public class Ray {
 	/**
 	 * Constructs a new Ray with the given head point and direction vector.
 	 * 
-	 * @param P The head point of the ray.
-	 * @param V The direction vector of the ray.
+	 * @param point The head point of the ray.
+	 * @param vector The direction vector of the ray.
 	 */
-	public Ray(Point P, Vector V) {
-		this.head = P;
-		this.direction = V.normalize();
+	public Ray(Point point, Vector vector) {
+		this.head = point;
+		this.direction = vector.normalize();
 	}
 
 	/**

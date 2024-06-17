@@ -23,11 +23,11 @@ public class Vector extends Point {
 	/**
 	 * Constructs a new Vector with the given Double3 object.
 	 * 
-	 * @param XYZ The Double3 object containing the coordinates of the vector.
+	 * @param xyzDouble3 The Double3 object containing the coordinates of the vector.
 	 * @throws IllegalArgumentException if the vector is a zero vector.
 	 */
-	public Vector(Double3 XYZ) {
-		super(XYZ);
+	public Vector(Double3 xyzDouble3) {
+		super(xyzDouble3);
 		if (xyz.equals(Double3.ZERO))
 			throw new IllegalArgumentException("can't build the zero vector");
 	}
@@ -65,11 +65,11 @@ public class Vector extends Point {
 	/**
 	 * Adds the given vector to this vector.
 	 * 
-	 * @param V The vector to add.
+	 * @param vector The vector to add.
 	 * @return A new vector that is the result of the addition.
 	 */
-	public Vector add(Vector V) {
-		return new Vector(xyz.add(V.xyz));
+	public Vector add(Vector vector) {
+		return new Vector(xyz.add(vector.xyz));
 	}
 
 	/**
@@ -85,24 +85,24 @@ public class Vector extends Point {
 	/**
 	 * Calculates the dot product of this vector and another vector.
 	 * 
-	 * @param V The vector to dot with.
+	 * @param vector The vector to dot with.
 	 * @return The dot product of the two vectors.
 	 */
-	public double dotProduct(Vector V) {
-		return this.xyz.d1 * V.xyz.d1 + this.xyz.d2 * V.xyz.d2 + this.xyz.d3 * V.xyz.d3;
+	public double dotProduct(Vector vector) {
+		return this.xyz.d1 * vector.xyz.d1 + this.xyz.d2 * vector.xyz.d2 + this.xyz.d3 * vector.xyz.d3;
 	}
 
 	/**
 	 * Calculates the cross product of this vector and another vector.
 	 * 
-	 * @param V The vector to cross with.
+	 * @param vector The vector to cross with.
 	 * @return A new vector that is the result of the cross product.
 	 */
-	public Vector crossProduct(Vector V) {
+	public Vector crossProduct(Vector vector) {
 		return new Vector( //
-				this.xyz.d2 * V.xyz.d3 - this.xyz.d3 * V.xyz.d2, //
-				this.xyz.d3 * V.xyz.d1 - this.xyz.d1 * V.xyz.d3, //
-				this.xyz.d1 * V.xyz.d2 - this.xyz.d2 * V.xyz.d1);
+				this.xyz.d2 * vector.xyz.d3 - this.xyz.d3 * vector.xyz.d2, //
+				this.xyz.d3 * vector.xyz.d1 - this.xyz.d1 * vector.xyz.d3, //
+				this.xyz.d1 * vector.xyz.d2 - this.xyz.d2 * vector.xyz.d1);
 	}
 
 	/**

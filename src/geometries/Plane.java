@@ -25,25 +25,25 @@ public class Plane implements Geometry {
 	/**
 	 * Constructs a new Plane passing through three given points.
 	 *
-	 * @param P1 The first point on the plane.
-	 * @param P2 The second point on the plane.
-	 * @param P3 The third point on the plane.
+	 * @param point1 The first point on the plane.
+	 * @param point2 The second point on the plane.
+	 * @param point3 The third point on the plane.
 	 * @throws IllegalArgumentException when the points are collinear or coincident
 	 */
-	public Plane(Point P1, Point P2, Point P3) {
-		this.normal = P2.subtract(P1).crossProduct(P3.subtract(P1)).normalize();
-		this.q = P1;
+	public Plane(Point point1, Point point2, Point point3) {
+		this.normal = point2.subtract(point1).crossProduct(point3.subtract(point1)).normalize();
+		this.q = point1;
 	}
 
 	/**
 	 * Constructs a new Plane with the given point and normal vector.
 	 *
-	 * @param P The reference point on the plane.
-	 * @param V The normal vector to the plane.
+	 * @param point The reference point on the plane.
+	 * @param vector The normal vector to the plane.
 	 */
-	public Plane(Point P, Vector V) {
-		this.q = P;
-		this.normal = V.normalize();
+	public Plane(Point point, Vector vector) {
+		this.q = point;
+		this.normal = vector.normalize();
 	}
 
 	/**

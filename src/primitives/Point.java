@@ -49,11 +49,11 @@ public class Point {
 	/**
 	 * Adds a vector to this point and returns a new point.
 	 * 
-	 * @param vec the vector to add
+	 * @param vector the vector to add
 	 * @return a new point resulting from the addition
 	 */
-	public Point add(Vector vec) {
-		return new Point(this.xyz.add(vec.xyz));
+	public Point add(Vector vector) {
+		return new Point(this.xyz.add(vector.xyz));
 	}
 
 	/**
@@ -69,24 +69,24 @@ public class Point {
 	/**
 	 * Calculates the square of the distance between this point and another point.
 	 * 
-	 * @param P the other point
+	 * @param point the other point
 	 * @return the square of the distance between the points
 	 */
-	public double distanceSquared(Point P) {
-		double dx = xyz.d1 - P.xyz.d1;
-		double dy = xyz.d2 - P.xyz.d2;
-		double dz = xyz.d3 - P.xyz.d3;
+	public double distanceSquared(Point point) {
+		double dx = xyz.d1 - point.xyz.d1;
+		double dy = xyz.d2 - point.xyz.d2;
+		double dz = xyz.d3 - point.xyz.d3;
 		return dx * dx + dy * dy + dz * dz;
 	}
 
 	/**
 	 * Calculates the distance between this point and another point.
 	 * 
-	 * @param P the other point
+	 * @param point the other point
 	 * @return the distance between the points
 	 */
-	public double distance(Point P) {
-		return Math.sqrt(distanceSquared(P));
+	public double distance(Point point) {
+		return Math.sqrt(distanceSquared(point));
 	}
 
 }

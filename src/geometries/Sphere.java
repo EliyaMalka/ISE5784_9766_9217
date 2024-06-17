@@ -19,23 +19,23 @@ public class Sphere extends RadialGeometry {
 	/**
 	 * Constructs a new Sphere with the given center point and radius.
 	 * 
-	 * @param P   The center point of the sphere.
-	 * @param rad The radius of the sphere.
+	 * @param centerPoint   The center point of the sphere.
+	 * @param radiusSphere The radius of the sphere.
 	 */
-	public Sphere(Point P, double rad) {
-		super(rad);
-		this.center = P;
+	public Sphere(Point centerPoint, double radiusSphere) {
+		super(radiusSphere);
+		this.center = centerPoint;
 	}
 
 	/**
 	 * Computes the normal vector at a given point on the surface of the sphere.
 	 * 
-	 * @param P The point on the surface of the sphere.
+	 * @param pointOnSphere The point on the surface of the sphere.
 	 * @return The normal vector at the given point.
 	 */
 	@Override
-	public Vector getNormal(Point P) {
-		return (P.subtract(this.center)).normalize();
+	public Vector getNormal(Point pointOnSphere) {
+		return (pointOnSphere.subtract(this.center)).normalize();
 	}
 
 	/**
