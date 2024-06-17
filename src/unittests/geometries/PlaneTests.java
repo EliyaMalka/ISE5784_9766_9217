@@ -7,13 +7,6 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 import geometries.Plane;
-import geometries.Sphere;
-
-import static primitives.Util.*;
-
-import java.awt.TrayIcon;
-import java.util.Comparator;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

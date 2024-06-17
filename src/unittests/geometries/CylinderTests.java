@@ -18,12 +18,6 @@ import primitives.Vector;
 class CylinderTests {
 
 	/**
-	 * Delta value for accuracy when comparing the numbers of type 'double' in
-	 * assertEquals
-	 */
-	private final double DELTA = 0.000001;
-
-	/**
 	 * Test method for {@link geometries.Cylinder#getNormal(primitives.Point)}. This
 	 * test checks the functionality of the getNormal method for the Cylinder class.
 	 */
