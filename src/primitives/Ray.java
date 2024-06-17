@@ -52,8 +52,7 @@ public class Ray {
 		if (isZero(t)) {
 			return this.getHead();
 		} else {
-			Point pointOnAxisPoint = head.add(direction.scale(t));
-			return pointOnAxisPoint;
+			return head.add((direction.scale(t)));
 		}
 
 	}

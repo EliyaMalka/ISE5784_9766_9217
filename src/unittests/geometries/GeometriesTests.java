@@ -7,7 +7,10 @@ import primitives.Vector;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-
+/**
+ * 
+ * link to model in geoGebra: https://www.geogebra.org/calculator/qvqhw6bc
+ * */
 public class GeometriesTests {
 
 	@Test
@@ -27,26 +30,26 @@ public class GeometriesTests {
 		
 		// =============== Boundary Values Tests ==================
 		// TC00
-		// check if empty list return null (https://www.geogebra.org/calculator/qvqhw6bc)
-		assertNull(emptyListObjects.findIntersections(rayTC00));
+		// check if empty list return null 
+		assertEquals(0,emptyListObjects.findIntersections(rayTC00).size());
 		
 		//TC01
-		// check BVA without intersections (https://www.geogebra.org/calculator/qvqhw6bc)
-		assertEquals(0, nonIntersectionList.findIntersections(rayTC01).size());
+		// check BVA without intersections 
+		assertEquals(0,nonIntersectionList.findIntersections(rayTC01).size());
 		
 		//TC02
-		//check BVA with 1 intersection (https://www.geogebra.org/calculator/qvqhw6bc)
+		//check BVA with 1 intersection 
 		assertEquals(1, oneIntersectionList.findIntersections(rayTC02).size());
 		
 		//TC03
-		//check BVA with all geometries intersection (https://www.geogebra.org/calculator/qvqhw6bc)
+		//check BVA with all geometries intersection 
 		assertEquals(3, allGeometriesIntersaction.findIntersections(rayTC03).size());
 
 		
 		// ============ Equivalence Partitions Tests ==============
 
 		//TC04
-		//check EP with 3 intersection (https://www.geogebra.org/calculator/qvqhw6bc)
+		//check EP with 3 intersection 
 		assertEquals(3, intersectionList.findIntersections(rayTC04).size());
 	}
 	
