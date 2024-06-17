@@ -29,13 +29,13 @@ class PointTests {
 
 		// ============ Equivalence Partitions Tests ==============
 		// Check if add() returns correct values
-		assertTrue(p1.add(v1).equals(result), "add() doesn't return correct values");
+		assertEquals(p1.add(v1) ,result, "add() doesn't return correct values");
 
 		// =============== Boundary Values Tests ==================
 		// Check if add() returns correct values with zero point
-		assertTrue(Point.ZERO.add(v1).equals(v1), "add() doesn't return correct values with zero point");
+		assertEquals(Point.ZERO.add(v1) ,v1, "add() doesn't return correct values with zero point");
 		// Check if add() returns correct values with negative vector to point
-		assertTrue(p1.add(negativeVector).equals(Point.ZERO),
+		assertEquals(p1.add(negativeVector) ,Point.ZERO,
 				"add() doesn't return correct values with negative vector to point");
 
 	}
@@ -55,14 +55,14 @@ class PointTests {
 
 		// ============ Equivalence Partitions Tests ==============
 		// Check if subtract() returns correct values
-		assertTrue(p1.subtract(p2).equals(result1), "subtract() doesn't return correct values");
+		assertEquals(p1.subtract(p2) ,result1, "subtract() doesn't return correct values");
 
 		// =============== Boundary Values Tests ==================
 		// Check if subtract() returns correct values with zero point
-		assertTrue(p1.subtract(Point.ZERO).equals(vecSamePoint),
+		assertEquals(p1.subtract(Point.ZERO) ,vecSamePoint,
 				"subtract() doesn't return correct values with zero point");
 		// Check if subtract() returns correct values with negative point
-		assertTrue(p1.subtract(negativPoint).equals(result2),
+		assertEquals(p1.subtract(negativPoint) ,result2,
 				"subtract() doesn't return correct values with negative point");
 		// Check if subtract() throws exception when the result is zero vector
 		assertThrows(IllegalArgumentException.class, () -> p1.subtract(vecSamePoint),

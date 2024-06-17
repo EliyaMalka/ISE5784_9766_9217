@@ -47,7 +47,7 @@ class VectorTests {
 		// Check if constructor sets the correct values
 		Vector v = new Vector(1, 2, 3);
 		Double3 xyzToCheck = new Double3(1, 2, 3);
-		assertTrue(v.equals(new Vector(xyzToCheck)), "Constructor does not set correct values");
+		assertEquals(v , new Vector(xyzToCheck), "Constructor does not set correct values");
 
 		// Check if constructor does not throw exception for valid values
 		assertDoesNotThrow(() -> new Vector(0, 0, 1), "Constructor throws exception for valid values");
@@ -91,7 +91,7 @@ class VectorTests {
 		// ============ Equivalence Partitions Tests ==============
 
 		// Check if add() returns correct values
-		assertTrue(result.equals(v1.add(v2)), "add() does not return the correct values");
+		assertEquals(result, v1.add(v2), "add() does not return the correct values");
 		assertDoesNotThrow(() -> v1.add(v2), "add() throws exception for valid values");
 
 		// =============== Boundary Values Tests ==================
@@ -116,8 +116,8 @@ class VectorTests {
 		// ============ Equivalence Partitions Tests ==============
 
 		// Check if scale() returns correct values
-		assertTrue(resultX.equals(v.scale(x)), "scale() does not return the correct values");
-		assertTrue(resultY.equals(v.scale(y)), "scale() does not return the correct values");
+		assertEquals(resultX ,v.scale(x), "scale() does not return the correct values");
+		assertEquals(resultY ,v.scale(y), "scale() does not return the correct values");
 		assertDoesNotThrow(() -> v.scale(x));
 
 		// =============== Boundary Values Tests ==================
@@ -168,8 +168,8 @@ class VectorTests {
 		// ============ Equivalence Partitions Tests ==============
 
 		// Check if crossProduct() returns correct orthogonal vectors
-		assertTrue(v1.dotProduct(v1.crossProduct(v2)) == 0, "crossProduct() does not return correct values");
-		assertTrue(v2.dotProduct(v2.crossProduct(v1)) == 0, "crossProduct() does not return correct values");
+		assertEquals(v1.dotProduct(v1.crossProduct(v2)) , 0, DELTA, "crossProduct() does not return correct values");
+		assertEquals(v2.dotProduct(v2.crossProduct(v1)) , 0, DELTA, "crossProduct() does not return correct values");
 
 		// =============== Boundary Values Tests ==================
 
@@ -198,14 +198,14 @@ class VectorTests {
 		// ============ Equivalence Partitions Tests ==============
 
 		// Check if normalize() returns a unit vector
-		assertTrue(v.normalize().length() == 1, "normalize() does not return a unit vector");
+		assertEquals(v.normalize().length() , 1, DELTA, "normalize() does not return a unit vector");
 
 		// =============== Boundary Values Tests ==================
 
 		// Check if normalize() returns correct values for unit vectors
-		assertTrue(unitVector1.normalize().length() == 1, "normalize() does not return correct values for unit vector");
-		assertTrue(unitVector2.normalize().length() == 1, "normalize() does not return correct values for unit vector");
-		assertTrue(unitVector3.normalize().length() == 1, "normalize() does not return correct values for unit vector");
+		assertEquals(unitVector1.normalize().length() , 1, DELTA, "normalize() does not return correct values for unit vector");
+		assertEquals(unitVector2.normalize().length() , 1, DELTA, "normalize() does not return correct values for unit vector");
+		assertEquals(unitVector3.normalize().length() , 1, DELTA, "normalize() does not return correct values for unit vector");
 	}
 
 }
