@@ -9,15 +9,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for the Geometries class.
- * link to model in geoGebra: https://www.geogebra.org/calculator/qvqhw6bc
+ * Unit tests for the Geometries class. link to model in geoGebra:
+ * https://www.geogebra.org/calculator/qvqhw6bc
  */
 public class GeometriesTests {
-	
-/**
- * Test method for findIntersections function.
- * Tests various scenarios of finding intersections between rays and geometries. 
- * */
+
+	/**
+	 * Test method for findIntersections function. Tests various scenarios of
+	 * finding intersections between rays and geometries.
+	 */
 	@Test
 	public void findIntersection() {
 
@@ -45,21 +45,25 @@ public class GeometriesTests {
 
 		// TC01
 		// check BVA without intersections
-		assertEquals(0, nonIntersectionList.findIntersections(rayTC01).size(),"A non-intersection ray does not return 0");
+		assertEquals(0, nonIntersectionList.findIntersections(rayTC01).size(),
+				"A non-intersection ray does not return 0");
 
 		// TC02
 		// check BVA with 1 intersection
-		assertEquals(1, oneIntersectionList.findIntersections(rayTC02).size(), "A ray with one intersection does not return one point");
+		assertEquals(1, oneIntersectionList.findIntersections(rayTC02).size(),
+				"A ray with one intersection does not return one point");
 
 		// TC03
 		// check BVA with all geometries intersection
-		assertEquals(3, allGeometriesIntersaction.findIntersections(rayTC03).size(), "A ray that intersections all geometries does not return correct points number");
+		assertEquals(3, allGeometriesIntersaction.findIntersections(rayTC03).size(),
+				"A ray that intersections all geometries does not return correct points number");
 
 		// ============ Equivalence Partitions Tests ==============
 
 		// TC04
 		// check EP with 3 intersection
-		assertEquals(3, intersectionList.findIntersections(rayTC04).size(), "intersections ray does not return correct points number");
+		assertEquals(3, intersectionList.findIntersections(rayTC04).size(),
+				"intersections ray does not return correct points number");
 	}
 
 }

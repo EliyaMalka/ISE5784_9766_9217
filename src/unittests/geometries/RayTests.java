@@ -21,16 +21,16 @@ public class RayTests {
 
 		// ============ Equivalence Partitions Tests ==============
 		// TC01
-		//when t is positive
-		assertEquals(p101, ray.getPoint(1.0),"ERROR TC01: when t is positive");
+		// when t is positive
+		assertEquals(p101, ray.getPoint(1.0), "ERROR TC01: when t is positive");
 
 		// TC02
-		//when t is negative
-		assertEquals(p_101, ray.getPoint(-1.0),"ERROR TC02: when t is negative");
+		// when t is negative
+		assertEquals(p_101, ray.getPoint(-1.0), "ERROR TC02: when t is negative");
 		// =============== Boundary Values Tests ==================
 		// TC03
 		// when t equal to zero
-		assertEquals(ray.getHead(), ray.getPoint(0.0),"ERROR TC03: when t equal to zero");
+		assertEquals(ray.getHead(), ray.getPoint(0.0), "ERROR TC03: when t equal to zero");
 
 	}
 

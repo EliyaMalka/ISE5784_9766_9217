@@ -33,12 +33,12 @@ class TubeTests {
 		// ============ Equivalence Partitions Tests ==============
 		// TC01: Test if getNormal() returns the correct normal vector for a point on
 		// the tube surface
-		assertEquals( result ,myTube.getNormal(pointTube), "getNormal() does not return correct values");
+		assertEquals(result, myTube.getNormal(pointTube), "getNormal() does not return correct values");
 
 		// =============== Boundary Values Tests ==================
 		// TC02: Test if getNormal() returns the correct normal vector for a point on
 		// the tube surface that is orthogonal to the ray
-		assertEquals(result,myTube.getNormal(pointBVA),
+		assertEquals(result, myTube.getNormal(pointBVA),
 				"getNormal() does not return correct values with a point that makes 90 degrees with the point on the ray");
 	}
 }

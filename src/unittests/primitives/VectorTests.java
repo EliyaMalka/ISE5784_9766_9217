@@ -40,6 +40,9 @@ class VectorTests {
 	/**
 	 * Test method for {@link primitives.Vector#Vector(double,double,double)}. Tests
 	 * the constructor of the Vector class.
+	 * 
+	 * @throws IllegalArgumentException if The zero vector is created
+	 * 
 	 */
 	@Test
 	void testVector() {
@@ -48,7 +51,7 @@ class VectorTests {
 		// Check if constructor sets the correct values
 		Vector v = new Vector(1, 2, 3);
 		Double3 xyzToCheck = new Double3(1, 2, 3);
-		assertEquals(v , new Vector(xyzToCheck), "Constructor does not set correct values");
+		assertEquals(v, new Vector(xyzToCheck), "Constructor does not set correct values");
 
 		// Check if constructor does not throw exception for valid values
 		assertDoesNotThrow(() -> new Vector(0, 0, 1), "Constructor throws exception for valid values");
@@ -81,6 +84,8 @@ class VectorTests {
 	/**
 	 * Test method for {@link primitives.Vector#add(primitives.Vector)}. Tests the
 	 * add function of the Vector class.
+	 * 
+	 * @throws IllegalArgumentException if The zero vector is created
 	 */
 	@Test
 	void testAddVector() {
@@ -105,6 +110,8 @@ class VectorTests {
 	/**
 	 * Test method for {@link primitives.Vector#scale(double)}. Tests the scale
 	 * function of the Vector class.
+	 * 
+	 * @throws IllegalArgumentException if The zero vector is created
 	 */
 	@Test
 	void testScale() {
@@ -117,8 +124,8 @@ class VectorTests {
 		// ============ Equivalence Partitions Tests ==============
 
 		// Check if scale() returns correct values
-		assertEquals(resultX ,v.scale(x), "scale() does not return the correct values");
-		assertEquals(resultY ,v.scale(y), "scale() does not return the correct values");
+		assertEquals(resultX, v.scale(x), "scale() does not return the correct values");
+		assertEquals(resultY, v.scale(y), "scale() does not return the correct values");
 		assertDoesNotThrow(() -> v.scale(x));
 
 		// =============== Boundary Values Tests ==================
@@ -157,6 +164,8 @@ class VectorTests {
 	/**
 	 * Test method for {@link primitives.Vector#crossProduct(primitives.Vector)}.
 	 * Tests the crossProduct function of the Vector class.
+	 * 
+	 * @throws IllegalArgumentException if The zero vector is created
 	 */
 	@Test
 	void testCrossProduct() {
@@ -169,8 +178,8 @@ class VectorTests {
 		// ============ Equivalence Partitions Tests ==============
 
 		// Check if crossProduct() returns correct orthogonal vectors
-		assertEquals(v1.dotProduct(v1.crossProduct(v2)) , 0, DELTA, "crossProduct() does not return correct values");
-		assertEquals(v2.dotProduct(v2.crossProduct(v1)) , 0, DELTA, "crossProduct() does not return correct values");
+		assertEquals(v1.dotProduct(v1.crossProduct(v2)), 0, DELTA, "crossProduct() does not return correct values");
+		assertEquals(v2.dotProduct(v2.crossProduct(v1)), 0, DELTA, "crossProduct() does not return correct values");
 
 		// =============== Boundary Values Tests ==================
 
@@ -199,19 +208,24 @@ class VectorTests {
 		// ============ Equivalence Partitions Tests ==============
 
 		// Check if normalize() returns a unit vector
-		assertEquals(v.normalize().length() , 1, DELTA, "normalize() does not return a unit vector");
+		assertEquals(v.normalize().length(), 1, DELTA, "normalize() does not return a unit vector");
 
 		// =============== Boundary Values Tests ==================
 
 		// Check if normalize() returns correct values for unit vectors
-		assertEquals(unitVector1.normalize().length() , 1, DELTA, "normalize() does not return correct values for unit vector");
-		assertEquals(unitVector2.normalize().length() , 1, DELTA, "normalize() does not return correct values for unit vector");
-		assertEquals(unitVector3.normalize().length() , 1, DELTA, "normalize() does not return correct values for unit vector");
+		assertEquals(unitVector1.normalize().length(), 1, DELTA,
+				"normalize() does not return correct values for unit vector");
+		assertEquals(unitVector2.normalize().length(), 1, DELTA,
+				"normalize() does not return correct values for unit vector");
+		assertEquals(unitVector3.normalize().length(), 1, DELTA,
+				"normalize() does not return correct values for unit vector");
 	}
-	
+
 	/**
 	 * Test method for {@link primitives.Point#subtract(primitives.Point)}. Tests
 	 * the subtraction of one point from another.
+	 * 
+	 * @throws IllegalArgumentException if The zero vector is created
 	 */
 	@Test
 	void testSubtract() {
@@ -224,14 +238,13 @@ class VectorTests {
 
 		// ============ Equivalence Partitions Tests ==============
 		// Check if subtract() returns correct values
-		assertEquals(p1.subtract(p2) ,result1, "subtract() doesn't return correct values");
+		assertEquals(p1.subtract(p2), result1, "subtract() doesn't return correct values");
 
 		// =============== Boundary Values Tests ==================
 		// Check if subtract() returns correct values with zero point
-		assertEquals(p1.subtract(Point.ZERO) ,vecSamePoint,
-				"subtract() doesn't return correct values with zero point");
+		assertEquals(p1.subtract(Point.ZERO), vecSamePoint, "subtract() doesn't return correct values with zero point");
 		// Check if subtract() returns correct values with negative point
-		assertEquals(p1.subtract(negativPoint) ,result2,
+		assertEquals(p1.subtract(negativPoint), result2,
 				"subtract() doesn't return correct values with negative point");
 		// Check if subtract() throws exception when the result is zero vector
 		assertThrows(IllegalArgumentException.class, () -> p1.subtract(vecSamePoint),

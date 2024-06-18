@@ -76,20 +76,26 @@ class TriangleTests {
 		final Ray rayTC12 = new Ray(p0_30RayPoint, v331);
 
 		// ============ Equivalence Partitions Tests ==============
-		//TC01
-		assertEquals(p002, triangle.findIntersections(rayTC01),"A intersection ray inside triangle does not return a correct point");
-		//TC02
-		assertNull(triangle.findIntersections(rayTC02), "A non - intersection ray outside triangle against edge does not return a correct point");
-		//TC03
-		assertNull(triangle.findIntersections(rayTC03), "A non - intersection ray outside triangle against vertex does not return a correct point");
+		// TC01
+		assertEquals(p002, triangle.findIntersections(rayTC01),
+				"A intersection ray inside triangle does not return a correct point");
+		// TC02
+		assertNull(triangle.findIntersections(rayTC02),
+				"A non - intersection ray outside triangle against edge does not return a correct point");
+		// TC03
+		assertNull(triangle.findIntersections(rayTC03),
+				"A non - intersection ray outside triangle against vertex does not return a correct point");
 
 		// =============== Boundary Values Tests ==================
-		//TC10
-		assertEquals(p003, triangle.findIntersections(rayTC10), "A intersection ray on vertex does not return a correct point");
-		//TC11
-		assertEquals(p102, triangle.findIntersections(rayTC11), "A intersection ray on edge does not return a correct point");
-		//TC12
-		assertNull(triangle.findIntersections(rayTC12), "A intersection ray on edge's continuation does not return a correct point");
+		// TC10
+		assertEquals(p003, triangle.findIntersections(rayTC10),
+				"A intersection ray on vertex does not return a correct point");
+		// TC11
+		assertEquals(p102, triangle.findIntersections(rayTC11),
+				"A intersection ray on edge does not return a correct point");
+		// TC12
+		assertNull(triangle.findIntersections(rayTC12),
+				"A intersection ray on edge's continuation does not return a correct point");
 
 	}
 }

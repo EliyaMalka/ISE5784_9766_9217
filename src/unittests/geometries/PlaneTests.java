@@ -20,6 +20,10 @@ class PlaneTests {
 	/**
 	 * Test method for
 	 * {@link geometries.Plane#Plane(primitives.Point, primitives.Point, primitives.Point)}.
+	 * 
+	 * @throws IllegalArgumentException given two identical points in constructor
+	 * @throws IllegalArgumentException when given three collinear points (on same
+	 *                                  ray)
 	 */
 	@Test
 	public void testConstructorPlane() {
@@ -35,9 +39,9 @@ class PlaneTests {
 		assertThrows(IllegalArgumentException.class, () -> new Plane(p1, p2, p3),
 				"The constructor does not throw an IllegalArgumentException when given two identical points");
 
-		// Test for constructing a plane with three collinear points
+		// Test for constructing a plane with three collinear points (on same ray)
 		assertThrows(IllegalArgumentException.class, () -> new Plane(p3, sameRayP3_1, sameRayP3_2),
-				"The constructor does not throw an IllegalArgumentException when given three collinear points");
+				"The constructor does not throw an IllegalArgumentException when given three collinear points (on same ray)");
 	}
 
 	/**
