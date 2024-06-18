@@ -6,6 +6,7 @@ package unittests.primitives;
 import static org.junit.jupiter.api.Assertions.*;
 
 import primitives.Double3;
+import primitives.Point;
 import primitives.Vector;
 
 import org.junit.jupiter.api.Test;
@@ -206,6 +207,35 @@ class VectorTests {
 		assertEquals(unitVector1.normalize().length() , 1, DELTA, "normalize() does not return correct values for unit vector");
 		assertEquals(unitVector2.normalize().length() , 1, DELTA, "normalize() does not return correct values for unit vector");
 		assertEquals(unitVector3.normalize().length() , 1, DELTA, "normalize() does not return correct values for unit vector");
+	}
+	
+	/**
+	 * Test method for {@link primitives.Point#subtract(primitives.Point)}. Tests
+	 * the subtraction of one point from another.
+	 */
+	@Test
+	void testSubtract() {
+		Vector p1 = new Vector(3, 7, 8);
+		Vector p2 = new Vector(1, 4, 5);
+		Vector negativPoint = new Vector(-1, -2, -3);
+		Vector result1 = new Vector(2, 3, 3);
+		Vector result2 = new Vector(4, 9, 11);
+		Vector vecSamePoint = new Vector(3, 7, 8);
+
+		// ============ Equivalence Partitions Tests ==============
+		// Check if subtract() returns correct values
+		assertEquals(p1.subtract(p2) ,result1, "subtract() doesn't return correct values");
+
+		// =============== Boundary Values Tests ==================
+		// Check if subtract() returns correct values with zero point
+		assertEquals(p1.subtract(Point.ZERO) ,vecSamePoint,
+				"subtract() doesn't return correct values with zero point");
+		// Check if subtract() returns correct values with negative point
+		assertEquals(p1.subtract(negativPoint) ,result2,
+				"subtract() doesn't return correct values with negative point");
+		// Check if subtract() throws exception when the result is zero vector
+		assertThrows(IllegalArgumentException.class, () -> p1.subtract(vecSamePoint),
+				"subtract() doesn't throw exception when the result is zero vector");
 	}
 
 }
