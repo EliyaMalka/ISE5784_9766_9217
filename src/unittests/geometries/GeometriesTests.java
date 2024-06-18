@@ -41,25 +41,25 @@ public class GeometriesTests {
 		// =============== Boundary Values Tests ==================
 		// TC00
 		// check if empty list return null
-		assertEquals(0, emptyListObjects.findIntersections(rayTC00).size());
+		assertNull(emptyListObjects.findIntersections(rayTC00).size(), "An empty list does not return null");
 
 		// TC01
 		// check BVA without intersections
-		assertEquals(0, nonIntersectionList.findIntersections(rayTC01).size());
+		assertEquals(0, nonIntersectionList.findIntersections(rayTC01).size(),"A non-intersection ray does not return 0");
 
 		// TC02
 		// check BVA with 1 intersection
-		assertEquals(1, oneIntersectionList.findIntersections(rayTC02).size());
+		assertEquals(1, oneIntersectionList.findIntersections(rayTC02).size(), "A ray with one intersection does not return one point");
 
 		// TC03
 		// check BVA with all geometries intersection
-		assertEquals(3, allGeometriesIntersaction.findIntersections(rayTC03).size());
+		assertEquals(3, allGeometriesIntersaction.findIntersections(rayTC03).size(), "A ray that intersections all geometries does not return correct points number");
 
 		// ============ Equivalence Partitions Tests ==============
 
 		// TC04
 		// check EP with 3 intersection
-		assertEquals(3, intersectionList.findIntersections(rayTC04).size());
+		assertEquals(3, intersectionList.findIntersections(rayTC04).size(), "intersections ray does not return correct points number");
 	}
 
 }
