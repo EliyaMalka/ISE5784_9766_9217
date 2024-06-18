@@ -23,7 +23,8 @@ public class Vector extends Point {
 	/**
 	 * Constructs a new Vector with the given Double3 object.
 	 * 
-	 * @param xyzDouble3 The Double3 object containing the coordinates of the vector.
+	 * @param xyzDouble3 The Double3 object containing the coordinates of the
+	 *                   vector.
 	 * @throws IllegalArgumentException if the vector is a zero vector.
 	 */
 	public Vector(Double3 xyzDouble3) {

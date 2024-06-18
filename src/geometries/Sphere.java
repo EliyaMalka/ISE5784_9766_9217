@@ -19,7 +19,7 @@ public class Sphere extends RadialGeometry {
 	/**
 	 * Constructs a new Sphere with the given center point and radius.
 	 * 
-	 * @param centerPoint   The center point of the sphere.
+	 * @param centerPoint  The center point of the sphere.
 	 * @param radiusSphere The radius of the sphere.
 	 */
 	public Sphere(Point centerPoint, double radiusSphere) {

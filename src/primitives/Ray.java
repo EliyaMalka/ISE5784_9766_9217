@@ -21,7 +21,7 @@ public class Ray {
 	/**
 	 * Constructs a new Ray with the given head point and direction vector.
 	 * 
-	 * @param point The head point of the ray.
+	 * @param point  The head point of the ray.
 	 * @param vector The direction vector of the ray.
 	 */
 	public Ray(Point point, Vector vector) {

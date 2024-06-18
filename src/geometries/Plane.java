@@ -38,7 +38,7 @@ public class Plane implements Geometry {
 	/**
 	 * Constructs a new Plane with the given point and normal vector.
 	 *
-	 * @param point The reference point on the plane.
+	 * @param point  The reference point on the plane.
 	 * @param vector The normal vector to the plane.
 	 */
 	public Plane(Point point, Vector vector) {
