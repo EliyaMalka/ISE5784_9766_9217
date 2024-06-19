@@ -49,7 +49,7 @@ public class Ray {
 	 */
 	@Override
 	public String toString() {
-		return "Ray[" + "point head = " + head + ", vector direction = " + direction + " ]";
+		return "Ray[ " + "point head = " + head + ", vector direction = " + direction + " ]";
 	}
 
 	/**
