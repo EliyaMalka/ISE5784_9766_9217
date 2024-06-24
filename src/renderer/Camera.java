@@ -67,7 +67,22 @@ public class Camera implements Cloneable {
 	private double distance = 0.0;
 	
 	public Ray constructRay(int nX, int nY, int j, int i) {
-		return null;
+
+		  double yI = -(i - (nY - 1) / 2.0) * Ry;
+	        double xJ = (j - (nX - 1) / 2.0) * Rx;
+
+	        Point3D pIJ = pCenter;
+
+	        if (xJ != 0) {
+	            pIJ = pIJ.add(vRight.scale(xJ));
+	        }
+
+	        if (yI != 0) {
+	            pIJ = pIJ.add(vUp.scale(yI));
+	        }
+
+	        return pIJ;
+
 	}
 	
 	public Point getp0() {
@@ -103,7 +118,7 @@ public class Camera implements Cloneable {
 	}
 	
 	public static Builder getBuilder() {
-		return null;
+		return new Builder();
 	}
 	
 
