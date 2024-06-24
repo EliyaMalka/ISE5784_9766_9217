@@ -1,8 +1,5 @@
 package renderer;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
-import java.io.ObjectInputStream.GetField;
 import java.util.MissingResourceException;
 
 import primitives.*;
@@ -52,7 +49,12 @@ public class Camera implements Cloneable {
 			if(camera.vUp == null)
 				throw new MissingResourceException("rendere data missing","Camera","vUp missing");
 			camera.vRight = (camera.vUp.crossProduct(camera.vTo)).normalize();
-			return (Camera) camera.clone();
+			try {
+				return (Camera) camera.clone();
+			} 
+			catch (CloneNotSupportedException e) {
+				throw new RuntimeException(e);
+				}
 		}
 	}
 	
@@ -101,7 +103,7 @@ public class Camera implements Cloneable {
 	}
 	
 	public static Builder getBuilder() {
-	
+		return null;
 	}
 	
 
