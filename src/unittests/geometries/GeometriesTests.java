@@ -45,7 +45,7 @@ public class GeometriesTests {
 
 		// TC01
 		// check BVA without intersections
-		assertEquals(0, nonIntersectionList.findIntersections(rayTC01).size(),
+		assertNull(nonIntersectionList.findIntersections(rayTC01),
 				"A non-intersection ray does not return 0");
 
 		// TC02

@@ -50,16 +50,32 @@ public class Geometries implements Intersectable {
 	 */
 	@Override
 	public List<Point> findIntersections(Ray ray) {
-		List<Point> allIntersectionPoints = new LinkedList<>();
 
+		boolean full = false;
+		
 		for (Intersectable obj : this.geometries) {
-			List<Point> objIntersectionPoints = obj.findIntersections(ray);
-			if (objIntersectionPoints != null) {
-				allIntersectionPoints.addAll(objIntersectionPoints);
+			if (obj.findIntersections(ray) != null) {
+				full = true;
 			}
 		}
 
-		return allIntersectionPoints;
+		if (full) {
+
+			List<Point> allIntersectionPoints = new LinkedList<>();
+
+			for (Intersectable obj : this.geometries) {
+
+				if (obj.findIntersections(ray) != null) {
+					allIntersectionPoints.addAll(obj.findIntersections(ray));
+				}
+
+			}
+
+			return allIntersectionPoints;
+		}
+
+		return null;
+
 	}
 
 }
