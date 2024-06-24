@@ -37,7 +37,7 @@ public class Camera implements Cloneable {
 			return this;
 		}
 		
-		public Camera Build() {
+		public Camera build() {
 			if(camera.width == 0) 
 				throw new MissingResourceException("rendere data missing","Camera","width missing");
 			if(camera.height == 0) 
@@ -71,7 +71,7 @@ public class Camera implements Cloneable {
 		  double yI = -(i - (nY - 1) / 2.0) * Ry;
 	        double xJ = (j - (nX - 1) / 2.0) * Rx;
 
-	        Point3D pIJ = pCenter;
+	        Point pIJ = pCenter;
 
 	        if (xJ != 0) {
 	            pIJ = pIJ.add(vRight.scale(xJ));

@@ -41,7 +41,7 @@ public class GeometriesTests {
 		// =============== Boundary Values Tests ==================
 		// TC00
 		// check if empty list return null
-		assertNull(emptyListObjects.findIntersections(rayTC00).size(), "An empty list does not return null");
+		assertNull(emptyListObjects.findIntersections(rayTC00), "An empty list does not return null");
 
 		// TC01
 		// check BVA without intersections
