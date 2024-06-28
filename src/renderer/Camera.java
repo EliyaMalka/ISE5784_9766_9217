@@ -3,6 +3,7 @@ package renderer;
 import java.util.MissingResourceException;
 
 import primitives.*;
+import primitives.Util.*;
 
 public class Camera implements Cloneable {
 
@@ -58,30 +59,33 @@ public class Camera implements Cloneable {
 		}
 	}
 	
-	private Point p0;
-	private Vector vTo;
-	private Vector vUp;
+	private Point p0; // point location of the camera
+	private Vector vTo; // vector to the image
+	private Vector vUp; 
 	private Vector vRight;
-	private double width = 0.0;
-	private double height = 0.0;
-	private double distance = 0.0;
+	private double width = 0.0; // width of the view plane
+	private double height = 0.0; // height of the view plane
+	private double distance = 0.0; // distance between the camera and the view plane
 	
 	public Ray constructRay(int nX, int nY, int j, int i) {
+		
+		double Ry = height / nY; // Ry is the distance between one "tick mark" to another in Y-axis.
+		double Rx = width / nX; // Rx is the distance between one "tick mark" to another in X-axis.
 
-		  double yI = -(i - (nY - 1) / 2.0) * Ry;
+		  double yI = ( ((nY - 1) / 2.0) - i ) * Ry;
 	        double xJ = (j - (nX - 1) / 2.0) * Rx;
 
-	        Point pIJ = pCenter;
+	        Point pIJ = p0.add(vTo.scale(distance)); // pIJ now equal to the point of the center view plane
 
-	        if (xJ != 0) {
+	        if (!Util.isZero(xJ)) {
 	            pIJ = pIJ.add(vRight.scale(xJ));
 	        }
 
-	        if (yI != 0) {
+	        if (!Util.isZero(yI)) {
 	            pIJ = pIJ.add(vUp.scale(yI));
 	        }
 
-	        return pIJ;
+	        return new Ray(p0, pIJ.subtract(p0));
 
 	}
 	
