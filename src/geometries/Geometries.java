@@ -52,7 +52,7 @@ public class Geometries implements Intersectable {
 	public List<Point> findIntersections(Ray ray) {
 
 		boolean full = false;
-		
+
 		for (Intersectable obj : this.geometries) {
 			if (obj.findIntersections(ray) != null) {
 				full = true;

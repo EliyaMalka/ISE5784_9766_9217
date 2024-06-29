@@ -130,11 +130,11 @@ public final class Main {
 		}
 		if (v.dotProduct(u) < 0)
 			out.println("ERROR: the normalized vector is opposite to the original one");
-		
+
 		Ray ray = new Ray(new Point(3, 5, 2), new Vector(6, 0, 0));
 		ray.toString();
-		out.println( ray.toString() );
-		
+		out.println(ray.toString());
+
 		out.println("If there were no any other outputs - all tests succeeded!");
 	}
 }
