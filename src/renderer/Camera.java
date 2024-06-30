@@ -134,7 +134,7 @@ public class Camera implements Cloneable {
 			pIJ = pIJ.add(vUp.scale(yI));
 		}
 
-		return new Ray(p0, pIJ.subtract(p0));
+		return new Ray(p0, pIJ.subtract(p0)); // return the ray from the camera
 	}
 
 	/**
