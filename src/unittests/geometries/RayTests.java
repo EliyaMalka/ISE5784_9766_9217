@@ -2,6 +2,11 @@ package unittests.geometries;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.lang.classfile.instruction.NewMultiArrayInstruction;
+import java.util.ArrayList;
+import java.util.List;
+
+
 import primitives.*;
 
 import org.junit.jupiter.api.Test;
@@ -31,6 +36,38 @@ public class RayTests {
 		// TC03
 		// when t equal to zero
 		assertEquals(ray.getHead(), ray.getPoint(0.0), "ERROR TC03: when t equal to zero");
+
+	}
+	
+	@Test
+	void findClosestPoint() {
+		List<Point> points = new ArrayList<Point>();
+		points.add(new Point(0, 0, 1));
+		points.add(new Point(0, 0, 3));
+		points.add(new Point(0, 0, 2));
+		List<Point> points02 = new ArrayList<Point>();
+		Ray rayTest01 = new Ray(new Point(0, 0, 4), new Vector(1, 1, 1));
+		Ray rayTest03 = new Ray(new Point(0, 0, 0), new Vector(1, 1, 1));
+		Ray rayTest04 = new Ray(new Point(0, 0, 2.1), new Vector(1, 1, 1));
+		
+		// ============ Equivalence Partitions Tests ==============
+		// TC01	
+		// when the closest point is the middle
+		assertEquals(new Point(0,0,3), rayTest01.findClosestPoint(points),"return uncorrect point" );
+		
+		// =============== Boundary Values Tests ==================
+		// TC02
+		//when the list is empty 
+		assertNull(rayTest01.findClosestPoint(points02), "is not null when the list is empty");
+		
+		// TC03
+		// when the closest point is the first
+		assertEquals(new Point(0,0,1), rayTest03.findClosestPoint(points),"return uncorrect point" );
+		
+		// TC04
+		//when the closest point is the last
+		assertEquals(new Point(0,0,2), rayTest04.findClosestPoint(points),"return uncorrect point" );
+
 
 	}
 
