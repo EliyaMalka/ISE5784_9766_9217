@@ -1,6 +1,5 @@
 package unittests.renderer;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import renderer.*;
 import primitives.*;
