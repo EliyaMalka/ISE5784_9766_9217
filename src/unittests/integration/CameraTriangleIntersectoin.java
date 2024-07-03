@@ -8,28 +8,30 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
-class CameraTriangleIntersectoin {
+/**
+ * CameraTriangleIntersection class of tests for intersections between a Camera and Triangles.
+ */
+class CameraTriangleIntersection {
 
-	@Test
-	@Disabled
-	void testIntersction() {
+    /**
+     * Tests the intersection of rays from the camera with triangles.
+     */
+    @Test
+    void testIntersection() {
 
-		// TC01
-		// small triangle
-		Triangle triangle01 = new Triangle(new Point(0, 1.0, -2.0), new Point(-1.0, -1.0, -2.0),
-				new Point(1.0, -1.0, -2.0));
-		Camera camera01 = Camera.getBuilder().setLocation(new Point(0, 0, 0))
-				.setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpSize(3, 3).setVpDistance(1).build();
-		assertEquals(1, CameraSphereIntersectoin.intersectionNumber(new Geometries(triangle01), camera01).size(),
-				"number of intersection is false");
+        // TC01: small triangle
+        Triangle triangle01 = new Triangle(new Point(0, 1.0, -2.0), new Point(-1.0, -1.0, -2.0),
+                new Point(1.0, -1.0, -2.0));
+        Camera camera01 = Camera.getBuilder().setLocation(new Point(0, 0, 0))
+                .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpSize(3, 3).setVpDistance(1).build();
+        assertEquals(1, CameraSphereIntersectoin.intersectionNumber(new Geometries(triangle01), camera01),
+                "Number of intersections is incorrect for small triangle");
 
-		// TC02
-		// large triangle
-		Triangle triangle02 = new Triangle(new Point(0, 20.0, -2.0), new Point(-1.0, -1.0, -2.0),
-				new Point(1.0, -1.0, -2.0));
-		Camera camera02 = camera01;
-		assertEquals(2, CameraSphereIntersectoin.intersectionNumber(new Geometries(triangle02), camera02).size(),
-				"number of intersection is false");
-	}
-
+        // TC02: large triangle
+        Triangle triangle02 = new Triangle(new Point(0, 20.0, -2.0), new Point(-1.0, -1.0, -2.0),
+                new Point(1.0, -1.0, -2.0));
+        Camera camera02 = camera01;
+        assertEquals(2, CameraSphereIntersectoin.intersectionNumber(new Geometries(triangle02), camera02),
+                "Number of intersections is incorrect for large triangle");
+    }
 }

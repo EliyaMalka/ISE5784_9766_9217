@@ -86,20 +86,30 @@ public class Ray {
 		}
 	}
 
-	public Point findClosestPoint(List<Point> points) {
-		if (points.isEmpty()) {
-			return null;
-		}
-		double minDistance = this.getHead().distance(points.get(0));
-		Point closest = points.get(0);
-		for (int i = 1; i < points.size(); i++) {
-			double distance = this.getHead().distance(points.get(i));
-			if (distance < minDistance) {
-				minDistance = distance;
-				closest = points.get(i);
-			}
-		}
-		return closest;
-	}
+    /**
+     * Finds the closest point to the head of the ray from a list of points.
+     * 
+     * @param points The list of points to search.
+     * @return The closest point to the head of the ray, or null if the list is empty.
+     */
+    public Point findClosestPoint(List<Point> points) {
+        // Return null if the list of points is empty
+        if (points.isEmpty()) {
+            return null;
+        }
+        // Initialize with the first point in the list
+        double minDistance = this.getHead().distance(points.get(0));
+        Point closest = points.get(0);
+        // Iterate through the list to find the closest point
+        for (int i = 1; i < points.size(); i++) {
+            double distance = this.getHead().distance(points.get(i));
+            if (distance < minDistance) {
+                minDistance = distance;
+                closest = points.get(i);
+            }
+        }
+        // Return the closest point
+        return closest;
+    }
 
 }
