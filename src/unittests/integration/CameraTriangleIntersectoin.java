@@ -7,13 +7,13 @@ import renderer.Camera;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
-//just for push to Git
+//just for push to Git...
 
 /**
  * CameraTriangleIntersection class of tests for intersections between a Camera and Triangles.
  */
 class CameraTriangleIntersection {
-
+//....
     /**
      * Tests the intersection of rays from the camera with triangles.
      */
