@@ -5,7 +5,7 @@ package geometries;
  * is an abstract class that provides a common base for various radial
  * geometries like spheres, cylinders, and cones.
  */
-public abstract class RadialGeometry implements Geometry {
+public abstract class RadialGeometry extends Geometry {
 
 	/**
 	 * The radius of the radial geometry shape.

@@ -3,6 +3,7 @@ package primitives;
 import java.util.List;
 
 import static primitives.Util.isZero;
+import geometries.Intersectable.GeoPoint;
 
 /**
  * The Ray class represents a ray in a 3D space, defined by a point and a
@@ -86,30 +87,42 @@ public class Ray {
 		}
 	}
 
-    /**
-     * Finds the closest point to the head of the ray from a list of points.
-     * 
-     * @param points The list of points to search.
-     * @return The closest point to the head of the ray, or null if the list is empty.
-     */
-    public Point findClosestPoint(List<Point> points) {
-        // Return null if the list of points is empty
-        if (points.isEmpty()) {
-            return null;
-        }
-        // Initialize with the first point in the list
-        double minDistance = this.getHead().distance(points.get(0));
-        Point closest = points.get(0);
-        // Iterate through the list to find the closest point
-        for (int i = 1; i < points.size(); i++) {
-            double distance = this.getHead().distance(points.get(i));
-            if (distance < minDistance) {
-                minDistance = distance;
-                closest = points.get(i);
-            }
-        }
-        // Return the closest point
-        return closest;
-    }
+	/**
+	 * Finds the closest point to the head of the ray from a list of points.
+	 * 
+	 * @param points The list of points to search.
+	 * @return The closest point to the head of the ray, or null if the list is
+	 *         empty.
+	 */
+	public Point findClosestPoint(List<Point> points) {
+		return points == null || points.isEmpty() ? null
+				: findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
+	}
 
+	/**
+	 * Finds the closest point to the head of the ray from a list of points.
+	 * 
+	 * @param geoPoints The list of points to search.
+	 * @return The closest point to the head of the ray, or null if the list is
+	 *         empty.
+	 */
+	public GeoPoint findClosestGeoPoint(List<GeoPoint> geoPoints) {
+		// Return null if the list of points is empty
+		if (geoPoints.isEmpty()) {
+			return null;
+		}
+		// Initialize with the first point in the list
+		double minDistance = this.getHead().distance(geoPoints.get(0).point);
+		GeoPoint closest = geoPoints.get(0);
+		// Iterate through the list to find the closest point
+		for (int i = 1; i < geoPoints.size(); i++) {
+			double distance = this.getHead().distance(geoPoints.get(i).point);
+			if (distance < minDistance) {
+				minDistance = distance;
+				closest = geoPoints.get(i);
+			}
+		}
+		// Return the closest point
+		return closest;
+	}
 }

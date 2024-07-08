@@ -11,7 +11,7 @@ import primitives.Ray;
  * interface. It allows adding geometries and finding intersections with a given
  * ray.
  */
-public class Geometries implements Intersectable {
+public class Geometries extends Intersectable {
 
 	private final List<Intersectable> geometries = new LinkedList<>();
 
@@ -49,7 +49,7 @@ public class Geometries implements Intersectable {
 	 *         found.
 	 */
 	@Override
-	public List<Point> findIntersections(Ray ray) {
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 
 		boolean full = false;
 
@@ -61,12 +61,12 @@ public class Geometries implements Intersectable {
 
 		if (full) {
 
-			List<Point> allIntersectionPoints = new LinkedList<>();
+			List<GeoPoint> allIntersectionPoints = new LinkedList<>();
 
 			for (Intersectable obj : this.geometries) {
 
 				if (obj.findIntersections(ray) != null) {
-					allIntersectionPoints.addAll(obj.findIntersections(ray));
+					allIntersectionPoints.addAll(obj.findGeoIntersectionsHelper(ray));
 				}
 
 			}

@@ -10,7 +10,7 @@ import static primitives.Util.*;
 /**
  * The Plane class represents a plane in a 3D space.
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
 
 	/**
 	 * A point on the plane.
@@ -76,7 +76,7 @@ public class Plane implements Geometry {
 	 *         exists.
 	 */
 	@Override
-	public List<Point> findIntersections(Ray ray) {
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 		if (this.q.equals(ray.getHead())) {
 			return null; // Ray starts on the plane, no intersections.
 		}
@@ -91,7 +91,7 @@ public class Plane implements Geometry {
 		double t = numerator / denominator;
 
 		if (t > 0) {
-			return List.of(ray.getPoint(alignZero(t)));
+			return List.of (new GeoPoint(this, ray.getPoint(alignZero(t))));
 		} else {
 			return null; // Intersection point is behind the ray origin.
 		}
