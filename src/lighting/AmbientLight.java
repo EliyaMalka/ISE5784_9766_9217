@@ -7,7 +7,10 @@ import primitives.*;
  */
 public class AmbientLight {
 
-    private final Color intensity; // the intensity of the ambient light
+    /**
+     * The intensity of the ambient light.
+     */
+    private final Color intensity;
 
     /**
      * A constant representing no ambient light.

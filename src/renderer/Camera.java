@@ -12,6 +12,10 @@ public class Camera implements Cloneable {
      * Builder class for Camera, allowing for incremental construction and configuration of a Camera object.
      */
     public static class Builder {
+    	
+        /**
+         * The Camera instance being built.
+         */
         private final Camera camera = new Camera();
 
         /**
@@ -123,14 +127,49 @@ public class Camera implements Cloneable {
         }
     }
 
-    private Point p0; // the location of the camera
-    private Vector vTo; // the direction vector towards the image
-    private Vector vUp; // the up direction vector
-    private Vector vRight; // the right direction vector, calculated from vTo and vUp
-    private double width = 0.0; // the width of the view plane
-    private double height = 0.0; // the height of the view plane
-    private double distance = 0.0; // the distance between the camera and the view plane
+    /**
+     * The location of the camera.
+     */
+    private Point p0;
+    
+    /**
+     * The direction vector towards the image.
+     */
+    private Vector vTo;
+    
+    /**
+     * The up direction vector.
+     */
+    private Vector vUp;
+    
+    /**
+     * The right direction vector, calculated from vTo and vUp.
+     */
+    private Vector vRight;
+    
+    /**
+     * The width of the view plane.
+     */
+    private double width = 0.0;
+    
+    /**
+     * The height of the view plane.
+     */
+    private double height = 0.0;
+    
+    /**
+     * The distance between the camera and the view plane.
+     */
+    private double distance = 0.0;
+    
+    /**
+     * The ImageWriter instance for the camera.
+     */
     private ImageWriter imageWriter;
+    
+    /**
+     * The RayTracerBase instance for the camera.
+     */
     private RayTracerBase rayTracer;
 
     /**
@@ -224,8 +263,9 @@ public class Camera implements Cloneable {
     public double getDistance() {
         return distance;
     }
-
-    // Private constructor to prevent direct instantiation
+    /**
+     * Private constructor to prevent direct instantiation of the Camera class.
+     */
     private Camera() {
     }
 
