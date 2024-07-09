@@ -27,20 +27,19 @@ class PlaneTests {
 	 */
 	@Test
 	public void testConstructorPlane() {
-		Point p1 = new Point(1, 0, 0);
-		Point p2 = new Point(1, 0, 0);
-		Point p3 = new Point(0, 0, 1);
+		Point point100 = new Point(1, 0, 0);
+		Point point001 = new Point(0, 0, 1);
 
-		Point sameRayP3_1 = new Point(0, 0, 3);
-		Point sameRayP3_2 = new Point(0, 0, 9);
+		Point point003 = new Point(0, 0, 3);
+		Point point009 = new Point(0, 0, 9);
 
 		// =============== Boundary Values Tests ==================
 		// Test for constructing a plane with two identical points
-		assertThrows(IllegalArgumentException.class, () -> new Plane(p1, p2, p3),
+		assertThrows(IllegalArgumentException.class, () -> new Plane(point100, point100, point001),
 				"The constructor does not throw an IllegalArgumentException when given two identical points");
 
 		// Test for constructing a plane with three collinear points (on same ray)
-		assertThrows(IllegalArgumentException.class, () -> new Plane(p3, sameRayP3_1, sameRayP3_2),
+		assertThrows(IllegalArgumentException.class, () -> new Plane(point001, point003, point009),
 				"The constructor does not throw an IllegalArgumentException when given three collinear points (on same ray)");
 	}
 
@@ -49,19 +48,19 @@ class PlaneTests {
 	 */
 	@Test
 	void testGetNormalPoint() {
-		Point p1 = new Point(1, 0, 0);
-		Point p2 = new Point(0, 1, 0);
-		Point p3 = new Point(0, 0, 1);
+		Point point100 = new Point(1, 0, 0);
+		Point point010 = new Point(0, 1, 0);
+		Point point001 = new Point(0, 0, 1);
 
 		Vector normalVector = new Vector(1 / Math.sqrt(3), 1 / Math.sqrt(3), 1 / Math.sqrt(3)); // normalized vector
 
-		Plane myPlane = new Plane(p1, p2, p3);
+		Plane myPlane = new Plane(point100, point010, point001);
 
 		// ============ Equivalence Partitions Tests ==============
 		// Test for correct normal vector calculation
 		assertTrue(
-				(myPlane.getNormal(p1).equals(normalVector))
-						|| (myPlane.getNormal(p1).equals(normalVector.scale(-1.0))),
+				(myPlane.getNormal(point100).equals(normalVector))
+						|| (myPlane.getNormal(point100).equals(normalVector.scale(-1.0))),
 				"getNormal(Point) does not return the correct normal vector");
 	}
 
@@ -78,20 +77,20 @@ class PlaneTests {
 
 		Plane plane = new Plane(p200, p002, p100);
 
-		final Point p010Negativ = new Point(0, -1, 0);
+		final Point point0m10 = new Point(0, -1, 0);
 		final Point p042 = new Point(0, 4, 2);
-		final Point p0_20 = new Point(0, -2, 0);
+		final Point point0m20 = new Point(0, -2, 0);
 
 		final Vector v012 = new Vector(0, 1, 2);
 		final Vector v011Negativ = new Vector(0, -1, -1);
 		final Vector v001 = new Vector(0, 0, 1);
 		final Vector v010 = new Vector(0, 1, 0);
 		final Vector v010Negativ = new Vector(0, -1, 0);
-		final Vector v0_22 = new Vector(0, -2, 2);
+		final Vector v0m22 = new Vector(0, -2, 2);
 
-		final Ray rayTC01 = new Ray(p010Negativ, v012);
-		final Ray rayTC02 = new Ray(p0_20, v0_22);
-		final Ray rayTC11 = new Ray(p010Negativ, v001);
+		final Ray rayTC01 = new Ray(point0m10, v012);
+		final Ray rayTC02 = new Ray(point0m20, v0m22);
+		final Ray rayTC11 = new Ray(point0m10, v001);
 		final Ray rayTC12 = new Ray(p100, v001);
 		final Ray rayTC21 = new Ray(p042, v010Negativ);
 		final Ray rayTC22 = new Ray(p042, v010);

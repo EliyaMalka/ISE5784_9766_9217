@@ -21,14 +21,7 @@ public class SimpleRayTracer extends RayTracerBase {
 		super(scene);
 	}
 
-	/**
-	 * Traces a ray through the scene and determines the color at the closest
-	 * intersection point. If no intersection is found, the background color of the
-	 * scene is returned.
-	 *
-	 * @param ray The ray to trace.
-	 * @return The color at the closest intersection point of the ray and the scene.
-	 */
+	
 	@Override
 	public Color traceRay(Ray ray) {
 		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);

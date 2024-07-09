@@ -65,11 +65,11 @@ public class Ray {
 	/**
 	 * Computes a point on the ray at a distance t from its head.
 	 * 
-	 * @param t The distance from the head of the ray.
+	 * @param distanceFromHead The distance from the head of the ray.
 	 * @return The point on the ray at distance t from its head.
 	 */
-	public Point getPoint(double t) {
-		return isZero(t) ? this.head : this.head.add(direction.scale(t));
+	public Point getPoint(double distanceFromHead) {
+		return isZero(distanceFromHead) ? this.head : this.head.add(direction.scale(distanceFromHead));
 	}
 
 	/**

@@ -17,11 +17,11 @@ import scene.*;
  */
 class CameraIntersections {
 
-	public List<Point> intersectionsPoints(Geometries g, Camera camera) {
+	public List<Point> intersectionsPoints(Geometries groupGeometries, Camera camera) {
 		List<Point> result = new ArrayList<Point>();
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				List<Point> intersections = g.findIntersections(camera.constructRay(3, 3, j, i));
+				List<Point> intersections = groupGeometries.findIntersections(camera.constructRay(3, 3, j, i));
 				if (intersections != null) {
 					result.addAll(intersections);
 				}

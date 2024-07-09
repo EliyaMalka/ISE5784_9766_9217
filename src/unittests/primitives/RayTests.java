@@ -26,7 +26,7 @@ public class RayTests {
 
 		final Point p001 = new Point(0, 0, 1);
 		final Point p101 = new Point(1, 0, 1);
-		final Point p_101 = new Point(-1, 0, 1);
+		final Point pm101 = new Point(-1, 0, 1);
 
 		final Vector v100 = new Vector(1, 0, 0);
 
@@ -37,7 +37,7 @@ public class RayTests {
 		assertEquals(p101, ray.getPoint(1.0), "ERROR TC01: when t is positive");
 
 		// TC02: when t is negative
-		assertEquals(p_101, ray.getPoint(-1.0), "ERROR TC02: when t is negative");
+		assertEquals(pm101, ray.getPoint(-1.0), "ERROR TC02: when t is negative");
 
 		// =============== Boundary Values Tests ==================
 		// TC03: when t equals zero

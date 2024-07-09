@@ -48,7 +48,7 @@ class TriangleTests {
 	private final Point p_201 = new Point(-2, 0, 1);
 
 	/**
-	 * TODO JAVADOC!!!
+	 * Test method for {@link geometries.Triangale#findIntersections(primitives.Ray)}.
 	 */
 	@Test
 	void testFindIntersections() {
@@ -65,15 +65,15 @@ class TriangleTests {
 		final Vector v132 = new Vector(1, 3, 2); // TC11
 		final Vector v331 = new Vector(3, 3, 1); // TC12
 
-		final Point p0_30RayPoint = new Point(0, -3, 0); // point of rays
+		final Point p0m30RayPoint = new Point(0, -3, 0); // point of rays
 
-		final Ray rayTC01 = new Ray(p0_30RayPoint, v032);
-		final Ray rayTC02 = new Ray(p0_30RayPoint, v332);
-		final Ray rayTC03 = new Ray(p0_30RayPoint, v430);
+		final Ray rayTC01 = new Ray(p0m30RayPoint, v032);
+		final Ray rayTC02 = new Ray(p0m30RayPoint, v332);
+		final Ray rayTC03 = new Ray(p0m30RayPoint, v430);
 
-		final Ray rayTC10 = new Ray(p0_30RayPoint, v033);
-		final Ray rayTC11 = new Ray(p0_30RayPoint, v132);
-		final Ray rayTC12 = new Ray(p0_30RayPoint, v331);
+		final Ray rayTC10 = new Ray(p0m30RayPoint, v033);
+		final Ray rayTC11 = new Ray(p0m30RayPoint, v132);
+		final Ray rayTC12 = new Ray(p0m30RayPoint, v331);
 
 		// ============ Equivalence Partitions Tests ==============
 		// TC01

@@ -24,11 +24,11 @@ public class Camera implements Cloneable {
 		/**
 		 * Sets the location of the camera.
 		 *
-		 * @param p the position of the camera
+		 * @param pointOfCamera the position of the camera
 		 * @return the current Builder instance for further configuration
 		 */
-		public Builder setLocation(Point p) {
-			camera.p0 = p;
+		public Builder setLocation(Point pointOfCamera) {
+			camera.p0 = pointOfCamera;
 			return this;
 		}
 
