@@ -103,7 +103,7 @@ public class Polygon extends Geometry {
 	 *         implemented.
 	 */
 	@Override
-	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+	protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 		// TODO: BONUS: Implement intersection calculation for polygon
 		return null;
 	}

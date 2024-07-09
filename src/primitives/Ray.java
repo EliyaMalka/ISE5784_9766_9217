@@ -3,7 +3,7 @@ package primitives;
 import java.util.List;
 
 import static primitives.Util.isZero;
-import geometries.Intersectable.GeoPoint;
+import static geometries.Intersectable.GeoPoint;
 
 /**
  * The Ray class represents a ray in a 3D space, defined by a point and a
@@ -80,11 +80,7 @@ public class Ray {
 	 * @return The point on the ray at distance t from its head.
 	 */
 	public Point getPoint(double t) {
-		if (isZero(t)) {
-			return this.getHead();
-		} else {
-			return head.add(direction.scale(t));
-		}
+		return isZero(t) ? this.head : this.head.add(direction.scale(t));
 	}
 
 	/**
@@ -108,18 +104,18 @@ public class Ray {
 	 */
 	public GeoPoint findClosestGeoPoint(List<GeoPoint> geoPoints) {
 		// Return null if the list of points is empty
-		if (geoPoints.isEmpty()) {
+		if (geoPoints == null || geoPoints.isEmpty())
 			return null;
-		}
+
 		// Initialize with the first point in the list
-		double minDistance = this.getHead().distance(geoPoints.get(0).point);
-		GeoPoint closest = geoPoints.get(0);
+		double minDistance = Double.POSITIVE_INFINITY;
+		GeoPoint closest = null;
 		// Iterate through the list to find the closest point
-		for (int i = 1; i < geoPoints.size(); i++) {
-			double distance = this.getHead().distance(geoPoints.get(i).point);
+		for (var geoPoint : geoPoints) {
+			double distance = this.head.distanceSquared(geoPoint.point);
 			if (distance < minDistance) {
 				minDistance = distance;
-				closest = geoPoints.get(i);
+				closest = geoPoint;
 			}
 		}
 		// Return the closest point

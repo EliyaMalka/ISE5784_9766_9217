@@ -76,25 +76,19 @@ public class Plane extends Geometry {
 	 *         exists.
 	 */
 	@Override
-	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-		if (this.q.equals(ray.getHead())) {
+	protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+		var head = ray.getHead();
+		if (this.q.equals(head))
 			return null; // Ray starts on the plane, no intersections.
-		}
 
-		double numerator = this.normal.dotProduct(this.q.subtract(ray.getHead()));
+		double numerator = this.normal.dotProduct(this.q.subtract(head));
 		double denominator = this.normal.dotProduct(ray.getDirection());
-
-		if (isZero(denominator)) {
+		if (isZero(denominator))
 			return null; // Ray is parallel to the plane.
-		}
 
-		double t = numerator / denominator;
-
-		if (t > 0) {
-			return List.of(new GeoPoint(this, ray.getPoint(alignZero(t))));
-		} else {
-			return null; // Intersection point is behind the ray origin.
-		}
+		double t = alignZero(numerator / denominator);
+		// Intersection point is behind the ray origin => return null
+		return t <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
 	}
 
 }

@@ -35,15 +35,8 @@ public class Tube extends RadialGeometry {
 	 */
 	@Override
 	public Vector getNormal(Point point) {
-		// if the point orthogonal to the ray
-		if (point.subtract(axis.getHead()).dotProduct(axis.getDirection()) == 0) {
-			return point.subtract(axis.getHead()).normalize();
-		} else {
-			// Calculate the projection of P onto the axis ray
-			Point frontPoint = axis.getHead().add(axis.getDirection().normalize()
-					.scale(axis.getDirection().normalize().dotProduct(point.subtract(axis.getHead()))));
-			return point.subtract(frontPoint).normalize();
-		}
+		double projection = point.subtract(axis.getHead()).dotProduct(axis.getDirection());
+		return point.subtract(axis.getPoint(projection)).normalize();
 	}
 
 	/**

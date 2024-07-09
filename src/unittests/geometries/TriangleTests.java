@@ -88,11 +88,9 @@ class TriangleTests {
 
 		// =============== Boundary Values Tests ==================
 		// TC10
-		assertNull(triangle.findIntersections(rayTC10),
-				"A intersection ray on vertex does not return a correct point");
+		assertNull(triangle.findIntersections(rayTC10), "A intersection ray on vertex does not return a correct point");
 		// TC11
-		assertNull(triangle.findIntersections(rayTC11),
-				"A intersection ray on edge does not return a correct point");
+		assertNull(triangle.findIntersections(rayTC11), "A intersection ray on edge does not return a correct point");
 		// TC12
 		assertNull(triangle.findIntersections(rayTC12),
 				"A intersection ray on edge's continuation does not return a correct point");

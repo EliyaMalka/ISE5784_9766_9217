@@ -22,17 +22,10 @@ public abstract class Intersectable {
 
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj) {
+			if (this == obj)
 				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			GeoPoint other = (GeoPoint) obj;
-			return geometry.equals(other.geometry) && point.equals(other.point);
+			return obj instanceof GeoPoint other //
+					&& geometry == other.geometry && point.equals(other.point);
 		}
 
 		@Override
@@ -49,12 +42,12 @@ public abstract class Intersectable {
 	 * @return a list of points where the ray intersects the geometric object. If
 	 *         there are no intersections, an empty list or null may be returned.
 	 */
-	public List<Point> findIntersections(Ray ray) {
+	public final List<Point> findIntersections(Ray ray) {
 		var geoList = findGeoIntersections(ray);
 		return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
 	}
 
-	public List<GeoPoint> findGeoIntersections(Ray ray) {
+	public final List<GeoPoint> findGeoIntersections(Ray ray) {
 		return findGeoIntersectionsHelper(ray);
 	}
 

@@ -6,6 +6,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import static primitives.Util.alignZero;
+
 /**
  * The Sphere class represents a sphere in a 3D space.
  */
@@ -38,59 +40,28 @@ public class Sphere extends RadialGeometry {
 		return (pointOnSphere.subtract(this.center)).normalize();
 	}
 
-	/**
-	 * Finds intersection points of a given ray with the sphere.
-	 * 
-	 * @param ray The ray to find intersections with.
-	 * @return A list containing the intersection points, or null if no intersection
-	 *         exists.
-	 */
 	@Override
 	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-
-		if (ray.getHead().equals(center)) {
+		Point head = ray.getHead();
+		if (head.equals(center))
 			return List.of(new GeoPoint(this, ray.getPoint(this.radius)));
-		}
 
-		Vector headToCenter = this.center.subtract(ray.getHead());
-		double t_m = headToCenter.dotProduct(ray.getDirection());
-		double d = Math.sqrt(headToCenter.lengthSquared() - t_m * t_m);
-		double t_h = Math.sqrt(this.radius * this.radius - d * d);
-
-		double t_1 = t_m + t_h;
-		double t_2 = t_m - t_h;
-
-		Point point_1 = null;
-		Point point_2 = null;
-
-		if (d == this.radius) {
+		Vector headToCenter = this.center.subtract(head);
+		double tm = headToCenter.dotProduct(ray.getDirection());
+		double dSquared = headToCenter.lengthSquared() - tm * tm;
+		double thSquared = this.radiusSquared - dSquared;
+		if (alignZero(thSquared) <= 0)
 			return null;
-		}
 
-		if (t_1 > 0) {
-			point_1 = ray.getPoint(t_1);
-		}
-		if (t_2 > 0) {
-			point_2 = ray.getPoint(t_2);
-		}
+		double th = Math.sqrt(thSquared);
+		double t2 = alignZero(tm + th); // it is always greater than t1
+		if (t2 <= 0)
+			return null;
 
-		if (point_1 != null && point_2 != null) {
-
-			if (t_1 < t_2) {
-				return List.of(new GeoPoint(this, ray.getPoint(t_1)), new GeoPoint(this, ray.getPoint(t_2)));
-			} else {
-				return List.of(new GeoPoint(this, ray.getPoint(t_2)), new GeoPoint(this, ray.getPoint(t_1)));
-			}
-
-		}
-
-		if (point_1 != null) {
-			return List.of(new GeoPoint(this, ray.getPoint(t_1)));
-		}
-		if (point_2 != null) {
-			return List.of(new GeoPoint(this, ray.getPoint(t_2)));
-		}
-
-		return null;
+		Point geoPoint2 = ray.getPoint(t2);
+		double t1 = alignZero(tm - th);
+		return t1 <= 0 //
+				? List.of(new GeoPoint(this, geoPoint2)) //
+				: List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, geoPoint2));
 	}
 }
