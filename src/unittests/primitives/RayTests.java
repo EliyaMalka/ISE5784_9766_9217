@@ -1,4 +1,4 @@
-package unittests.geometries;
+package unittests.primitives;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class RayTests {
 	 * Default constructor for RayTests.
 	 */
 	public RayTests() {
-		// Default constructor just for javadoc ganerition
+		// Default constructor just for javadoc generation
 	}
 
 	/**

@@ -49,32 +49,19 @@ public class Geometries extends Intersectable {
 	 */
 	@Override
 	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-
-		boolean full = false;
+		List<GeoPoint> allIntersectionPoints = null;
 
 		for (Intersectable obj : this.geometries) {
-			if (obj.findIntersections(ray) != null) {
-				full = true;
+			var intersectionPoints = obj.findGeoIntersections(ray);
+			if (intersectionPoints != null) {
+				if (allIntersectionPoints == null)
+					allIntersectionPoints = new LinkedList<>(intersectionPoints);
+				else
+					allIntersectionPoints.addAll(intersectionPoints);
 			}
 		}
 
-		if (full) {
-
-			List<GeoPoint> allIntersectionPoints = new LinkedList<>();
-
-			for (Intersectable obj : this.geometries) {
-
-				if (obj.findIntersections(ray) != null) {
-					allIntersectionPoints.addAll(obj.findGeoIntersectionsHelper(ray));
-				}
-
-			}
-
-			return allIntersectionPoints;
-		}
-
-		return null;
-
+		return allIntersectionPoints;
 	}
 
 }

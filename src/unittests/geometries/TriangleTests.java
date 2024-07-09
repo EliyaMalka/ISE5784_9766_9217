@@ -5,6 +5,8 @@ package unittests.geometries;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import geometries.Triangle;
@@ -45,14 +47,15 @@ class TriangleTests {
 	private final Point p003 = new Point(0, 0, 3);
 	private final Point p_201 = new Point(-2, 0, 1);
 
+	/**
+	 * TODO JAVADOC!!!
+	 */
+	@Test
 	void testFindIntersections() {
 
 		Triangle triangle = new Triangle(p201, p003, p_201);
 
 		final Point p002 = new Point(0, 0, 2); // TC01
-
-		final Point p003 = new Point(0, 0, 3); // TC10
-		final Point p102 = new Point(1, 0, 2); // TC11
 
 		final Vector v032 = new Vector(0, 3, 2); // TC01
 		final Vector v332 = new Vector(3, 3, 2); // TC02
@@ -74,7 +77,7 @@ class TriangleTests {
 
 		// ============ Equivalence Partitions Tests ==============
 		// TC01
-		assertEquals(p002, triangle.findIntersections(rayTC01),
+		assertEquals(List.of(p002), triangle.findIntersections(rayTC01),
 				"A intersection ray inside triangle does not return a correct point");
 		// TC02
 		assertNull(triangle.findIntersections(rayTC02),
@@ -85,10 +88,10 @@ class TriangleTests {
 
 		// =============== Boundary Values Tests ==================
 		// TC10
-		assertEquals(p003, triangle.findIntersections(rayTC10),
+		assertNull(triangle.findIntersections(rayTC10),
 				"A intersection ray on vertex does not return a correct point");
 		// TC11
-		assertEquals(p102, triangle.findIntersections(rayTC11),
+		assertNull(triangle.findIntersections(rayTC11),
 				"A intersection ray on edge does not return a correct point");
 		// TC12
 		assertNull(triangle.findIntersections(rayTC12),
