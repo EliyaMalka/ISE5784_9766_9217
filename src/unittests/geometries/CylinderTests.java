@@ -33,7 +33,6 @@ class CylinderTests {
 		Point pointEP3 = new Point(0, 1, 10);
 
 		Point pointBVA1 = new Point(0, 0, 0);
-		Point pointBVA2 = new Point(0, 0, 10);
 		Point pointBVA3 = new Point(3, 3, 0);
 
 		Vector result = new Vector(1, 0, 0);

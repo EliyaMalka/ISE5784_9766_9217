@@ -91,7 +91,7 @@ public class Plane extends Geometry {
 		double t = numerator / denominator;
 
 		if (t > 0) {
-			return List.of (new GeoPoint(this, ray.getPoint(alignZero(t))));
+			return List.of(new GeoPoint(this, ray.getPoint(alignZero(t))));
 		} else {
 			return null; // Intersection point is behind the ray origin.
 		}

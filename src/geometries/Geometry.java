@@ -1,6 +1,5 @@
 package geometries;
 
-
 import primitives.*;
 
 /**
@@ -10,6 +9,7 @@ import primitives.*;
 public abstract class Geometry extends Intersectable {
 
 	protected Color emission = Color.BLACK;
+
 	/**
 	 * Computes the normal vector at a given point on the shape.
 	 * 
@@ -21,7 +21,7 @@ public abstract class Geometry extends Intersectable {
 	public Color getEmission() {
 		return emission;
 	}
-	
+
 	public Geometry setEmission(Color emission) {
 		this.emission = emission;
 		return this;

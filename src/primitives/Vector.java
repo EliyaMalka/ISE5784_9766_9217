@@ -76,7 +76,7 @@ public class Vector extends Point {
 	/**
 	 * Scales this vector by a given factor.
 	 * 
-	 * @param scal The scaling factor.
+	 * @param scale The scaling factor.
 	 * @return A new vector that is the result of the scaling.
 	 */
 	public Vector scale(double scale) {

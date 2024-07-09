@@ -50,12 +50,9 @@ class TriangleTests {
 		Triangle triangle = new Triangle(p201, p003, p_201);
 
 		final Point p002 = new Point(0, 0, 2); // TC01
-		final Point p302 = new Point(3, 0, 2); // TC02
-		final Point p400 = new Point(4, 0, 0); // TC03
 
 		final Point p003 = new Point(0, 0, 3); // TC10
 		final Point p102 = new Point(1, 0, 2); // TC11
-		final Point p301 = new Point(3, 0, 1); // TC12
 
 		final Vector v032 = new Vector(0, 3, 2); // TC01
 		final Vector v332 = new Vector(3, 3, 2); // TC02
