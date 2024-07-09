@@ -46,14 +46,6 @@ public class Plane extends Geometry {
 		this.normal = vector.normalize();
 	}
 
-	/**
-	 * Returns the normal vector to the plane at a given point (which is ignored in
-	 * this case since the plane is infinite and the normal vector is constant
-	 * everywhere on the plane).
-	 *
-	 * @param P The point (ignored).
-	 * @return The normal vector to the plane.
-	 */
 	@Override
 	public Vector getNormal(Point P) {
 		return this.normal;
@@ -68,13 +60,6 @@ public class Plane extends Geometry {
 		return this.normal;
 	}
 
-	/**
-	 * Finds the intersection points of a given ray with the plane.
-	 *
-	 * @param ray The ray to find intersections with.
-	 * @return A list containing the intersection point, or null if no intersection
-	 *         exists.
-	 */
 	@Override
 	protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 		var head = ray.getHead();
@@ -90,5 +75,4 @@ public class Plane extends Geometry {
 		// Intersection point is behind the ray origin => return null
 		return t <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
 	}
-
 }
