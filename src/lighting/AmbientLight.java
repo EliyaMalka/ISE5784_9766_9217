@@ -6,12 +6,7 @@ import primitives.*;
  * The AmbientLight class represents ambient lighting in a scene. It is defined
  * by its intensity and color.
  */
-public class AmbientLight {
-
-	/**
-	 * The intensity of the ambient light.
-	 */
-	private final Color intensity;
+public class AmbientLight extends Light {
 
 	/**
 	 * A constant representing no ambient light.
@@ -25,7 +20,7 @@ public class AmbientLight {
 	 * @param KA the attenuation factor as a Double3
 	 */
 	public AmbientLight(Color IA, Double3 KA) {
-		intensity = IA.scale(KA);
+		super(IA.scale(KA));
 	}
 
 	/**
@@ -35,15 +30,6 @@ public class AmbientLight {
 	 * @param KA the attenuation factor as a double
 	 */
 	public AmbientLight(Color IA, Double KA) {
-		intensity = IA.scale(KA);
-	}
-
-	/**
-	 * Returns the intensity of the ambient light.
-	 *
-	 * @return the intensity of the ambient light
-	 */
-	public Color getIntensity() {
-		return intensity;
+		super(IA.scale(KA));
 	}
 }
