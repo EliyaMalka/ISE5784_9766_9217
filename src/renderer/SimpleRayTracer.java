@@ -30,7 +30,7 @@ public class SimpleRayTracer extends RayTracerBase {
 		}
 		GeoPoint closestPoint = ray.findClosestGeoPoint(intersections);
 
-		return calcColor(closestPoint);
+		return calcColor(closestPoint, ray);
 	}
 
 	/**
@@ -40,7 +40,44 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param point The point at which to calculate the color.
 	 * @return The color at the specified point.
 	 */
-	private Color calcColor(GeoPoint point) {
-		return scene.ambientLight.getIntensity().add(point.geometry.getEmission());
+	private Color calcColor(GeoPoint point, Ray ray) {
+		return scene.ambientLight.getIntensity().add(point.geometry.getEmission()).add(calcLocalEffects(point, ray));
+	}
+	
+	/**
+	 * Calculates the local effects at an intersection point, such as diffuse and
+	 * specular reflections.
+	 *
+	 * @param point The intersection point and associated geometry.
+	 * @param ray   The ray that intersected with the geometry.
+	 * @return The color due to local effects.
+	 */
+	private Color calcLocalEffects(GeoPoint point, Ray ray) {
+		//TODO להשלים את הפונקציה על פי הקורס התיאורטי.
+		return Color.BLACK;
+	}
+	
+	/**
+	 * Calculates the diffuse reflection at an intersection point.
+	 *
+	 * @param point The intersection point and associated geometry.
+	 * @param ray   The ray that intersected with the geometry.
+	 * @return The color due to diffuse reflection.
+	 */
+	private Color calcDiffuse(GeoPoint point, Ray ray) {
+		//TODO להשלים את הפונקציה על פי הקורס התיאורטי.
+		return Color.BLACK;	
+	}
+	
+	/**
+	 * Calculates the specular reflection at an intersection point.
+	 *
+	 * @param point The intersection point and associated geometry.
+	 * @param ray   The ray that intersected with the geometry.
+	 * @return The color due to specular reflection.
+	 */
+	private Color calcSpecular(GeoPoint point, Ray ray) {
+		//TODO להשלים את הפונקציה על פי הקורס התיאורטי.
+		return Color.BLACK;
 	}
 }
