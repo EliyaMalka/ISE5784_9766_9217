@@ -1,4 +1,5 @@
 package lighting;
+
 import primitives.*;
 
 /**
@@ -13,7 +14,7 @@ public interface LightSource {
 	 * @param p The point at which to calculate the intensity of the light.
 	 * @return The intensity of the light at the point.
 	 */
-	public Color getIntensity(Point p); 
+	public Color getIntensity(Point p);
 
 	/**
 	 * Returns the vector from the light source to the specified point.

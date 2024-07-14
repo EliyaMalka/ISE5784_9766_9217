@@ -2,6 +2,10 @@ package scene;
 
 import primitives.*;
 import lighting.*;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import geometries.*;
 
 /**
@@ -29,6 +33,11 @@ public class Scene {
 	 * The collection of geometries in the scene.
 	 */
 	public Geometries geometries = new Geometries();
+
+	/**
+	 * The collection of light sources in the scene.
+	 */
+	public List<LightSource> lights = new LinkedList<>();
 
 	/**
 	 * Constructs a new Scene with the specified name.
@@ -69,6 +78,19 @@ public class Scene {
 	 */
 	public Scene setGeometries(Geometries geometries) {
 		this.geometries = geometries;
+		return this;
+	}
+
+	/**
+	 * adds light sources to the scene
+	 * 
+	 * @param light The light sources to add.
+	 * @return The current Scene instance for further configuration.
+	 */
+	public Scene setLights(LightSource... light) {
+		for (LightSource l : light) {
+			lights.add(l);
+		}
 		return this;
 	}
 }

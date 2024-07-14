@@ -60,10 +60,10 @@ class PointTests {
 
 		// =============== Boundary Values Tests ==================
 		// Check if subtract() returns correct values with zero point
-		assertEquals(p378.subtract(Point.ZERO), vecSamePoint, "subtract() doesn't return correct values with zero point");
+		assertEquals(p378.subtract(Point.ZERO), vecSamePoint,
+				"subtract() doesn't return correct values with zero point");
 		// Check if subtract() returns correct values with negative point
-		assertEquals(p378.subtract(pm1m2m3), result2,
-				"subtract() doesn't return correct values with negative point");
+		assertEquals(p378.subtract(pm1m2m3), result2, "subtract() doesn't return correct values with negative point");
 		// Check if subtract() throws exception when the result is zero vector
 		assertThrows(IllegalArgumentException.class, () -> p378.subtract(vecSamePoint),
 				"subtract() doesn't throw exception when the result is zero vector");

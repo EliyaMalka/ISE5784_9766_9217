@@ -8,14 +8,14 @@ import primitives.*;
  */
 
 abstract class Light {
-	
+
 	/**
 	 * Constructs a new Light with the given intensity.
 	 * 
 	 * @param intensity The intensity of the light.
 	 */
 	protected Color intensity;
-	
+
 	/**
 	 * Constructs a new Light with the given intensity.
 	 * 
@@ -24,7 +24,7 @@ abstract class Light {
 	protected Light(Color intensity) {
 		this.intensity = intensity;
 	}
-	
+
 	/**
 	 * Returns the intensity of the light.
 	 * 
@@ -32,5 +32,5 @@ abstract class Light {
 	 */
 	public Color getIntensity() {
 		return intensity;
-    }
+	}
 }

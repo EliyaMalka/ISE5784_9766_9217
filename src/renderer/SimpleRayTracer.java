@@ -21,7 +21,6 @@ public class SimpleRayTracer extends RayTracerBase {
 		super(scene);
 	}
 
-	
 	@Override
 	public Color traceRay(Ray ray) {
 		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);

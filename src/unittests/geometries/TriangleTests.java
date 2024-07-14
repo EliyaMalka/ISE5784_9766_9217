@@ -48,7 +48,8 @@ class TriangleTests {
 	private final Point p_201 = new Point(-2, 0, 1);
 
 	/**
-	 * Test method for {@link geometries.Triangale#findIntersections(primitives.Ray)}.
+	 * Test method for
+	 * {@link geometries.Triangale#findIntersections(primitives.Ray)}.
 	 */
 	@Test
 	void testFindIntersections() {
