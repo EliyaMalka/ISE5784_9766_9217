@@ -4,6 +4,9 @@ import java.util.List;
 import primitives.*;
 import scene.*;
 import geometries.Intersectable.GeoPoint;
+import lighting.LightSource;
+
+import static primitives.Util.alignZero;
 
 /**
  * The SimpleRayTracer class extends the RayTracerBase and implements a basic
@@ -43,7 +46,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	private Color calcColor(GeoPoint point, Ray ray) {
 		return scene.ambientLight.getIntensity().add(point.geometry.getEmission()).add(calcLocalEffects(point, ray));
 	}
-	
+
 	/**
 	 * Calculates the local effects at an intersection point, such as diffuse and
 	 * specular reflections.
@@ -53,31 +56,44 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return The color due to local effects.
 	 */
 	private Color calcLocalEffects(GeoPoint point, Ray ray) {
-		//TODO להשלים את הפונקציה על פי הקורס התיאורטי.
-		return Color.BLACK;
+		Color color = Color.BLACK;
+		Vector v = ray.getDirection();
+		Vector n = point.geometry.getNormal(point.point);
+
+		double nv = alignZero(n.dotProduct(v));
+		if (nv == 0)
+			return Color.BLACK;
+
+		Material material = point.geometry.getMaterial();
+		int shininess = material.nShininess;
+
+		Double3 kd = material.kD;
+		Double3 ks = material.kS;
+
+		for (LightSource lightSource : scene.lights) {
+			Vector l = lightSource.getL(point.point);
+			if (l == null)
+				continue;
+			double nl = alignZero(n.dotProduct(l));
+
+			if (nl * nv > 0) { // sign(nl) == sign(nv)
+				Color lightIntensity = lightSource.getIntensity(point.point);
+				Double3 factor = calcDiffuse(kd, nl).add(calcSpecular(ks, l, n, nl, v, shininess));
+				color = color.add(lightIntensity.scale(factor));
+			}
+		}
+		return color;
 	}
-	
-	/**
-	 * Calculates the diffuse reflection at an intersection point.
-	 *
-	 * @param point The intersection point and associated geometry.
-	 * @param ray   The ray that intersected with the geometry.
-	 * @return The color due to diffuse reflection.
-	 */
-	private Color calcDiffuse(GeoPoint point, Ray ray) {
-		//TODO להשלים את הפונקציה על פי הקורס התיאורטי.
-		return Color.BLACK;	
+
+	private Double3 calcDiffuse(Double3 kd, double nl) {
+		return kd.scale(Math.abs(nl));
 	}
-	
-	/**
-	 * Calculates the specular reflection at an intersection point.
-	 *
-	 * @param point The intersection point and associated geometry.
-	 * @param ray   The ray that intersected with the geometry.
-	 * @return The color due to specular reflection.
-	 */
-	private Color calcSpecular(GeoPoint point, Ray ray) {
-		//TODO להשלים את הפונקציה על פי הקורס התיאורטי.
-		return Color.BLACK;
+
+	private Double3 calcSpecular(Double3 ks, Vector l, Vector n, double nl, Vector v, int shininess) {
+		Vector r = l.subtract(n.scale(2 * nl));
+		double vr = -alignZero(v.dotProduct(r));
+		if (vr <= 0)
+			return Double3.ZERO;
+		return ks.scale(Math.pow(vr, shininess));
 	}
 }
