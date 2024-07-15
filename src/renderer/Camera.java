@@ -42,7 +42,7 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if the vectors are not perpendicular
 		 */
 		public Builder setDirection(Vector vto, Vector vup) {
-			if (!Util.isZero(vto.dotProduct(vup)))
+			if (!isZero(vto.dotProduct(vup)))
 				throw new IllegalArgumentException("Vectors vUp and vTo are not verticals");
 			camera.vTo = vto.normalize();
 			camera.vUp = vup.normalize();
@@ -121,6 +121,8 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException("Renderer data missing", "Camera", "vTo missing");
 			if (camera.vUp == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "vUp missing");
+			if (alignZero( camera.vTo.dotProduct(camera.vUp)) != 0.0)
+				throw new IllegalArgumentException("vUp and vTo are not verticals");
 			camera.vRight = (camera.vTo.crossProduct(camera.vUp)).normalize();
 			
 			// Helper objects data
@@ -128,6 +130,10 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException("Renderer data missing", "Camera", "imageWriter missing");
 			if (camera.rayTracer == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "rayTracer missing");
+			
+			// Camera location data
+			if (camera.p0 == null)
+				throw new MissingResourceException("Renderer data missing", "Camera", "p0 missing");
 			
 			try {
 				return (Camera) camera.clone();
@@ -192,11 +198,11 @@ public class Camera implements Cloneable {
 	 * @return the constructed ray
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {
-		double Ry = height / nY; // the distance between tick marks in the Y-axis
-		double Rx = width / nX; // the distance between tick marks in the X-axis
+		double rY = height / nY; // the distance between tick marks in the Y-axis
+		double rX = width / nX; // the distance between tick marks in the X-axis
 
-		double yI = (((nY - 1) / 2.0) - i) * Ry;
-		double xJ = (j - (nX - 1) / 2.0) * Rx;
+		double yI = (((nY - 1) / 2.0) - i) * rY;
+		double xJ = (j - (nX - 1) / 2.0) * rX;
 
 		Point pIJ = p0.add(vTo.scale(distance)); // the center of the view plane
 		if (!isZero(xJ))
@@ -292,9 +298,12 @@ public class Camera implements Cloneable {
 	 * @return the current Camera instance
 	 */
 	public Camera renderImage() {
-		for (int j = 0; j < imageWriter.getNy(); j++) {
-			for (int i = 0; i < imageWriter.getNx(); i++) {
-				castRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
+		int nX = imageWriter.getNx();
+		int nY = imageWriter.getNy();
+		
+		for (int j = 0; j < nY ; j++) {
+			for (int i = 0; i < nX ; i++) {
+				castRay(nX, nY , j, i);
 			}
 		}
 		return this;
