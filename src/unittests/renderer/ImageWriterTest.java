@@ -3,6 +3,7 @@ package unittests.renderer;
 import renderer.*;
 import primitives.*;
 import org.junit.jupiter.api.Test;
+import static java.awt.Color.*;
 
 /**
  * Unit test for the ImageWriter class.
@@ -15,20 +16,18 @@ class ImageWriterTest {
 	 */
 	@Test
 	void imageTest() {
+		final Color gridColor = new Color(1, 57, 183);
+		final Color bgColor = new Color(WHITE);
+		final int nX = 801, ny = 501, step = 50;
 		// Create an ImageWriter object with a name "test" and dimensions 800x500
-		ImageWriter imageWriter = new ImageWriter("test", 800, 500);
+		final ImageWriter imageWriter = new ImageWriter("test", nX, ny);
 
 		// Iterate over the pixels of the image
-		for (int i = 0; i < 800; i++) {
-			for (int j = 0; j < 500; j++) {
+		for (int i = 0; i < nX; i++)
+			for (int j = 0; j < ny; j++)
 				// If the pixel is on a grid line or on the border, color it blue
-				if (i % 50 == 0 || j % 50 == 0 || i == 799 || j == 499)
-					imageWriter.writePixel(i, j, new Color(1, 57, 183));
-				// Otherwise, color it white
-				else
-					imageWriter.writePixel(i, j, new Color(255, 255, 255));
-			}
-		}
+				imageWriter.writePixel(i, j, i % step == 0 || j % step == 0 ? gridColor : bgColor);
+
 		// Write the image to a file
 		imageWriter.writeToImage();
 	}

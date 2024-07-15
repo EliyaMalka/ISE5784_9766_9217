@@ -69,7 +69,7 @@ class PlaneTests {
 	private final Point p100 = new Point(1, 0, 0);
 
 	/**
-	 * Test method for {@link geometries.plane#findIntersections(primitives.Ray)}.
+	 * Test method for {@link geometries.Plane#findIntersections(primitives.Ray)}.
 	 * link to GeoGebra model : https://www.geogebra.org/calculator/kjc6u59j
 	 */
 	@Test

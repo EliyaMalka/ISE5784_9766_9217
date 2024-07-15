@@ -17,7 +17,7 @@ public class Scene {
 	/**
 	 * The name of the scene.
 	 */
-	public String name;
+	public final String name;
 
 	/**
 	 * The background color of the scene. Default is black.
@@ -88,9 +88,7 @@ public class Scene {
 	 * @return The current Scene instance for further configuration.
 	 */
 	public Scene setLights(LightSource... light) {
-		for (LightSource l : light) {
-			lights.add(l);
-		}
+		lights.addAll(List.of(light));
 		return this;
 	}
 }

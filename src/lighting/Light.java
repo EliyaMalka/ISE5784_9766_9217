@@ -14,7 +14,7 @@ abstract class Light {
 	 * 
 	 * @param intensity The intensity of the light.
 	 */
-	protected Color intensity;
+	protected final Color intensity;
 
 	/**
 	 * Constructs a new Light with the given intensity.

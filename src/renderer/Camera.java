@@ -2,6 +2,7 @@ package renderer;
 
 import java.util.MissingResourceException;
 import primitives.*;
+import static primitives.Util.*;
 
 /**
  * The Camera class represents a camera used for rendering a 3D image. The
@@ -107,25 +108,31 @@ public class Camera implements Cloneable {
 		 * @throws MissingResourceException if any required parameters are missing
 		 */
 		public Camera build() {
-			if (camera.width == 0)
+			// View Plane data
+			if (camera.width <= 0)
 				throw new MissingResourceException("Renderer data missing", "Camera", "width missing");
-			if (camera.height == 0)
+			if (camera.height <= 0)
 				throw new MissingResourceException("Renderer data missing", "Camera", "height missing");
-			if (camera.distance == 0)
+			if (camera.distance <= 0)
 				throw new MissingResourceException("Renderer data missing", "Camera", "distance missing");
+
+			// Camera location and direction data
 			if (camera.vTo == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "vTo missing");
 			if (camera.vUp == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "vUp missing");
+			camera.vRight = (camera.vTo.crossProduct(camera.vUp)).normalize();
+			
+			// Helper objects data
 			if (camera.imageWriter == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "imageWriter missing");
 			if (camera.rayTracer == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "rayTracer missing");
-			camera.vRight = (camera.vTo.crossProduct(camera.vUp)).normalize();
+			
 			try {
 				return (Camera) camera.clone();
 			} catch (CloneNotSupportedException e) {
-				throw new RuntimeException(e);
+				throw new AssertionError(e);
 			}
 		}
 	}
@@ -192,14 +199,10 @@ public class Camera implements Cloneable {
 		double xJ = (j - (nX - 1) / 2.0) * Rx;
 
 		Point pIJ = p0.add(vTo.scale(distance)); // the center of the view plane
-
-		if (!Util.isZero(xJ)) {
+		if (!isZero(xJ))
 			pIJ = pIJ.add(vRight.scale(xJ));
-		}
-
-		if (!Util.isZero(yI)) {
+		if (!isZero(yI))
 			pIJ = pIJ.add(vUp.scale(yI));
-		}
 
 		return new Ray(p0, pIJ.subtract(p0)); // return the ray from the camera
 	}
@@ -334,13 +337,11 @@ public class Camera implements Cloneable {
 	 * @param Ny     the number of pixels in the y-axis
 	 * @param column the column index of the pixel
 	 * @param row    the row index of the pixel
-	 * @return the current Camera instance
 	 */
-	private Camera castRay(int Nx, int Ny, int column, int row) {
+	private void castRay(int Nx, int Ny, int column, int row) {
 		Ray ray = constructRay(Nx, Ny, column, row);
 		Color color = rayTracer.traceRay(ray);
 		imageWriter.writePixel(column, row, color);
-		return this;
 	}
 
 }
