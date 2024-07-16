@@ -4,7 +4,6 @@ import primitives.*;
 import scene.*;
 import static geometries.Intersectable.GeoPoint;
 import lighting.LightSource;
-
 import static primitives.Util.*;
 
 /**
@@ -50,40 +49,31 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return The color due to local effects.
 	 */
 	private Color calcLocalEffects(GeoPoint point, Ray ray) {
-		Color color = Color.BLACK;
-		Vector v = ray.getDirection();
 		Vector n = point.geometry.getNormal(point.point);
-
+		Vector v = ray.getDirection();
 		double nv = alignZero(n.dotProduct(v));
 		if (nv == 0)
 			return Color.BLACK;
-
 		Material material = point.geometry.getMaterial();
-		int shininess = material.nShininess;
-
-		Double3 kd = material.kD;
-		Double3 ks = material.kS;
-
+		Color color = point.geometry.getEmission();
 		for (LightSource lightSource : scene.lights) {
 			Vector l = lightSource.getL(point.point);
-			if (l == null)
-				continue;
 			double nl = alignZero(n.dotProduct(l));
-
 			if (nl * nv > 0) { // sign(nl) == sign(nv)
-				Color lightIntensity = lightSource.getIntensity(point.point);
-				Double3 factor = calcDiffuse(kd, nl).add(calcSpecular(ks, l, n, nl, v, shininess));
-				color = color.add(lightIntensity.scale(factor));
+				Color iL = lightSource.getIntensity(point.point);
+				color = color.add(iL.scale(calcDiffusive(material.kD, nl)
+						.add(calcSpecular(material.kS, n, l, nl, v, material.nShininess))));
 			}
 		}
 		return color;
+
 	}
 
-	private Double3 calcDiffuse(Double3 kd, double nl) {
+	private Double3 calcDiffusive(Double3 kd, double nl) {
 		return kd.scale(Math.abs(nl));
 	}
 
-	private Double3 calcSpecular(Double3 ks, Vector l, Vector n, double nl, Vector v, int shininess) {
+	private Double3 calcSpecular(Double3 ks, Vector n, Vector l, double nl, Vector v, int shininess) {
 		Vector r = l.subtract(n.scale(2 * nl));
 		double vr = -alignZero(v.dotProduct(r));
 		if (vr <= 0)
