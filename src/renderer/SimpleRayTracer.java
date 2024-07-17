@@ -62,7 +62,7 @@ public class SimpleRayTracer extends RayTracerBase {
 			if (nl * nv > 0) { // sign(nl) == sign(nv)
 				Color iL = lightSource.getIntensity(point.point);
 				color = color.add(iL.scale(calcDiffusive(material.kD, nl)
-						.add(calcSpecular(material.kS, n, l, nl, v, material.nShininess))));
+						.add(calcSpecular(material.kS, l, n, nl, v, material.nShininess))));
 			}
 		}
 		return color;
@@ -73,8 +73,8 @@ public class SimpleRayTracer extends RayTracerBase {
 		return kd.scale(Math.abs(nl));
 	}
 
-	private Double3 calcSpecular(Double3 ks, Vector n, Vector l, double nl, Vector v, int shininess) {
-		Vector r = l.subtract(n.scale(2 * nl));
+	private Double3 calcSpecular(Double3 ks, Vector l, Vector n, double nl, Vector v, int shininess) {
+		Vector r = l.add(n.scale(-2 * nl));;
 		double vr = -alignZero(v.dotProduct(r));
 		if (vr <= 0)
 			return Double3.ZERO;
