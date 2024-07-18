@@ -11,7 +11,7 @@ public class AmbientLight extends Light {
 	/**
 	 * A constant representing no ambient light.
 	 */
-	public static AmbientLight NONE = new AmbientLight(Color.BLACK, 0.0);
+	public static AmbientLight NONE = new AmbientLight(Color.BLACK, Double3.ZERO);
 
 	/**
 	 * Constructs an AmbientLight with the specified color and attenuation factor.
