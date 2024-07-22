@@ -35,7 +35,7 @@ class CameraIntersections {
 
 	private final Camera camera1 = builder.setLocation(new Point(0, 0, 0)).build();
 	private final Camera camera2 = builder.setLocation(new Point(0, 0, 0.5)).build();
-	
+
 	/**
 	 * Tests the number of intersections between the rays constructed by the camera
 	 * and sphere.

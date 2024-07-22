@@ -2,6 +2,10 @@ package lighting;
 
 import primitives.*;
 
+/**
+ * The DirectionalLight class represents a light source in a 3D space that emits
+ * light in a specific direction.
+ */
 public class DirectionalLight extends Light implements LightSource {
 
 	/*** The direction of the light. */

@@ -10,9 +10,7 @@ import primitives.*;
 abstract class Light {
 
 	/**
-	 * Constructs a new Light with the given intensity.
-	 * 
-	 * @param intensity The intensity of the light.
+	 * The intensity of the light.
 	 */
 	protected final Color intensity;
 

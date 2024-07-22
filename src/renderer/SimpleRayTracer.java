@@ -33,6 +33,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * returns the ambient light intensity.
 	 *
 	 * @param point The point at which to calculate the color.
+	 * @param ray   The ray that intersected with the geometry.
 	 * @return The color at the specified point.
 	 */
 	private Color calcColor(GeoPoint point, Ray ray) {
@@ -45,7 +46,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * specular reflections.
 	 *
 	 * @param geoPoint The intersection point and associated geometry.
-	 * @param ray   The ray that intersected with the geometry.
+	 * @param ray      The ray that intersected with the geometry.
 	 * @return The color due to local effects.
 	 */
 	private Color calcLocalEffects(GeoPoint geoPoint, Ray ray) {
@@ -61,25 +62,44 @@ public class SimpleRayTracer extends RayTracerBase {
 			double verticalFactor2 = alignZero(normalOfGeometry.dotProduct(lightSourceVector));
 			if (verticalFactor2 * verticalFactor1 > 0) { // sign(verticalFactor1) == sign(verticalFactor2)
 				Color colorLightSource = lightSource.getIntensity(geoPoint.point);
-				color = color.add(colorLightSource.scale(calcDiffusive(material.kD, verticalFactor2)
-						.add(calcSpecular(material.kS, lightSourceVector, normalOfGeometry, verticalFactor2, directionAxis, material.nShininess))));
+				color = color.add(colorLightSource.scale(
+						calcDiffusive(material.kD, verticalFactor2).add(calcSpecular(material.kS, lightSourceVector,
+								normalOfGeometry, verticalFactor2, directionAxis, material.nShininess))));
 			}
 		}
 		return color;
 
 	}
 
+	/**
+	 * Calculates the diffusive reflection at an intersection point.
+	 *
+	 * @param kd The diffusive reflection coefficient of the geometry.
+	 * @param nl The dot product of the normal vector and the light vector.
+	 * @return The color due to diffusive reflection.
+	 */
 	private Double3 calcDiffusive(Double3 kd, double nl) {
 		return kd.scale(Math.abs(nl));
 	}
 
+	/**
+	 * Calculates the specular reflection at an intersection point.
+	 *
+	 * @param ks        The specular reflection coefficient of the geometry.
+	 * @param l         The vector from the light source to the intersection point.
+	 * @param n         The normal vector at the intersection point.
+	 * @param nl        The dot product of the normal vector and the light vector.
+	 * @param v         The vector from the intersection point to the camera.
+	 * @param shininess The shininess of the geometry.
+	 * @return The color due to specular reflection.
+	 */
 	private Double3 calcSpecular(Double3 ks, Vector l, Vector n, double nl, Vector v, int shininess) {
-		Vector r = l.add(n.scale(-2 * nl));;
+		Vector r = l.add(n.scale(-2 * nl));
+		;
 		double vr = -alignZero(v.dotProduct(r));
 		if (vr <= 0)
 			return Double3.ZERO;
 		return ks.scale(Math.pow(vr, shininess));
 	}
-	
 
 }

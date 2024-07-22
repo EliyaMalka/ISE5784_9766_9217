@@ -121,20 +121,20 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException("Renderer data missing", "Camera", "vTo missing");
 			if (camera.vUp == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "vUp missing");
-			if (alignZero( camera.vTo.dotProduct(camera.vUp)) != 0.0)
+			if (alignZero(camera.vTo.dotProduct(camera.vUp)) != 0.0)
 				throw new IllegalArgumentException("vUp and vTo are not verticals");
 			camera.vRight = (camera.vTo.crossProduct(camera.vUp)).normalize();
-			
+
 			// Helper objects data
 			if (camera.imageWriter == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "imageWriter missing");
 			if (camera.rayTracer == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "rayTracer missing");
-			
+
 			// Camera location data
 			if (camera.p0 == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "p0 missing");
-			
+
 			try {
 				return (Camera) camera.clone();
 			} catch (CloneNotSupportedException e) {
@@ -300,10 +300,10 @@ public class Camera implements Cloneable {
 	public Camera renderImage() {
 		int nX = imageWriter.getNx();
 		int nY = imageWriter.getNy();
-		
-		for (int j = 0; j < nY ; j++) {
-			for (int i = 0; i < nX ; i++) {
-				castRay(nX, nY , j, i);
+
+		for (int j = 0; j < nY; j++) {
+			for (int i = 0; i < nX; i++) {
+				castRay(nX, nY, j, i);
 			}
 		}
 		return this;

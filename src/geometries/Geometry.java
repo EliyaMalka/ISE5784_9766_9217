@@ -22,10 +22,21 @@ public abstract class Geometry extends Intersectable {
 	 */
 	public abstract Vector getNormal(Point point);
 
+	/**
+	 * gets the emission of the shape.
+	 * 
+	 * @return The emission
+	 */
 	public Color getEmission() {
 		return emission;
 	}
 
+	/**
+	 * sets the emission of the shape.
+	 * 
+	 * @param emission The emission of the shape.
+	 * @return The shape.
+	 */
 	public Geometry setEmission(Color emission) {
 		this.emission = emission;
 		return this;
@@ -34,8 +45,7 @@ public abstract class Geometry extends Intersectable {
 	/**
 	 * gets the material of the shape.
 	 * 
-	 * @param material The material of the shape.
-	 * @return The shape.
+	 * @return The material
 	 */
 	public Material getMaterial() {
 		return material;
