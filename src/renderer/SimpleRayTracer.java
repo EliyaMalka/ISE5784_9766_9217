@@ -37,32 +37,32 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private Color calcColor(GeoPoint point, Ray ray) {
 		return scene.ambientLight.getIntensity() //
-				.add(point.geometry.getEmission()).add(calcLocalEffects(point, ray));
+				.add(calcLocalEffects(point, ray));
 	}
 
 	/**
 	 * Calculates the local effects at an intersection point, such as diffuse and
 	 * specular reflections.
 	 *
-	 * @param point The intersection point and associated geometry.
+	 * @param geoPoint The intersection point and associated geometry.
 	 * @param ray   The ray that intersected with the geometry.
 	 * @return The color due to local effects.
 	 */
-	private Color calcLocalEffects(GeoPoint point, Ray ray) {
-		Vector n = point.geometry.getNormal(point.point);
-		Vector v = ray.getDirection();
-		double nv = alignZero(n.dotProduct(v));
-		if (nv == 0)
+	private Color calcLocalEffects(GeoPoint geoPoint, Ray ray) {
+		Vector normalOfGeometry = geoPoint.geometry.getNormal(geoPoint.point);
+		Vector directionAxis = ray.getDirection();
+		double verticalFactor1 = alignZero(normalOfGeometry.dotProduct(directionAxis));
+		if (verticalFactor1 == 0)
 			return Color.BLACK;
-		Material material = point.geometry.getMaterial();
-		Color color = point.geometry.getEmission();
+		Material material = geoPoint.geometry.getMaterial();
+		Color color = geoPoint.geometry.getEmission();
 		for (LightSource lightSource : scene.lights) {
-			Vector l = lightSource.getL(point.point);
-			double nl = alignZero(n.dotProduct(l));
-			if (nl * nv > 0) { // sign(nl) == sign(nv)
-				Color iL = lightSource.getIntensity(point.point);
-				color = color.add(iL.scale(calcDiffusive(material.kD, nl)
-						.add(calcSpecular(material.kS, l, n, nl, v, material.nShininess))));
+			Vector lightSourceVector = lightSource.getL(geoPoint.point);
+			double verticalFactor2 = alignZero(normalOfGeometry.dotProduct(lightSourceVector));
+			if (verticalFactor2 * verticalFactor1 > 0) { // sign(verticalFactor1) == sign(verticalFactor2)
+				Color colorLightSource = lightSource.getIntensity(geoPoint.point);
+				color = color.add(colorLightSource.scale(calcDiffusive(material.kD, verticalFactor2)
+						.add(calcSpecular(material.kS, lightSourceVector, normalOfGeometry, verticalFactor2, directionAxis, material.nShininess))));
 			}
 		}
 		return color;
@@ -80,4 +80,6 @@ public class SimpleRayTracer extends RayTracerBase {
 			return Double3.ZERO;
 		return ks.scale(Math.pow(vr, shininess));
 	}
+	
+
 }

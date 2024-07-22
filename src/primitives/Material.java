@@ -16,7 +16,7 @@ public class Material {
 	}
 
 	public Material setKd(Double kD) {
-		this.kS = new Double3(kD);
+		this.kD = new Double3(kD);
 		return this;
 	}
 

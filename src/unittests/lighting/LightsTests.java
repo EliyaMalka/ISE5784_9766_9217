@@ -90,7 +90,11 @@ public class LightsTests {
 		scene1.geometries.add(sphere);
 		scene1.lights.add(new DirectionalLight(sphereLightColor, sphereLightDirection));
 
-		camera1.setImageWriter(new ImageWriter("lightSphereDirectional", 500, 500)).build().renderImage()
+		camera1 //
+				.setImageWriter(new ImageWriter("lightSphereDirectional", 500, 500)) //
+//				.setImageWriter(new ImageWriter("lightSphereDirectionalDebug", 1, 1)) // debugging
+				.build() //
+				.renderImage() //
 				.writeToImage();
 	}
 
