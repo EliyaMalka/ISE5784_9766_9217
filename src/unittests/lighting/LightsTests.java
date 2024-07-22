@@ -31,7 +31,7 @@ public class LightsTests {
 			.setLocation(new Point(0, 0, 1000)).setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
 			.setVpSize(200, 200).setVpDistance(1000);
 
-	/** Shininess value for most of the geometries in the tests */
+	/** Shininess value for most of the geometries in the tests ......... */
 	private static final int SHININESS = 301;
 	/** Diffusion attenuation factor for some of the geometries in the tests */
 	private static final double KD = 0.5;
