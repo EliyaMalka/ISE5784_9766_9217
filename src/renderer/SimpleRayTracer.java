@@ -14,6 +14,11 @@ import static primitives.Util.*;
 public class SimpleRayTracer extends RayTracerBase {
 
 	/**
+	 * constant for the amount of ray head movement for shading rays
+	 */
+	private static final double DELTA = 0.1;
+
+	/**
 	 * Constructs a new SimpleRayTracer with the specified scene.
 	 *
 	 * @param scene The scene to be rendered.
@@ -85,7 +90,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	/**
 	 * Calculates the specular reflection at an intersection point.
 	 *
-	 * @param ks        The specular reflection coefficient of the geometry.
+	 * @param kS        The specular reflection coefficient of the geometry.
 	 * @param l         The vector from the light source to the intersection point.
 	 * @param n         The normal vector at the intersection point.
 	 * @param nl        The dot product of the normal vector and the light vector.
@@ -93,13 +98,38 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param shininess The shininess of the geometry.
 	 * @return The color due to specular reflection.
 	 */
-	private Double3 calcSpecular(Double3 ks, Vector l, Vector n, double nl, Vector v, int shininess) {
+	private Double3 calcSpecular(Double3 kS, Vector l, Vector n, double nl, Vector v, int shininess) {
 		Vector r = l.add(n.scale(-2 * nl));
 		;
 		double vr = -alignZero(v.dotProduct(r));
 		if (vr <= 0)
 			return Double3.ZERO;
-		return ks.scale(Math.pow(vr, shininess));
+		return kS.scale(Math.pow(vr, shininess));
 	}
 
-}
+	/**
+	 * Checks if a point is shaded by another geometry.
+	 *
+	 * @param geoPoint       The point to check if it is shaded.
+	 * @param lightSource             The light source to check if it is shaded.
+	 * @param lightDirection The direction of the light source.
+	 * @param n              The normal vector at the intersection point.
+	 * @return true if the point is not shaded, false otherwise.
+	 */
+	private boolean unshaded(GeoPoint geoPoint, LightSource lightSource, Vector lightDirection, Vector n) {
+		Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
+		Point point = geoPoint.point.add(delta);
+		Ray shadowRay = new Ray(point, lightDirection);
+		var intersections = scene.geometries.findGeoIntersections(shadowRay);
+		if (intersections == null)
+			return true;
+		double lightDistance = lightSource.getDistance(geoPoint.point);
+		for (var geo : intersections) {
+			if (alignZero(geo.point.distance(geoPoint.point) - lightDistance) <= 0)
+				return false;
+		}
+		return true;
+	}
+
+		
+    }

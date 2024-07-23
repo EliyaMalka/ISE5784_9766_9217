@@ -47,4 +47,5 @@ public class SpotLight extends PointLight {
 	public PointLight setKq(Double kQ) {
 		return (SpotLight) super.setKq(kQ);
 	}
+	
 }
