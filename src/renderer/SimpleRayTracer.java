@@ -19,6 +19,15 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * constant for the amount of ray head movement for shading rays
 	 */
 	private static final double DELTA = 0.1;
+	/**
+	 * constant for the maximum number of levels of recursion for the calculation of
+	 * the color
+	 */
+	private static final int MAX_CALC_COLOR_LEVEL = 10;
+	/**
+	 * constant for the minimum amount of color to be calculated
+	 */
+	private static final double MIN_CALC_COLOR_K = 0.001;
 
 	/**
 	 * Constructs a new SimpleRayTracer with the specified scene.
@@ -46,6 +55,18 @@ public class SimpleRayTracer extends RayTracerBase {
 	private Color calcColor(GeoPoint point, Ray ray) {
 		return scene.ambientLight.getIntensity() //
 				.add(calcLocalEffects(point, ray));
+	}
+
+	/**
+	 * Calculates the color at a given point in the scene. Currently, it only
+	 * returns the ambient light intensity.
+	 *
+	 * @param point  The point at which to calculate the color.
+	 * @param ray The ray that intersected with the geometry.
+	 * @return The color at the specified point.
+	 */
+	private Color calcColor(GeoPoint point, Ray ray) {
+
 	}
 
 	/**
@@ -136,4 +157,6 @@ public class SimpleRayTracer extends RayTracerBase {
 		}
 		return true;
 	}
+	
+	private Vector calcRay
 }
