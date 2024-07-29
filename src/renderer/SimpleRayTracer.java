@@ -6,6 +6,8 @@ import static geometries.Intersectable.GeoPoint;
 import lighting.LightSource;
 import static primitives.Util.*;
 
+import java.util.List;
+
 /**
  * The SimpleRayTracer class extends the RayTracerBase and implements a basic
  * ray tracing algorithm. It calculates the color at the intersection points of
@@ -67,8 +69,7 @@ public class SimpleRayTracer extends RayTracerBase {
 			double verticalFactor2 = alignZero(normalOfGeometry.dotProduct(lightSourceVector));
 			// sign(verticalFactor1 == sign(verticalFactor2)
 			if (verticalFactor2 * verticalFactor1 > 0
-					// && unshaded(geoPoint, lightSourceVector, normalOfGeometry, verticalFactor2, lightSource)
-					) {
+					&& unshaded(geoPoint, lightSource, lightSourceVector, normalOfGeometry, verticalFactor2)) {
 				Color colorLightSource = lightSource.getIntensity(geoPoint.point);
 				color = color.add(colorLightSource.scale(
 						calcDiffusive(material.kD, verticalFactor2).add(calcSpecular(material.kS, lightSourceVector,
@@ -112,24 +113,25 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * intersections between the point and a light source.
 	 *
 	 * @param geoPoint       the geometric point on the geometry being tested
-	 * @param lightDirection the direction vector from the point to the light source
+	 * @param light          the light source being considered
+	 * @param directionLight the direction vector from the point to the light source
 	 * @param normalVector   the normal vector at the point on the geometry
-	 * @param dotProduct     the dot product of the normal vector and the light
 	 *                       direction vector
-	 * @param lightSource    the light source being considered
+	 * @param dotProduct     the dot product of the normal vector and the direction
 	 * @return {@code true} if the point is unshaded (i.e., no objects block the
 	 *         light); {@code false} otherwise
 	 */
-	private boolean unshaded(GeoPoint geoPoint, Vector lightDirection, Vector normalVector, double dotProduct,
-			LightSource lightSource) {
-		Point point = geoPoint.point.add(normalVector.scale(alignZero(dotProduct) > 0 ? DELTA : -DELTA));
-		Ray lightRay = new Ray(point, lightDirection);
-		var intersections = scene.geometries.findGeoIntersections(lightRay);
+	private boolean unshaded(GeoPoint geoPoint, LightSource light, Vector directionLight, Vector normalVector,
+			double dotProduct) {
+		Vector lightDirection = directionLight.scale(-1); // from point to light source
+		Vector deltaVector = normalVector.scale(dotProduct < 0 ? DELTA : -DELTA);
+		Point point = geoPoint.point.add(deltaVector);
+		Ray shadowRay = new Ray(point, lightDirection);
+		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(shadowRay);
 		if (intersections == null)
 			return true;
-		double lightDistance = lightSource.getDistance(geoPoint.point);
-		for (GeoPoint gp : intersections) {
-			if (alignZero(gp.point.distance(geoPoint.point) - lightDistance) <= 0)
+		for (GeoPoint intersectionGeoPoint : intersections) {
+			if (alignZero(intersectionGeoPoint.point.distance(geoPoint.point) - light.getDistance(geoPoint.point)) <= 0)
 				return false;
 		}
 		return true;
