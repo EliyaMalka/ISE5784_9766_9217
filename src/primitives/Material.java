@@ -36,7 +36,7 @@ public class Material {
 	 * @param kD the kD to set
 	 * @return the material itself for method chaining
 	 */
-	public Material setKd(Double kD) {
+	public Material setKd(double kD) {
 		this.kD = new Double3(kD);
 		return this;
 	}
@@ -58,7 +58,7 @@ public class Material {
 	 * @param kS the kS to set
 	 * @return the material itself for method chaining
 	 */
-	public Material setKs(Double kS) {
+	public Material setKs(double kS) {
 		this.kS = new Double3(kS);
 		return this;
 	}

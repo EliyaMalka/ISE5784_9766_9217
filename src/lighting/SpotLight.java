@@ -3,6 +3,7 @@ package lighting;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
+import static primitives.Util.alignZero; 
 
 /**
  * The SpotLight class represents a spot light source in a 3D space. It is a
@@ -28,8 +29,8 @@ public class SpotLight extends PointLight {
 
 	@Override
 	public Color getIntensity(Point point) {
-
-		return (super.getIntensity(point)).scale(Math.max(0, direction.dotProduct(getL(point))));
+		double cos = alignZero(direction.dotProduct(getL(point)));
+		return cos <= 0 ? Color.BLACK :super.getIntensity(point).scale(cos);
 	}
 
 	@Override

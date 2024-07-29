@@ -65,11 +65,10 @@ public class SimpleRayTracer extends RayTracerBase {
 		for (LightSource lightSource : scene.lights) {
 			Vector lightSourceVector = lightSource.getL(geoPoint.point);
 			double verticalFactor2 = alignZero(normalOfGeometry.dotProduct(lightSourceVector));
+			// sign(verticalFactor1 == sign(verticalFactor2)
 			if (verticalFactor2 * verticalFactor1 > 0
-					&& unshaded(geoPoint, lightSourceVector, normalOfGeometry, verticalFactor2, lightSource)) { // sign(verticalFactor1
-																												// // ==
-																												// //
-																												// sign(verticalFactor2)
+					// && unshaded(geoPoint, lightSourceVector, normalOfGeometry, verticalFactor2, lightSource)
+					) {
 				Color colorLightSource = lightSource.getIntensity(geoPoint.point);
 				color = color.add(colorLightSource.scale(
 						calcDiffusive(material.kD, verticalFactor2).add(calcSpecular(material.kS, lightSourceVector,
@@ -104,11 +103,8 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private Double3 calcSpecular(Double3 kS, Vector l, Vector n, double nl, Vector v, int shininess) {
 		Vector r = l.add(n.scale(-2 * nl));
-		;
-		double vr = -alignZero(v.dotProduct(r));
-		if (vr <= 0)
-			return Double3.ZERO;
-		return kS.scale(Math.pow(vr, shininess));
+		double minusVR = -alignZero(v.dotProduct(r));
+		return minusVR <= 0 ? Double3.ZERO : kS.scale(Math.pow(minusVR, shininess));
 	}
 
 	/**
@@ -133,8 +129,7 @@ public class SimpleRayTracer extends RayTracerBase {
 			return true;
 		double lightDistance = lightSource.getDistance(geoPoint.point);
 		for (GeoPoint gp : intersections) {
-			if (alignZero(gp.point.distance(geoPoint.point) - lightDistance) <= 0
-					&& gp.geometry.getMaterial().nShininess == 0)
+			if (alignZero(gp.point.distance(geoPoint.point) - lightDistance) <= 0)
 				return false;
 		}
 		return true;
