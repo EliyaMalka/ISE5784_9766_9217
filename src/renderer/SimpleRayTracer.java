@@ -5,6 +5,7 @@ import scene.*;
 import static geometries.Intersectable.GeoPoint;
 import lighting.LightSource;
 import static primitives.Util.*;
+
 /**
  * The SimpleRayTracer class extends the RayTracerBase and implements a basic
  * ray tracing algorithm. It calculates the color at the intersection points of
@@ -64,7 +65,11 @@ public class SimpleRayTracer extends RayTracerBase {
 		for (LightSource lightSource : scene.lights) {
 			Vector lightSourceVector = lightSource.getL(geoPoint.point);
 			double verticalFactor2 = alignZero(normalOfGeometry.dotProduct(lightSourceVector));
-			if (verticalFactor2 * verticalFactor1 > 0 && unshaded(geoPoint, lightSourceVector, normalOfGeometry, verticalFactor2, lightSource)) { // sign(verticalFactor1 // == // sign(verticalFactor2)
+			if (verticalFactor2 * verticalFactor1 > 0
+					&& unshaded(geoPoint, lightSourceVector, normalOfGeometry, verticalFactor2, lightSource)) { // sign(verticalFactor1
+																												// // ==
+																												// //
+																												// sign(verticalFactor2)
 				Color colorLightSource = lightSource.getIntensity(geoPoint.point);
 				color = color.add(colorLightSource.scale(
 						calcDiffusive(material.kD, verticalFactor2).add(calcSpecular(material.kS, lightSourceVector,
@@ -106,18 +111,21 @@ public class SimpleRayTracer extends RayTracerBase {
 		return kS.scale(Math.pow(vr, shininess));
 	}
 
-    /**
-     * Determines if a given point on a geometry is unshaded by checking for intersections between
-     * the point and a light source.
-     *
-     * @param geoPoint the geometric point on the geometry being tested
-     * @param lightDirection the direction vector from the point to the light source
-     * @param normalVector the normal vector at the point on the geometry
-     * @param dotProduct the dot product of the normal vector and the light direction vector
-     * @param lightSource the light source being considered
-     * @return {@code true} if the point is unshaded (i.e., no objects block the light); {@code false} otherwise
-     */
-	private boolean unshaded(GeoPoint geoPoint, Vector lightDirection  , Vector normalVector, double dotProduct, LightSource lightSource) {
+	/**
+	 * Determines if a given point on a geometry is unshaded by checking for
+	 * intersections between the point and a light source.
+	 *
+	 * @param geoPoint       the geometric point on the geometry being tested
+	 * @param lightDirection the direction vector from the point to the light source
+	 * @param normalVector   the normal vector at the point on the geometry
+	 * @param dotProduct     the dot product of the normal vector and the light
+	 *                       direction vector
+	 * @param lightSource    the light source being considered
+	 * @return {@code true} if the point is unshaded (i.e., no objects block the
+	 *         light); {@code false} otherwise
+	 */
+	private boolean unshaded(GeoPoint geoPoint, Vector lightDirection, Vector normalVector, double dotProduct,
+			LightSource lightSource) {
 		Point point = geoPoint.point.add(normalVector.scale(alignZero(dotProduct) > 0 ? DELTA : -DELTA));
 		Ray lightRay = new Ray(point, lightDirection);
 		var intersections = scene.geometries.findGeoIntersections(lightRay);
@@ -125,7 +133,8 @@ public class SimpleRayTracer extends RayTracerBase {
 			return true;
 		double lightDistance = lightSource.getDistance(geoPoint.point);
 		for (GeoPoint gp : intersections) {
-			if (alignZero(gp.point.distance(geoPoint.point) - lightDistance) <= 0 && gp.geometry.getMaterial().nShininess == 0)
+			if (alignZero(gp.point.distance(geoPoint.point) - lightDistance) <= 0
+					&& gp.geometry.getMaterial().nShininess == 0)
 				return false;
 		}
 		return true;
