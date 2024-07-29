@@ -20,9 +20,9 @@ public class Material {
 	public int nShininess = 0;
 
 	/**
-	 * Setter for kd.
+	 * Setter for kD.
 	 *
-	 * @param kD the kd to set
+	 * @param kD the kD to set
 	 * @return the material itself for method chaining
 	 */
 	public Material setKd(Double3 kD) {
@@ -31,9 +31,9 @@ public class Material {
 	}
 
 	/**
-	 * Setter for kd with regular double.
+	 * Setter for kD with regular double.
 	 *
-	 * @param kD the kd to set
+	 * @param kD the kD to set
 	 * @return the material itself for method chaining
 	 */
 	public Material setKd(Double kD) {
@@ -42,9 +42,9 @@ public class Material {
 	}
 
 	/**
-	 * Setter for ks.
+	 * Setter for kS.
 	 *
-	 * @param kS the ks to set
+	 * @param kS the kS to set
 	 * @return the material itself for method chaining
 	 */
 	public Material setKs(Double3 kS) {
@@ -53,9 +53,9 @@ public class Material {
 	}
 
 	/**
-	 * Setter for ks with regular double.
+	 * Setter for kS with regular double.
 	 *
-	 * @param kS the ks to set
+	 * @param kS the kS to set
 	 * @return the material itself for method chaining
 	 */
 	public Material setKs(Double kS) {
