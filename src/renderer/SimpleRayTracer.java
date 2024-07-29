@@ -158,5 +158,29 @@ public class SimpleRayTracer extends RayTracerBase {
 		return true;
 	}
 	
-	private Vector calcRay
+	/**
+	 * calculate the ray of reflection
+	 *
+	 * @param geoPoint      the point on geomtry
+	 * @param ray           The ray that intersected with the geometry.
+	 * @return              the reflection ray
+	 */
+	private Ray constructReflectedRay(GeoPoint geoPoint, Ray ray) {
+		Vector normal = geoPoint.geometry.getNormal(geoPoint.point);
+		Vector direction = ray.getDirection();
+		Vector r = direction.subtract(normal.scale(2 * direction.dotProduct(normal)));
+		return new Ray(geoPoint.point, r, normal);
+	}
+	
+	/**
+	 * calculate the ray of transparent
+	 * 
+	 * @param geoPoint     the point on geomtry
+	 * @param ray          The ray that intersected with the geometry.
+	 * @return             the transparent ray        
+	 */
+	private Ray constructTransparentRay(GeoPoint geoPoint, Ray ray) {
+	//TODO 
+	}
+
 }

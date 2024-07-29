@@ -4,6 +4,7 @@ import java.util.List;
 
 import static primitives.Util.isZero;
 import static geometries.Intersectable.GeoPoint;
+import static primitives.Util.alignZero;
 
 /**
  * The Ray class represents a ray in a 3D space, defined by a point and a
@@ -30,6 +31,20 @@ public class Ray {
 	public Ray(Point point, Vector vector) {
 		this.head = point;
 		this.direction = vector.normalize();
+	}
+	
+	/**
+	 * Constructs a new Ray with the given head point, direction vector, and normal
+	 * vector.
+	 * 
+	 * @param point  The head point of the ray.
+	 * @param direction The direction vector of the ray.
+	 * @param normal The normal vector of the ray.
+	 */
+	public Ray(Point point, Vector direction, Vector normal) {
+		double nv = normal.dotProduct(direction);
+		this.head = alignZero(nv) == 0 ? point : point.add(normal.scale(nv > 0 ? 0.1 : -0.1));
+		this.direction = direction.normalize();
 	}
 
 	@Override
