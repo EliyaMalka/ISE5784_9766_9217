@@ -9,7 +9,7 @@ import primitives.*;
 public class DirectionalLight extends Light implements LightSource {
 
 	/*** The direction of the light. */
-	private Vector direction;
+	private final Vector direction;
 
 	/**
 	 * Constructs a new DirectionalLight with the specified intensity and direction.

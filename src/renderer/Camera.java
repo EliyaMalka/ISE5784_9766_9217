@@ -36,16 +36,16 @@ public class Camera implements Cloneable {
 		/**
 		 * Sets the direction vectors of the camera.
 		 *
-		 * @param vto the direction vector towards the image
-		 * @param vup the up direction vector
+		 * @param vTo the direction vector towards the image
+		 * @param vUp the up direction vector
 		 * @return the current Builder instance for further configuration
 		 * @throws IllegalArgumentException if the vectors are not perpendicular
 		 */
-		public Builder setDirection(Vector vto, Vector vup) {
-			if (!isZero(vto.dotProduct(vup)))
+		public Builder setDirection(Vector vTo, Vector vUp) {
+			if (!isZero(vTo.dotProduct(vUp)))
 				throw new IllegalArgumentException("Vectors vUp and vTo are not verticals");
-			camera.vTo = vto.normalize();
-			camera.vUp = vup.normalize();
+			camera.vTo = vTo.normalize();
+			camera.vUp = vUp.normalize();
 			return this;
 		}
 
@@ -58,7 +58,7 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if the width or height is non-positive
 		 */
 		public Builder setVpSize(double width, double height) {
-			if (width <= 0 || height <= 0)
+			if (alignZero(width) <= 0 || alignZero(height) <= 0)
 				throw new IllegalArgumentException("Width and height can't be negative");
 			camera.height = height;
 			camera.width = width;
@@ -73,7 +73,7 @@ public class Camera implements Cloneable {
 		 * @throws IllegalArgumentException if the distance is non-positive
 		 */
 		public Builder setVpDistance(double distance) {
-			if (distance <= 0)
+			if (alignZero(distance) <= 0)
 				throw new IllegalArgumentException("Distance can't be negative");
 			camera.distance = distance;
 			return this;
@@ -109,11 +109,11 @@ public class Camera implements Cloneable {
 		 */
 		public Camera build() {
 			// View Plane data
-			if (camera.width <= 0)
+			if (alignZero(camera.width) <= 0)
 				throw new MissingResourceException("Renderer data missing", "Camera", "width missing");
-			if (camera.height <= 0)
+			if (alignZero(camera.height) <= 0)
 				throw new MissingResourceException("Renderer data missing", "Camera", "height missing");
-			if (camera.distance <= 0)
+			if (alignZero(camera.distance) <= 0)
 				throw new MissingResourceException("Renderer data missing", "Camera", "distance missing");
 
 			// Camera location and direction data
@@ -342,13 +342,13 @@ public class Camera implements Cloneable {
 	 * Casts a ray through a specific pixel and writes the traced color to the
 	 * image.
 	 *
-	 * @param Nx     the number of pixels in the x-axis
-	 * @param Ny     the number of pixels in the y-axis
+	 * @param nX     the number of pixels in the x-axis
+	 * @param nY     the number of pixels in the y-axis
 	 * @param column the column index of the pixel
 	 * @param row    the row index of the pixel
 	 */
-	private void castRay(int Nx, int Ny, int column, int row) {
-		Ray ray = constructRay(Nx, Ny, column, row);
+	private void castRay(int nX, int nY, int column, int row) {
+		Ray ray = constructRay(nX, nY, column, row);
 		Color color = rayTracer.traceRay(ray);
 		imageWriter.writePixel(column, row, color);
 	}
