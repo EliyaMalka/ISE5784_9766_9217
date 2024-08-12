@@ -157,18 +157,19 @@ public class SimpleRayTracer extends RayTracerBase {
 		Vector r = direction.subtract(normal.scale(2 * direction.dotProduct(normal)));
 		return new Ray(geoPoint.point, r, normal);
 	}
-	
-    /**
-     * Constructs the refracted ray at a given geometric point.
-     *
-     * @param gp the geometric point.
-     * @param ray the incident ray.
-     * @return the refracted ray.
-     */
-    private Ray constructRefractedRay(GeoPoint geoPoint, Ray ray) {
+
+	/**
+	 * Constructs the refracted ray at a given geometric point.
+	 *
+	 * @param gp  the geometric point.
+	 * @param ray the incident ray.
+	 * @return the refracted ray.
+	 */
+	private Ray constructRefractedRay(GeoPoint geoPoint, Ray ray) {
 		Vector normal = geoPoint.geometry.getNormal(geoPoint.point);
-        return new Ray(geoPoint.point, ray.getDirection(), normal);
-    }
+		return new Ray(geoPoint.point, ray.getDirection(), normal);
+
+	}
 
 	/**
 	 * calculate the global effects (transparency and reflection) of light on a
