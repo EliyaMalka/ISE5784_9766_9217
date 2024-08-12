@@ -23,6 +23,11 @@ public class Ray {
 	private final Vector direction;
 
 	/**
+	 * for moving heads of shadow rays
+	 */
+	private static final double DELTA = 0.1;
+
+	/**
 	 * Constructs a new Ray with the given head point and direction vector.
 	 * 
 	 * @param point  The head point of the ray.
@@ -32,18 +37,18 @@ public class Ray {
 		this.head = point;
 		this.direction = vector.normalize();
 	}
-	
+
 	/**
 	 * Constructs a new Ray with the given head point, direction vector, and normal
 	 * vector.
 	 * 
-	 * @param point  The head point of the ray.
+	 * @param point     The head point of the ray.
 	 * @param direction The direction vector of the ray.
-	 * @param normal The normal vector of the ray.
+	 * @param normal    The normal vector of the ray.
 	 */
 	public Ray(Point point, Vector direction, Vector normal) {
 		double nv = normal.dotProduct(direction);
-		this.head = alignZero(nv) == 0 ? point : point.add(normal.scale(nv > 0 ? 0.1 : -0.1));
+		this.head = alignZero(nv) == 0 ? point : point.add(normal.scale(nv > 0 ? DELTA : -DELTA));
 		this.direction = direction.normalize();
 	}
 

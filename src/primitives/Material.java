@@ -83,48 +83,48 @@ public class Material {
 		this.nShininess = nShininess;
 		return this;
 	}
-	
+
 	/**
 	 * Setter for kT.
 	 *
 	 * @param kT the kT to set
 	 * @return the material itself for method chaining
 	 */
-	public Material setKT(Double3 kT) {
+	public Material setKt(Double3 kT) {
 		this.kT = kT;
 		return this;
 	}
-	
+
 	/**
 	 * Setter for kT with regular double.
 	 * 
 	 * @param kT the kT to set
 	 * @return the material itself for method chaining
 	 */
-	public Material setKT(double kT) {
+	public Material setKt(double kT) {
 		this.kT = new Double3(kT);
 		return this;
 	}
-	
+
 	/**
 	 * Setter for kR.
 	 * 
 	 * @param kR the kR to set
 	 * @return the material itself for method chaining
 	 */
-	public Material setKR(Double3 kR) {
+	public Material setKr(Double3 kR) {
 		this.kR = kR;
-        return this;
+		return this;
 	}
-	
+
 	/**
 	 * Setter for kR with regular double.
 	 * 
 	 * @param kR the kR to set
 	 * @return the material itself for method chaining
 	 */
-    public Material setKR(double kR) {
+	public Material setKr(double kR) {
 		this.kR = new Double3(kR);
 		return this;
-    }
+	}
 }
