@@ -2,8 +2,9 @@ package renderer;
 
 import primitives.*;
 import scene.*;
-import static geometries.Intersectable.GeoPoint;
-import lighting.LightSource;
+import  geometries.*;
+import geometries.Intersectable.GeoPoint;
+import lighting.*;
 import static primitives.Util.*;
 
 import java.util.List;
@@ -144,18 +145,15 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private boolean unshaded(GeoPoint geoPoint, LightSource light, Vector directionLight, Vector normalVector,
 			double dotProduct) {
-		Vector lightDirection = directionLight.scale(-1); // from point to light source
-		Vector deltaVector = normalVector.scale(dotProduct < 0 ? DELTA : -DELTA);
-		Point point = geoPoint.point.add(deltaVector);
-		Ray shadowRay = new Ray(point, lightDirection);
-		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(shadowRay);
-		if (intersections == null)
-			return true;
-		for (GeoPoint intersectionGeoPoint : intersections) {
-			if (alignZero(intersectionGeoPoint.point.distance(geoPoint.point) - light.getDistance(geoPoint.point)) <= 0)
-				return false;
-		}
-		return true;
+        Vector lightDirection = directionLight.scale(-1); // from point to light source
+        Ray ray = new Ray(geoPoint.point, lightDirection, normalVector);
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
+        if (intersections == null)
+            return true;
+        for (GeoPoint intersection : intersections)
+            if (Double3.ZERO.equals(intersection.geometry.getMaterial().kT))
+                return false;
+        return true;
 	}
 	
 	/**
@@ -182,5 +180,22 @@ public class SimpleRayTracer extends RayTracerBase {
 	private Ray constructTransparentRay(GeoPoint geoPoint, Ray ray) {
 	//TODO 
 	}
+	
+    /**
+     * calculate the global effects (transparency and reflection) of light on a point
+     *
+     * @param ray   the ray that intersects the point
+     * @param kx    the attenuation factor of material
+     * @param level the recursive level
+     * @param k     the reduced attenuation factor
+     * @return the Color of the global effects on the point
+     */
+    private Color calcColorGlobalEffect(Ray ray, Double3 kx, int level, Double3 k) {
+        Double3 kkx = kx.product(k);
+        if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
+        GeoPoint gp = ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
+        return (gp == null ? scene.background : calcColor(gp, ray, level - 1, kkx))
+                .scale(kx);
+    }
 
 }
