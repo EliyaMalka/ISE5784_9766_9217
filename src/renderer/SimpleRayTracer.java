@@ -2,7 +2,6 @@ package renderer;
 
 import primitives.*;
 import scene.*;
-import geometries.*;
 import geometries.Intersectable.GeoPoint;
 import lighting.*;
 import static primitives.Util.*;
@@ -67,7 +66,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return The color at the specified point.
 	 */
 	private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k) {
-		Color color = calcLocalEffects(gp, ray);
+		Color color = calcLocalEffects(gp, ray, k);
 		return 1 == level ? color : color.add(calcGlobalEffects(gp, ray, level, k));
 	}
 
@@ -79,7 +78,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param ray      The ray that intersected with the geometry.
 	 * @return The color due to local effects.
 	 */
-	private Color calcLocalEffects(GeoPoint geoPoint, Ray ray) {
+	private Color calcLocalEffects(GeoPoint geoPoint, Ray ray, Double3 k) {
 		Vector normalOfGeometry = geoPoint.geometry.getNormal(geoPoint.point);
 		Vector directionAxis = ray.getDirection();
 		double verticalFactor1 = alignZero(normalOfGeometry.dotProduct(directionAxis));
@@ -87,16 +86,19 @@ public class SimpleRayTracer extends RayTracerBase {
 			return Color.BLACK;
 		Material material = geoPoint.geometry.getMaterial();
 		Color color = geoPoint.geometry.getEmission();
+		Double3 ktr;
 		for (LightSource lightSource : scene.lights) {
 			Vector lightSourceVector = lightSource.getL(geoPoint.point);
 			double verticalFactor2 = alignZero(normalOfGeometry.dotProduct(lightSourceVector));
 			// sign(verticalFactor1 == sign(verticalFactor2)
-			if (verticalFactor2 * verticalFactor1 > 0
-					&& unshaded(geoPoint, lightSource, lightSourceVector, normalOfGeometry, verticalFactor2)) {
-				Color colorLightSource = lightSource.getIntensity(geoPoint.point);
-				color = color.add(colorLightSource.scale(
-						calcDiffusive(material.kD, verticalFactor2).add(calcSpecular(material.kS, lightSourceVector,
-								normalOfGeometry, verticalFactor2, directionAxis, material.nShininess))));
+			if (alignZero(verticalFactor2 * verticalFactor1) > 0) {
+				ktr = transparency(geoPoint, lightSource, lightSourceVector, normalOfGeometry);
+				if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
+					Color colorLightSource = lightSource.getIntensity(geoPoint.point).scale(ktr);
+					color = color.add(colorLightSource.scale(
+							calcDiffusive(material.kD, verticalFactor2).add(calcSpecular(material.kS, lightSourceVector,
+									normalOfGeometry, verticalFactor2, directionAxis, material.nShininess))));
+				}
 			}
 		}
 		return color;
@@ -132,32 +134,6 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	/**
-	 * Determines if a given point on a geometry is unshaded by checking for
-	 * intersections between the point and a light source.
-	 *
-	 * @param geoPoint       the geometric point on the geometry being tested
-	 * @param light          the light source being considered
-	 * @param directionLight the direction vector from the point to the light source
-	 * @param normalVector   the normal vector at the point on the geometry
-	 *                       direction vector
-	 * @param dotProduct     the dot product of the normal vector and the direction
-	 * @return {@code true} if the point is unshaded (i.e., no objects block the
-	 *         light); {@code false} otherwise
-	 */
-	private boolean unshaded(GeoPoint geoPoint, LightSource light, Vector directionLight, Vector normalVector,
-			double dotProduct) {
-		Vector lightDirection = directionLight.scale(-1); // from point to light source
-		Ray ray = new Ray(geoPoint.point, lightDirection, normalVector);
-		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
-		if (intersections == null)
-			return true;
-		for (GeoPoint intersection : intersections)
-			if (Double3.ZERO.equals(intersection.geometry.getMaterial().kT))
-				return false;
-		return true;
-	}
-
-	/**
 	 * finds the closest intersection to ray's head with ray
 	 *
 	 * @param ray the ray
@@ -181,6 +157,18 @@ public class SimpleRayTracer extends RayTracerBase {
 		Vector r = direction.subtract(normal.scale(2 * direction.dotProduct(normal)));
 		return new Ray(geoPoint.point, r, normal);
 	}
+	
+    /**
+     * Constructs the refracted ray at a given geometric point.
+     *
+     * @param gp the geometric point.
+     * @param ray the incident ray.
+     * @return the refracted ray.
+     */
+    private Ray constructRefractedRay(GeoPoint geoPoint, Ray ray) {
+		Vector normal = geoPoint.geometry.getNormal(geoPoint.point);
+        return new Ray(geoPoint.point, ray.getDirection(), normal);
+    }
 
 	/**
 	 * calculate the global effects (transparency and reflection) of light on a
@@ -193,9 +181,8 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the Color of the global effects on the point
 	 */
 	private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
-		Vector n = gp.geometry.getNormal(gp.point);
 		Material material = gp.geometry.getMaterial();
-		return calcGlobalEffect(constructReflectedRay(gp, ray), material.kT, level, k)
+		return calcGlobalEffect(constructRefractedRay(gp, ray), material.kT, level, k)
 				.add(calcGlobalEffect(constructReflectedRay(gp, ray), material.kR, level, k));
 	}
 
@@ -215,6 +202,28 @@ public class SimpleRayTracer extends RayTracerBase {
 			return Color.BLACK;
 		GeoPoint gp = findClosestIntersection(ray);
 		return (gp == null ? scene.background : calcColor(gp, ray, level - 1, kkx)).scale(kx);
+	}
+
+	/**
+	 * Calculates the transparency factor for light passing through a series of
+	 * geometries.
+	 *
+	 * @param gp    the geometric point at which the transparency is calculated.
+	 * @param light the light source.
+	 * @param l     the direction vector from the light source to the intersection
+	 *              point.
+	 * @param n     the normal vector at the point of intersection.
+	 * @return the transparency factor as a Double3.
+	 */
+	private Double3 transparency(GeoPoint gp, LightSource light, Vector l, Vector n) {
+		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(new Ray(gp.point, l.scale(-1), n));
+		Double3 ktr = Double3.ONE;
+		if (intersections == null)
+			return ktr;
+		for (GeoPoint geoPoint : intersections) {
+			ktr = ktr.product(geoPoint.geometry.getMaterial().kT);
+		}
+		return ktr;
 	}
 
 }
