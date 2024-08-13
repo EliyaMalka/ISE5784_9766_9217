@@ -85,4 +85,25 @@ public class ReflectionRefractionTests {
 		cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000).setVpSize(200, 200)
 				.setImageWriter(new ImageWriter("refractionShadow", 600, 600)).build().renderImage().writeToImage();
 	}
+
+	@Test
+	public void sphereBehindSphere() {
+		scene.geometries.add(
+				new Sphere(new Point(0, 0, 200), 50d).setEmission(new Color(BLUE))
+						.setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setKt(0.3)),
+				new Sphere(new Point(0, 0, -100), 25d).setEmission(new Color(RED))
+						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100)),
+				new Sphere(new Point(0, 0, -100), 10d).setEmission(new Color(GREEN))
+						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setKt(0.5)),
+				new Triangle(new Point(150, 150, 185), new Point(150, -150, -135), new Point(75, 75, -150))
+						.setEmission(new Color(20, 20, 20)).setMaterial(new Material().setKr(1)),
+				new Triangle(new Point(-150, -150, -115), new Point(-70, 70, -140), new Point(75, 75, -150))
+						.setMaterial(new Material().setKr(new Double3(0.5, 0, 0.4))));
+		scene.lights.add(new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2))
+				.setKl(0.0004).setKq(0.0000006));
+
+		cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000).setVpSize(150, 150)
+				.setImageWriter(new ImageWriter("refractionSphereBehindSphere", 500, 500)).build().renderImage()
+				.writeToImage();
+	}
 }
