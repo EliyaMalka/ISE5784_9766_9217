@@ -43,10 +43,6 @@ class TriangleTests {
 				"getNormal() doesn't return the correct normal vector");
 	}
 
-	private final Point p201 = new Point(2, 0, 1);
-	private final Point p003 = new Point(0, 0, 3);
-	private final Point p_201 = new Point(-2, 0, 1);
-
 	/**
 	 * Test method for
 	 * {@link geometries.Triangle#findIntersections(primitives.Ray)}.
@@ -54,7 +50,7 @@ class TriangleTests {
 	@Test
 	void testFindIntersections() {
 
-		Triangle triangle = new Triangle(p201, p003, p_201);
+		Triangle triangle = new Triangle(new Point(2, 0, 1), new Point(0, 0, 3), new Point(-2, 0, 1));
 
 		final Point p002 = new Point(0, 0, 2); // TC01
 

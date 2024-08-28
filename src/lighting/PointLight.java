@@ -86,6 +86,9 @@ public class PointLight extends Light implements LightSource {
 
 	@Override
 	public double getDistance(Point point) {
-		return position.distance(point);
+		if (point.equals(position)) {
+			throw new IllegalArgumentException("The point cannot be equal to the position of the point light.");
+		}
+		return point.distance(position);
 	}
 }

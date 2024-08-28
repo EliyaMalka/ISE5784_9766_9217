@@ -37,6 +37,9 @@ class SphereTests {
 				"getNormal() doesn't return the correct normal vector");
 	}
 
+	/**
+	 * point 1, 0, 0
+	 */
 	private final Point p100 = new Point(1, 0, 0);
 
 	/**
@@ -46,7 +49,7 @@ class SphereTests {
 	@Test
 	public void testFindIntersections() {
 
-		Sphere sphere = new Sphere(p100, 1.0);
+		Sphere sphere = new Sphere(new Point(1, 0, 0), 1.0);
 
 		final Point pm100 = new Point(-1, 0, 0);
 		final Vector v310 = new Vector(3, 1, 0);

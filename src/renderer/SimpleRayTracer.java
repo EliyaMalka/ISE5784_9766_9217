@@ -62,7 +62,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * returns the ambient light intensity.
 	 *
 	 * @param geoPoint The point at which to calculate the color.
-	 * @param ray   The ray that intersected with the geometry.
+	 * @param ray      The ray that intersected with the geometry.
 	 * @return The color at the specified point.
 	 */
 	private Color calcColor(GeoPoint geoPoint, Ray ray, int level, Double3 k) {
@@ -161,8 +161,8 @@ public class SimpleRayTracer extends RayTracerBase {
 	/**
 	 * Constructs the refracted ray at a given geometric point.
 	 *
-	 * @param geoPoint  the geometric point.
-	 * @param ray the incident ray.
+	 * @param geoPoint the geometric point.
+	 * @param ray      the incident ray.
 	 * @return the refracted ray.
 	 */
 	private Ray constructRefractedRay(GeoPoint geoPoint, Ray ray) {
@@ -221,8 +221,16 @@ public class SimpleRayTracer extends RayTracerBase {
 		Double3 ktr = Double3.ONE;
 		if (intersections == null)
 			return ktr;
-		for (GeoPoint geoPoint : intersections) {
-			ktr = ktr.product(geoPoint.geometry.getMaterial().kT);
+		double maxDistance = light.getDistance(gp.point);
+
+		for (GeoPoint geopoint : intersections) {
+			if (gp.point.distance(geopoint.point) <= maxDistance) {
+				ktr = ktr.product(geopoint.geometry.getMaterial().kT);
+				if (ktr.lowerThan(MIN_CALC_COLOR_K)) {
+					return Double3.ZERO;
+				}
+			}
+
 		}
 		return ktr;
 	}
