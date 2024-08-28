@@ -27,6 +27,7 @@ public class ReflectionRefractionTests {
 	/** Camera builder for the tests with triangles */
 	private final Camera.Builder cameraBuilder = Camera.getBuilder()
 			.setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0)).setRayTracer(new SimpleRayTracer(scene));
+	
 
 	/** Produce a picture of a sphere lighted by a spot light */
 	@Test
@@ -105,5 +106,40 @@ public class ReflectionRefractionTests {
 		cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000).setVpSize(150, 150)
 				.setImageWriter(new ImageWriter("refractionSphereBehindSphere", 500, 500)).build().renderImage()
 				.writeToImage();
+	}
+	
+	@Test
+	public void tableWithSphere() {
+		/***
+		scene.geometries.add(
+				new Triangle(new Point(-150, -150, -115), new Point(-150, 150, -115), new Point(150, 150, 115))
+						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)),
+				new Triangle(new Point(-150, -150, -115), new Point(150, 150, -115), new Point(150, -150, -115))
+						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)),
+				new Sphere(new Point(60, 50, -50), 30d).setEmission(new Color(BLUE))
+						.setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(30).setKt(0.6)));
+		scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
+		scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(60, 50, 0), new Vector(0, 0, -1)).setKl(4E-5)
+				.setKq(2E-7));
+
+		cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000).setVpSize(200, 200)
+				.setImageWriter(new ImageWriter("tableWithSphere", 600, 600)).build().renderImage().writeToImage();
+		***/
+		Camera.Builder camera = Camera.getBuilder().setDirection(new Vector(2000,1000,-470), new Vector(47,0,200)).setRayTracer(new SimpleRayTracer(scene));
+		
+		
+		scene.geometries.add(
+		new Triangle(new Point(-180, -90, 0), new Point(-180, 90, 0), new Point(180, 90, 0)).setEmission(new Color(0, 8, 255)).setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)),
+		new Triangle(new Point(-180, -90, 0), new Point(180, 90, 0), new Point(180, -90, 0)).setEmission(new Color(0, 8, 255)).setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)),
+		new Sphere(new Point(0,0,30), 30).setEmission(new Color(125,125,125)).setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(30).setKt(0.6)));
+	    
+		scene.lights.add(new SpotLight(new Color(1000, 600, 0), new Point(-600, 300, 150), new Vector(40, -20, -10))
+				.setKl(0.0004).setKq(0.0000006));
+		
+		camera.setLocation(new Point(-1000, -500, 250))
+		.setVpDistance(1000).setVpSize(200, 200)
+		.setImageWriter(new ImageWriter("tableWithSphere", 500, 500)).build().renderImage()
+		.writeToImage();
+		
 	}
 }
