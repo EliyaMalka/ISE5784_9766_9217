@@ -10,10 +10,20 @@ import renderer.*;
 import scene.*;
 
 /**
- * Integration tests for Camera and geometries intersections.
+ * Integration tests for Camera and geometries intersections. This class tests
+ * the intersections between rays constructed by a camera and various geometric
+ * shapes such as spheres, planes, and triangles.
  */
 class CameraIntersections {
 
+	/**
+	 * Helper method to assert the number of intersections between the camera's rays
+	 * and a given geometry.
+	 * 
+	 * @param expected the expected number of intersections
+	 * @param geometry the geometry to test against
+	 * @param camera   the camera generating the rays
+	 */
 	private void assertIntersections(int expected, Intersectable geometry, Camera camera) {
 		int count = 0;
 		for (int i = 0; i < 3; i++) {
@@ -27,13 +37,28 @@ class CameraIntersections {
 		assertEquals(expected, count, "Number of intersections is incorrect");
 	}
 
+	/**
+	 * Camera builder setup. This builder is used to configure the camera with the
+	 * desired parameters, including direction vectors, view plane size, view plane
+	 * distance, ray tracer, and image writer.
+	 */
 	private final Camera.Builder builder = Camera.getBuilder() //
 			.setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0)) //
 			.setVpSize(3, 3).setVpDistance(1) //
 			.setRayTracer(new SimpleRayTracer(new Scene("test"))) //
 			.setImageWriter(new ImageWriter("test", 600, 800));
 
+	/**
+	 * Camera instance positioned at the origin (0, 0, 0). This camera is
+	 * constructed using the builder and is used to generate rays from the origin.
+	 */
 	private final Camera camera1 = builder.setLocation(new Point(0, 0, 0)).build();
+
+	/**
+	 * Camera instance positioned slightly in front of the origin at (0, 0, 0.5).
+	 * This camera is constructed using the builder and is used to generate rays
+	 * from a location slightly forward of the origin.
+	 */
 	private final Camera camera2 = builder.setLocation(new Point(0, 0, 0.5)).build();
 
 	/**

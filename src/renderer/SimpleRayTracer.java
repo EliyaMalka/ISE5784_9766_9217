@@ -61,13 +61,13 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * Calculates the color at a given point in the scene. Currently, it only
 	 * returns the ambient light intensity.
 	 *
-	 * @param point The point at which to calculate the color.
+	 * @param geoPoint The point at which to calculate the color.
 	 * @param ray   The ray that intersected with the geometry.
 	 * @return The color at the specified point.
 	 */
-	private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k) {
-		Color color = calcLocalEffects(gp, ray, k);
-		return 1 == level ? color : color.add(calcGlobalEffects(gp, ray, level, k));
+	private Color calcColor(GeoPoint geoPoint, Ray ray, int level, Double3 k) {
+		Color color = calcLocalEffects(geoPoint, ray, k);
+		return 1 == level ? color : color.add(calcGlobalEffects(geoPoint, ray, level, k));
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	/**
 	 * Constructs the refracted ray at a given geometric point.
 	 *
-	 * @param gp  the geometric point.
+	 * @param geoPoint  the geometric point.
 	 * @param ray the incident ray.
 	 * @return the refracted ray.
 	 */
