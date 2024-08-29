@@ -15,7 +15,7 @@ public class PointLight extends Light implements LightSource {
 	/** The quadratic attenuation factor. */
 	private double kQ = 0;
 	/*** The position of the light. */
-	protected Point position;
+	protected final Point position;
 
 	/**
 	 * Constructs a new PointLight with the specified intensity and position.
@@ -26,17 +26,6 @@ public class PointLight extends Light implements LightSource {
 	public PointLight(Color intensity, Point position) {
 		super(intensity);
 		this.position = position;
-	}
-
-	/**
-	 * Sets the position of the point light.
-	 *
-	 * @param position the new position of the point light
-	 * @return the {@code PointLight} object itself for method chaining
-	 */
-	public PointLight setPosition(Point position) {
-		this.position = position;
-		return this;
 	}
 
 	/**
@@ -86,9 +75,6 @@ public class PointLight extends Light implements LightSource {
 
 	@Override
 	public double getDistance(Point point) {
-		if (point.equals(position)) {
-			throw new IllegalArgumentException("The point cannot be equal to the position of the point light.");
-		}
 		return point.distance(position);
 	}
 }

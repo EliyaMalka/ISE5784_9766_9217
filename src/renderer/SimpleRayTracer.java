@@ -66,8 +66,14 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return The color at the specified point.
 	 */
 	private Color calcColor(GeoPoint geoPoint, Ray ray, int level, Double3 k) {
-		Color color = calcLocalEffects(geoPoint, ray, k);
-		return 1 == level ? color : color.add(calcGlobalEffects(geoPoint, ray, level, k));
+		Vector directionAxis = ray.getDirection();
+		Vector normalOfGeometry = geoPoint.geometry.getNormal(geoPoint.point);
+		double verticalFactor1 = alignZero(normalOfGeometry.dotProduct(directionAxis));
+		if (verticalFactor1 == 0)
+			return Color.BLACK;
+		Color color = calcLocalEffects(geoPoint, directionAxis, normalOfGeometry, verticalFactor1, k);
+		return 1 == level ? color
+				: color.add(calcGlobalEffects(geoPoint, directionAxis, normalOfGeometry, verticalFactor1, level, k));
 	}
 
 	/**
@@ -78,12 +84,8 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param ray      The ray that intersected with the geometry.
 	 * @return The color due to local effects.
 	 */
-	private Color calcLocalEffects(GeoPoint geoPoint, Ray ray, Double3 k) {
-		Vector normalOfGeometry = geoPoint.geometry.getNormal(geoPoint.point);
-		Vector directionAxis = ray.getDirection();
-		double verticalFactor1 = alignZero(normalOfGeometry.dotProduct(directionAxis));
-		if (verticalFactor1 == 0)
-			return Color.BLACK;
+	private Color calcLocalEffects(GeoPoint geoPoint, Vector directionAxis, Vector normalOfGeometry,
+			double verticalFactor1, Double3 k) {
 		Material material = geoPoint.geometry.getMaterial();
 		Color color = geoPoint.geometry.getEmission();
 		Double3 ktr;
@@ -115,7 +117,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return The color due to diffusive reflection.
 	 */
 	private Double3 calcDiffusive(Double3 kd, double normalDotProductVectorLight) {
-		return kd.scale(Math.abs(normalDotProductVectorLight));
+		return kd.scale(normalDotProductVectorLight >= 0 ? normalDotProductVectorLight : -normalDotProductVectorLight);
 	}
 
 	/**
@@ -159,10 +161,8 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param ray      The ray that intersected with the geometry.
 	 * @return the reflection ray
 	 */
-	private Ray constructReflectedRay(GeoPoint geoPoint, Ray ray) {
-		Vector normal = geoPoint.geometry.getNormal(geoPoint.point);
-		Vector direction = ray.getDirection();
-		Vector r = direction.subtract(normal.scale(2 * direction.dotProduct(normal)));
+	private Ray constructReflectedRay(GeoPoint geoPoint, Vector direction, Vector normal, double verticalFactor1) {
+		Vector r = direction.subtract(normal.scale(2 * verticalFactor1));
 		return new Ray(geoPoint.point, r, normal);
 	}
 
@@ -173,9 +173,8 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param ray      the incident ray.
 	 * @return the refracted ray.
 	 */
-	private Ray constructRefractedRay(GeoPoint geoPoint, Ray ray) {
-		Vector normal = geoPoint.geometry.getNormal(geoPoint.point);
-		return new Ray(geoPoint.point, ray.getDirection(), normal);
+	private Ray constructRefractedRay(GeoPoint geoPoint, Vector directionAxis, Vector normalOfGeometry) {
+		return new Ray(geoPoint.point, directionAxis, normalOfGeometry);
 
 	}
 
@@ -189,10 +188,12 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param k        the attenuation factor
 	 * @return the Color of the global effects on the point
 	 */
-	private Color calcGlobalEffects(GeoPoint geoPoint, Ray ray, int level, Double3 k) {
+	private Color calcGlobalEffects(GeoPoint geoPoint, Vector directionAxis, Vector normalOfGeometry,
+			double verticalFactor1, int level, Double3 k) {
 		Material material = geoPoint.geometry.getMaterial();
-		return calcGlobalEffect(constructRefractedRay(geoPoint, ray), material.kT, level, k)
-				.add(calcGlobalEffect(constructReflectedRay(geoPoint, ray), material.kR, level, k));
+		return calcGlobalEffect(constructRefractedRay(geoPoint, directionAxis, normalOfGeometry), material.kT, level, k)
+				.add(calcGlobalEffect(constructReflectedRay(geoPoint, directionAxis, normalOfGeometry, verticalFactor1),
+						material.kR, level, k));
 	}
 
 	/**
