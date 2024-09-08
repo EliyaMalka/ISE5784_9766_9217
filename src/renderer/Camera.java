@@ -104,17 +104,6 @@ public class Camera implements Cloneable {
 		}
 
 		/**
-		 * Set the flag for using depth of field effects
-		 *
-		 * @param useDOF the flag for using depth of field effects
-		 * @return the camera builder
-		 */
-		public Builder setUseDOF(boolean useDOF) {
-			camera.useDOF = useDOF;
-			return this;
-		}
-
-		/**
 		 * Set the aperture of the camera
 		 *
 		 * @param aperture the aperture of the camera
@@ -181,17 +170,6 @@ public class Camera implements Cloneable {
 			if (camera.p0 == null)
 				throw new MissingResourceException("Renderer data missing", "Camera", "p0 missing");
 
-			// Depth of field data
-			if (camera.useDOF) {
-				if (alignZero(camera.apertureSize) <= 0)
-					throw new MissingResourceException("Renderer data missing", "Camera", "aperture size missing");
-				if (alignZero(camera.focalPlaneDistance) < 0)
-					throw new MissingResourceException("Renderer data missing", "Camera",
-							"focal plane distance missing");
-				if (alignZero(camera.numOfRaysDOF) <= 0)
-					throw new MissingResourceException("Renderer data missing", "Camera", "numOfRaysDOF missing");
-			}
-
 			try {
 				return (Camera) camera.clone();
 			} catch (CloneNotSupportedException e) {
@@ -257,17 +235,12 @@ public class Camera implements Cloneable {
 	/**
 	 * The number of rays for depth of field effects.
 	 */
-	private int numOfRaysDOF = 1;
+	private int numOfRaysDOF = 0;
 
 	/**
 	 * The distance between the camera and the focal plane.
 	 */
-	private double focalPlaneDistance = 100.0;
-
-	/**
-	 * The flag for using depth of field effects.
-	 */
-	private boolean useDOF = false;
+	private double focalPlaneDistance = 0;
 
 	/**
 	 * Constructs a ray from the camera through a specific pixel in the view plane.
@@ -418,58 +391,65 @@ public class Camera implements Cloneable {
 		imageWriter.writeToImage();
 		return this;
 	}
-	
-    /**
-     * Construct a jittered ray from a pixel
-     *
-     * @param nX        the number of pixels in the x direction
-     * @param nY        the number of pixels in the y direction
-     * @param j         the x index of the pixel
-     * @param i         the y index of the pixel
-     * @param pixelSize the size of the pixel
-     * @return the jittered point
-     */
-    private Point constructJitteredPoint(int nX, int nY, double j, double i, double pixelSize) {
-        double jitterX = Util.random(-0.5, 0.5);
-        double jitterY = Util.random(-0.5, 0.5);
-        Point pIJ = p0;
 
-        double yI = -(i + jitterY - (nY - 1) / 2d) * pixelSize;
-        double xJ = (j + jitterX - (nX - 1) / 2d) * pixelSize;
+	/**
+	 * Construct a jittered ray from a pixel
+	 *
+	 * @param nX        the number of pixels in the x direction
+	 * @param nY        the number of pixels in the y direction
+	 * @param j         the x index of the pixel
+	 * @param i         the y index of the pixel
+	 * @param pixelSize the size of the pixel
+	 * @return the jittered point
+	 */
+	private Point constructJitteredPoint(int nX, int nY, double j, double i, double pixelSize) {
+		double jitterX = Util.random(-0.5, 0.5);
+		double jitterY = Util.random(-0.5, 0.5);
+		Point pIJ = p0;
 
-        if (!isZero(xJ)) pIJ = pIJ.add(vRight.scale(xJ));
-        if (!isZero(yI)) pIJ = pIJ.add(vUp.scale(yI));
+		double yI = -(i + jitterY - (nY - 1) / 2d) * pixelSize;
+		double xJ = (j + jitterX - (nX - 1) / 2d) * pixelSize;
 
-        return pIJ;
-    }
-	
-    /**
-     * Construct a grid of rays from the camera
-     *
-     * @param n   the number of rays in the grid
-     * @param ray the ray from the camera
-     * @return the list of rays in the circle
-     */
-    public List<Ray> constructRaysGridFromCamera(int n, Ray ray) {
-        List<Ray> myRays = new LinkedList<>(); //the list of all the rays
+		if (!isZero(xJ))
+			pIJ = pIJ.add(vRight.scale(xJ));
+		if (!isZero(yI))
+			pIJ = pIJ.add(vUp.scale(yI));
 
-        double t = focalPlaneDistance / (vTo.dotProduct(ray.getDirection())); // distance from the focusPoint on the aperture grid to the focus focusPoint ( found with the cosinus)
-        Point focusPoint = ray.getPoint(t); // we found the focus focusPoint
+		return pIJ;
+	}
 
-        double pixelSize = alignZero((apertureSize * 2) / n); // the size of each pixel
+	/**
+	 * Construct a grid of rays from the camera
+	 *
+	 * @param n   the number of rays in the grid
+	 * @param ray the ray from the camera
+	 * @return the list of rays in the circle
+	 */
+	public List<Ray> constructRaysGridFromCamera(int n, Ray ray) {
+		List<Ray> myRays = new LinkedList<>(); // the list of all the rays
 
-        // we construct a ray from each pixel of the grid, and we select only the rays in the circle
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                Point tmpPoint = constructJitteredPoint(n, n, j, i, pixelSize); // we construct a point from a pixel
-                Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint)); // we construct a ray from the point to the focus focusPoint
-                if (tmpRay.getPoint(0).distanceSquared(p0) <= apertureSize * apertureSize) // we check if the ray is in the circle
-                    myRays.add(tmpRay); // we add the ray to the list
-            }
-        }
+		double t = focalPlaneDistance / (vTo.dotProduct(ray.getDirection())); // distance from the focusPoint on the
+																				// aperture grid to the focus focusPoint
+																				// ( found with the cosinus)
+		Point focusPoint = ray.getPoint(t); // we found the focus focusPoint
 
-        return myRays; // we return  the list of all my rays in the circle
-    }
+		double pixelSize = alignZero((apertureSize * 2) / n); // the size of each pixel
+
+		// we construct a ray from each pixel of the grid, and we select only the rays
+		// in the circle
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				Point tmpPoint = constructJitteredPoint(n, n, j, i, pixelSize); // we construct a point from a pixel
+				Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint)); // we construct a ray from the point to
+																				// the focus focusPoint
+				if (tmpRay.getPoint(0).distanceSquared(p0) <= apertureSize * apertureSize) // we check if the ray is in
+																							// the circle
+					myRays.add(tmpRay); // we add the ray to the list
+			}
+		}
+
+		return myRays; // we return the list of all my rays in the circle
+	}
 
 	/**
 	 * Casts a ray through a specific pixel and writes the traced color to the
@@ -484,26 +464,16 @@ public class Camera implements Cloneable {
 		Ray ray = constructRay(nX, nY, column, row);
 		Color color = rayTracer.traceRay(ray);
 		imageWriter.writePixel(column, row, color);
-		
-        Ray mainRay = constructRay(nX, nY, column, row);
-        Color accumulatedColor = Color.BLACK;
 
 		// Depth of field
-	            for (int l = 0; l < amountOfRays_DOF ; l++) {
-	            	
-	                // Depth of field loop
-	                if (useDOF) {
-	                    List<Ray> dofRays = constructRaysGridFromCamera(amountOfRays_DOF, aaRay);
-	                    Color dofAccumulatedColor = Color.BLACK;
-	                    for (Ray dofRay : dofRays) {
-	                        dofAccumulatedColor = dofAccumulatedColor.add(rayTracer.traceRay(dofRay));
-	                    }
-	                    accumulatedColor = accumulatedColor.add(dofAccumulatedColor.scale(1d / dofRays.size()));
-	                } else {
-	                    accumulatedColor = accumulatedColor.add(rayTracer.traceRay(aaRay));
-	                }
-	            }
-	        }
+		if (apertureSize > 0 && focalPlaneDistance > 0 && numOfRaysDOF > 0) {
+			Color accumulatedColor = Color.BLACK;
+			List<Ray> rays = constructRaysGridFromCamera(numOfRaysDOF, ray);
+			for (Ray rayFromList : rays) {
+				accumulatedColor = accumulatedColor.add(rayTracer.traceRay(rayFromList));
+			}
+			accumulatedColor = accumulatedColor.scale(1d / rays.size());
+			imageWriter.writePixel(column, row, accumulatedColor);
 		}
 	}
-
+}
