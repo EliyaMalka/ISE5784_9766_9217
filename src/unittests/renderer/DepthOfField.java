@@ -25,24 +25,35 @@ public class DepthOfField {
 	@Test
 	public void tableWithSphere() {
 
-		Camera.Builder camera = Camera.getBuilder().setDirection(new Vector(0, 350, -100), new Vector(1,6,21))
-				.setRayTracer(new SimpleRayTracer(scene)).setAmountOfRaysDOF(100).setAperture(3).setDepthOfField(50);
+		Camera.Builder camera = Camera.getBuilder().setDirection(new Vector(0, 350, -100), new Vector(1, 6, 21))
+				.setRayTracer(new SimpleRayTracer(scene)).setAmountOfRaysDOF(100).setAperture(1).setDepthOfField(230);
 
-		scene.geometries.add(new Triangle(new Point(-180, -90, 0), new Point(-180, 90, 0), new Point(180, 90, 0))
-				.setEmission(new Color(0, 8, 255)).setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)),
-				new Triangle(new Point(-180, -90, 0), new Point(180, 90, 0), new Point(180, -90, 0))
-						.setEmission(new Color(0, 8, 255))
-						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)),
-				new Sphere(new Point(0, 0, 30), 10).setEmission(new Color(255,0,0))
-						.setMaterial(new Material().setKd(0.2).setShininess(30).setKs(0.6)),
-				new Sphere(new Point(-20, -50, 30), 20).setEmission(new Color(255,0,0))
-						.setMaterial(new Material().setKd(0.2).setShininess(30).setKs(0.6)));
+		scene.geometries.add(
+				new Triangle(new Point(-660, -440, 0), new Point(-660, 440, 0), new Point(660, 440, 0))
+						.setEmission(new Color(255, 255, 102))
+						.setMaterial(new Material().setKd(0.6).setKs(0.2).setShininess(30).setKr(0.1).setKt(0)),
+				new Triangle(new Point(-660, -440, 0), new Point(660, 440, 0), new Point(660, -440, 0))
+						.setEmission(new Color(255, 255, 102))
+						.setMaterial(new Material().setKd(0.6).setKs(0.2).setShininess(30).setKr(0.1).setKt(0)),
+				new Sphere(new Point(27.5, 110, 30), 10).setEmission(new Color(255, 0, 0))
+						.setMaterial(new Material().setKd(0.6).setShininess(30).setKs(0.2).setKt(0).setKr(0)),
+						new Sphere(new Point(37.5, 170, 30), 7.5).setEmission(new Color(0, 0, 255))
+						.setMaterial(new Material().setKd(0.6).setShininess(30).setKs(0.2).setKt(0).setKr(0)),
+				new Sphere(new Point(15, 40, 30), 15).setEmission(new Color(0, 0, 255))
+						.setMaterial(new Material().setKd(0.6).setShininess(30).setKs(0.2).setKt(0).setKr(0)),
+				new Sphere(new Point(0, -50, 30), 20).setEmission(new Color(255, 0, 0))
+						.setMaterial(new Material().setKd(0.6).setShininess(30).setKs(0.2).setKt(0).setKr(0)),
+				new Sphere(new Point(-15, -120, 30), 25).setEmission(new Color(0, 0, 255))
+						.setMaterial(new Material().setKd(0.6).setShininess(30).setKs(0.2).setKt(0).setKr(0)),
+				new Sphere(new Point(-25, -170, 30), 30).setEmission(new Color(255, 0, 0))
+						.setMaterial(new Material().setKd(0.6).setShininess(30).setKs(0.2).setKt(0).setKr(0)));
 
-		scene.lights.add(new SpotLight(new Color(1000, 600, 0), new Point(-600, 300, 300), new Vector(40, -20, -10))
+		scene.lights.add(new SpotLight(new Color(1000, 600, 0), new Point(-600, 150, 300), new Vector(575, -30, 40))
 				.setKl(0.0004).setKq(0.0000006));
 
-		camera.setLocation(new Point(0, -350, 130)).setVpDistance(1000).setVpSize(200, 200)
-				.setImageWriter(new ImageWriter("tableWithSphereDepthOfFeild", 500, 500)).build().renderImage().writeToImage();
+		camera.setLocation(new Point(0, -400, 130)).setVpDistance(1000).setVpSize(350, 350)
+				.setImageWriter(new ImageWriter("tableWithSphereDepthOfFeild", 500, 500)).build().renderImage()
+				.writeToImage();
 
 	}
 
