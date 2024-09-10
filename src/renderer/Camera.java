@@ -13,6 +13,74 @@ import static primitives.Util.*;
  */
 public class Camera implements Cloneable {
 
+	//-------------------- Objects for camera -----------------------------------------------------
+
+	/**
+	 * The location of the camera.
+	 */
+	private Point p0;
+
+	/**
+	 * The direction vector towards the image.
+	 */
+	private Vector vTo;
+
+	/**
+	 * The up direction vector.
+	 */
+	private Vector vUp;
+
+	/**
+	 * The right direction vector, calculated from vTo and vUp.
+	 */
+	private Vector vRight;
+
+	/**
+	 * The width of the view plane.
+	 */
+	private double width = 0.0;
+
+	/**
+	 * The height of the view plane.
+	 */
+	private double height = 0.0;
+
+	/**
+	 * The distance between the camera and the view plane.
+	 */
+	private double distance = 0.0;
+
+	//-------------------- Objects for images -----------------------------------------------------
+
+	/**
+	 * The ImageWriter instance for the camera.
+	 */
+	private ImageWriter imageWriter;
+
+	/**
+	 * The RayTracerBase instance for the camera.
+	 */
+	private RayTracerBase rayTracer;
+
+	//-------------------- Objects for DOF -----------------------------------------------------
+
+	/**
+	 * The aperture size for depth of field effects.
+	 */
+	private double apertureSize = 0.0;
+
+	/**
+	 * The number of rays for depth of field effects.
+	 */
+	private int numOfRaysDOF = 0;
+
+	/**
+	 * The distance between the camera and the focal plane.
+	 */
+	private double focalPlaneDistance = 0;
+	
+	//-------------------- Builder -----------------------------------------------------
+	
 	/**
 	 * Builder class for Camera, allowing for incremental construction and
 	 * configuration of a Camera object.
@@ -109,7 +177,7 @@ public class Camera implements Cloneable {
 		 * @param aperture the aperture of the camera
 		 * @return the camera builder
 		 */
-		public Builder setAperture(double aperture) {
+		public Builder setApertureSize(double aperture) {
 			camera.apertureSize = aperture;
 			return this;
 		}
@@ -120,7 +188,7 @@ public class Camera implements Cloneable {
 		 * @param numberRays the number of rays in the grid
 		 * @return the camera builder
 		 */
-		public Builder setAmountOfRaysDOF(int numberRays) {
+		public Builder setNumOfRaysDOF(int numberRays) {
 			camera.numOfRaysDOF = numberRays;
 			return this;
 		}
@@ -131,7 +199,7 @@ public class Camera implements Cloneable {
 		 * @param distanceFocal the depth of field of the camera
 		 * @return the camera builder
 		 */
-		public Builder setDepthOfField(double distanceFocal) {
+		public Builder setfocalPlaneDistance(double distanceFocal) {
 			camera.focalPlaneDistance = distanceFocal;
 			return this;
 		}
@@ -178,94 +246,7 @@ public class Camera implements Cloneable {
 		}
 	}
 
-	/**
-	 * The location of the camera.
-	 */
-	private Point p0;
-
-	/**
-	 * The direction vector towards the image.
-	 */
-	private Vector vTo;
-
-	/**
-	 * The up direction vector.
-	 */
-	private Vector vUp;
-
-	/**
-	 * The right direction vector, calculated from vTo and vUp.
-	 */
-	private Vector vRight;
-
-	/**
-	 * The width of the view plane.
-	 */
-	private double width = 0.0;
-
-	/**
-	 * The height of the view plane.
-	 */
-	private double height = 0.0;
-
-	/**
-	 * The distance between the camera and the view plane.
-	 */
-	private double distance = 0.0;
-
-	///////////////////////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * The ImageWriter instance for the camera.
-	 */
-	private ImageWriter imageWriter;
-
-	/**
-	 * The RayTracerBase instance for the camera.
-	 */
-	private RayTracerBase rayTracer;
-
-	///////////////////////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * The aperture size for depth of field effects.
-	 */
-	private double apertureSize = 0.0;
-
-	/**
-	 * The number of rays for depth of field effects.
-	 */
-	private int numOfRaysDOF = 0;
-
-	/**
-	 * The distance between the camera and the focal plane.
-	 */
-	private double focalPlaneDistance = 0;
-
-	/**
-	 * Constructs a ray from the camera through a specific pixel in the view plane.
-	 *
-	 * @param nX the number of pixels in the x-axis
-	 * @param nY the number of pixels in the y-axis
-	 * @param j  the column index of the pixel
-	 * @param i  the row index of the pixel
-	 * @return the constructed ray
-	 */
-	public Ray constructRay(int nX, int nY, int j, int i) {
-		double rY = height / nY; // the distance between tick marks in the Y-axis
-		double rX = width / nX; // the distance between tick marks in the X-axis
-
-		double yI = (((nY - 1) / 2.0) - i) * rY;
-		double xJ = (j - (nX - 1) / 2.0) * rX;
-
-		Point pIJ = p0.add(vTo.scale(distance)); // the center of the view plane
-		if (!isZero(xJ))
-			pIJ = pIJ.add(vRight.scale(xJ));
-		if (!isZero(yI))
-			pIJ = pIJ.add(vUp.scale(yI));
-
-		return new Ray(p0, pIJ.subtract(p0)); // return the ray from the camera
-	}
+	//-------------- Geters -------------------------------------------------------
 
 	/**
 	 * Returns the location of the camera.
@@ -320,6 +301,8 @@ public class Camera implements Cloneable {
 	public double getHeight() {
 		return height;
 	}
+	
+
 
 	/**
 	 * Returns the distance between the camera and the view plane.
@@ -329,13 +312,7 @@ public class Camera implements Cloneable {
 	public double getDistance() {
 		return distance;
 	}
-
-	/**
-	 * Private constructor to prevent direct instantiation of the Camera class.
-	 */
-	private Camera() {
-	}
-
+	
 	/**
 	 * Returns a new Builder instance for constructing a Camera.
 	 *
@@ -343,6 +320,40 @@ public class Camera implements Cloneable {
 	 */
 	public static Builder getBuilder() {
 		return new Builder();
+	}
+	
+
+	/**
+	 * Private constructor to prevent direct instantiation of the Camera class.
+	 */
+	private Camera() {
+	}
+
+
+	
+	/**
+	 * Constructs a ray from the camera through a specific pixel in the view plane.
+	 *
+	 * @param nX the number of pixels in the x-axis
+	 * @param nY the number of pixels in the y-axis
+	 * @param j  the column index of the pixel
+	 * @param i  the row index of the pixel
+	 * @return the constructed ray
+	 */
+	public Ray constructRay(int nX, int nY, int j, int i) {
+		double rY = height / nY; // the distance between tick marks in the Y-axis
+		double rX = width / nX; // the distance between tick marks in the X-axis
+
+		double yI = (((nY - 1) / 2.0) - i) * rY;
+		double xJ = (j - (nX - 1) / 2.0) * rX;
+
+		Point pIJ = p0.add(vTo.scale(distance)); // the center of the view plane
+		if (!isZero(xJ))
+			pIJ = pIJ.add(vRight.scale(xJ));
+		if (!isZero(yI))
+			pIJ = pIJ.add(vUp.scale(yI));
+
+		return new Ray(p0, pIJ.subtract(p0)); // return the ray from the camera
 	}
 
 	/**
@@ -393,22 +404,22 @@ public class Camera implements Cloneable {
 	}
 
 	/**
-	 * Construct a jittered ray from a pixel
+	 * Construct a shifted point from a pixel
 	 *
 	 * @param nX        the number of pixels in the x direction
 	 * @param nY        the number of pixels in the y direction
 	 * @param j         the x index of the pixel
 	 * @param i         the y index of the pixel
 	 * @param pixelSize the size of the pixel
-	 * @return the jittered point
+	 * @return the shifted point
 	 */
-	private Point constructJitteredPoint(int nX, int nY, double j, double i, double pixelSize) {
-		double jitterX = Util.random(-0.5, 0.5);
-		double jitterY = Util.random(-0.5, 0.5);
+	private Point constructShiftedPoint(int nX, int nY, double j, double i, double pixelSize) {
+		double shiftedX = Util.random(-0.5, 0.5);
+		double shiftedY = Util.random(-0.5, 0.5);
 		Point pIJ = p0;
 
-		double yI = -(i + jitterY - (nY - 1) / 2d) * pixelSize;
-		double xJ = (j + jitterX - (nX - 1) / 2d) * pixelSize;
+		double yI = -(i + shiftedY - (nY - 1) / 2.0) * pixelSize;
+		double xJ = (j + shiftedX - (nX - 1) / 2.0) * pixelSize;
 
 		if (!isZero(xJ))
 			pIJ = pIJ.add(vRight.scale(xJ));
@@ -421,25 +432,25 @@ public class Camera implements Cloneable {
 	/**
 	 * Construct a grid of rays from the camera
 	 *
-	 * @param n   the number of rays in the grid
-	 * @param ray the ray from the camera
+	 * @param numberRaysGrid   the number of rays in the grid
+	 * @param rayCamera the ray from the camera
 	 * @return the list of rays in the circle
 	 */
-	public List<Ray> constructRaysGridFromCamera(int n, Ray ray) {
+	public List<Ray> constructRaysGridFromCamera(int numberRaysGrid, Ray rayCamera) {
 		List<Ray> myRays = new LinkedList<>(); // the list of all the rays
 
-		double t = focalPlaneDistance / (vTo.dotProduct(ray.getDirection())); // distance from the focusPoint on the
+		double t = focalPlaneDistance / (vTo.dotProduct(rayCamera.getDirection())); // distance from the focusPoint on the
 																				// aperture grid to the focus focusPoint
 																				// ( found with the cosinus)
-		Point focusPoint = ray.getPoint(t); // we found the focus focusPoint
+		Point focusPoint = rayCamera.getPoint(t); // we found the focus focusPoint
 
-		double pixelSize = alignZero((apertureSize * 2) / n); // the size of each pixel
+		double pixelSize = alignZero((apertureSize * 2) / numberRaysGrid); // the size of each pixel
 
 		// we construct a ray from each pixel of the grid, and we select only the rays
 		// in the circle
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				Point tmpPoint = constructJitteredPoint(n, n, j, i, pixelSize); // we construct a point from a pixel
+		for (int i = 0; i < numberRaysGrid; i++) {
+			for (int j = 0; j < numberRaysGrid; j++) {
+				Point tmpPoint = constructShiftedPoint(numberRaysGrid, numberRaysGrid, j, i, pixelSize); // we construct a point from a pixel
 				Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint)); // we construct a ray from the point to
 																				// the focus focusPoint
 				if (tmpRay.getPoint(0).distanceSquared(p0) <= apertureSize * apertureSize) // we check if the ray is in

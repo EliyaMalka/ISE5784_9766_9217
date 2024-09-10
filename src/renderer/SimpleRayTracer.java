@@ -167,11 +167,12 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	/**
-	 * Constructs the refracted ray at a given geometric point.
+	 * calculate the ray of refraction
 	 *
-	 * @param geoPoint the geometric point.
-	 * @param ray      the incident ray.
-	 * @return the refracted ray.
+	 * @param geoPoint         the point on geometry
+	 * @param directionAxis    the direction of the ray
+	 * @param normalOfGeometry the normal of the geometry
+	 * @return the refraction ray
 	 */
 	private Ray constructRefractedRay(GeoPoint geoPoint, Vector directionAxis, Vector normalOfGeometry) {
 		return new Ray(geoPoint.point, directionAxis, normalOfGeometry);
@@ -180,12 +181,14 @@ public class SimpleRayTracer extends RayTracerBase {
 
 	/**
 	 * calculate the global effects (transparency and reflection) of light on a
-	 * point. //
-	 * 
-	 * @param geoPoint the point
-	 * @param ray      the ray that intersects the point
-	 * @param level    the recursive level
-	 * @param k        the attenuation factor
+	 * point
+	 *
+	 * @param geoPoint         the point on geometry
+	 * @param directionAxis    the direction of the ray
+	 * @param normalOfGeometry the normal of the geometry
+	 * @param verticalFactor1  the dot product of the normal and the direction
+	 * @param level            the recursive level
+	 * @param k                the reduced attenuation factor
 	 * @return the Color of the global effects on the point
 	 */
 	private Color calcGlobalEffects(GeoPoint geoPoint, Vector directionAxis, Vector normalOfGeometry,
