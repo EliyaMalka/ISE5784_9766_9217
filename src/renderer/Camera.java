@@ -13,7 +13,8 @@ import static primitives.Util.*;
  */
 public class Camera implements Cloneable {
 
-	//-------------------- Objects for camera -----------------------------------------------------
+	// -------------------- Objects for camera
+	// -----------------------------------------------------
 
 	/**
 	 * The location of the camera.
@@ -50,7 +51,8 @@ public class Camera implements Cloneable {
 	 */
 	private double distance = 0.0;
 
-	//-------------------- Objects for images -----------------------------------------------------
+	// -------------------- Objects for images
+	// -----------------------------------------------------
 
 	/**
 	 * The ImageWriter instance for the camera.
@@ -62,7 +64,8 @@ public class Camera implements Cloneable {
 	 */
 	private RayTracerBase rayTracer;
 
-	//-------------------- Objects for DOF -----------------------------------------------------
+	// -------------------- Objects for DOF
+	// -----------------------------------------------------
 
 	/**
 	 * The aperture size for depth of field effects.
@@ -78,9 +81,10 @@ public class Camera implements Cloneable {
 	 * The distance between the camera and the focal plane.
 	 */
 	private double focalPlaneDistance = 0;
-	
-	//-------------------- Builder -----------------------------------------------------
-	
+
+	// -------------------- Builder
+	// -----------------------------------------------------
+
 	/**
 	 * Builder class for Camera, allowing for incremental construction and
 	 * configuration of a Camera object.
@@ -246,7 +250,7 @@ public class Camera implements Cloneable {
 		}
 	}
 
-	//-------------- Geters -------------------------------------------------------
+	// -------------- Geters -------------------------------------------------------
 
 	/**
 	 * Returns the location of the camera.
@@ -301,8 +305,6 @@ public class Camera implements Cloneable {
 	public double getHeight() {
 		return height;
 	}
-	
-
 
 	/**
 	 * Returns the distance between the camera and the view plane.
@@ -312,7 +314,7 @@ public class Camera implements Cloneable {
 	public double getDistance() {
 		return distance;
 	}
-	
+
 	/**
 	 * Returns a new Builder instance for constructing a Camera.
 	 *
@@ -321,7 +323,6 @@ public class Camera implements Cloneable {
 	public static Builder getBuilder() {
 		return new Builder();
 	}
-	
 
 	/**
 	 * Private constructor to prevent direct instantiation of the Camera class.
@@ -329,8 +330,6 @@ public class Camera implements Cloneable {
 	private Camera() {
 	}
 
-
-	
 	/**
 	 * Constructs a ray from the camera through a specific pixel in the view plane.
 	 *
@@ -341,19 +340,19 @@ public class Camera implements Cloneable {
 	 * @return the constructed ray
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {
-		double rY = height / nY; // the distance between tick marks in the Y-axis
-		double rX = width / nX; // the distance between tick marks in the X-axis
+		double rY = height / nY; 
+		double rX = width / nX; 
 
 		double yI = (((nY - 1) / 2.0) - i) * rY;
 		double xJ = (j - (nX - 1) / 2.0) * rX;
 
-		Point pIJ = p0.add(vTo.scale(distance)); // the center of the view plane
+		Point pIJ = p0.add(vTo.scale(distance)); 
 		if (!isZero(xJ))
 			pIJ = pIJ.add(vRight.scale(xJ));
 		if (!isZero(yI))
 			pIJ = pIJ.add(vUp.scale(yI));
 
-		return new Ray(p0, pIJ.subtract(p0)); // return the ray from the camera
+		return new Ray(p0, pIJ.subtract(p0)); 
 	}
 
 	/**
@@ -432,34 +431,30 @@ public class Camera implements Cloneable {
 	/**
 	 * Construct a grid of rays from the camera
 	 *
-	 * @param numberRaysGrid   the number of rays in the grid
-	 * @param rayCamera the ray from the camera
+	 * @param numberRaysGrid the number of rays in the grid
+	 * @param rayCamera      the ray from the camera
 	 * @return the list of rays in the circle
 	 */
 	public List<Ray> constructRaysGridFromCamera(int numberRaysGrid, Ray rayCamera) {
-		List<Ray> myRays = new LinkedList<>(); // the list of all the rays
+		List<Ray> raysOfGrid = new LinkedList<>();
 
-		double t = focalPlaneDistance / (vTo.dotProduct(rayCamera.getDirection())); // distance from the focusPoint on the
-																				// aperture grid to the focus focusPoint
-																				// ( found with the cosinus)
-		Point focusPoint = rayCamera.getPoint(t); // we found the focus focusPoint
+		double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(rayCamera.getDirection()));
 
-		double pixelSize = alignZero((apertureSize * 2) / numberRaysGrid); // the size of each pixel
+		Point focusPoint = rayCamera.getPoint(highFocusPoint);
 
-		// we construct a ray from each pixel of the grid, and we select only the rays
-		// in the circle
+		double pixelSize = alignZero((apertureSize * 2) / numberRaysGrid);
+
 		for (int i = 0; i < numberRaysGrid; i++) {
 			for (int j = 0; j < numberRaysGrid; j++) {
-				Point tmpPoint = constructShiftedPoint(numberRaysGrid, numberRaysGrid, j, i, pixelSize); // we construct a point from a pixel
-				Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint)); // we construct a ray from the point to
-																				// the focus focusPoint
-				if (tmpRay.getPoint(0).distanceSquared(p0) <= apertureSize * apertureSize) // we check if the ray is in
-																							// the circle
-					myRays.add(tmpRay); // we add the ray to the list
+				Point tmpPoint = constructShiftedPoint(numberRaysGrid, numberRaysGrid, j, i, pixelSize);
+				Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint));
+
+				if (tmpRay.getHead().distanceSquared(p0) <= apertureSize * apertureSize)
+					raysOfGrid.add(tmpRay);
 			}
 		}
 
-		return myRays; // we return the list of all my rays in the circle
+		return raysOfGrid;
 	}
 
 	/**

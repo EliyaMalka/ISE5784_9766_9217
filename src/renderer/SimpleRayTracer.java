@@ -58,12 +58,13 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	/**
-	 * Calculates the color at a given point in the scene. Currently, it only
-	 * returns the ambient light intensity.
+	 * Calculates the color at a given point in the scene.
 	 *
-	 * @param geoPoint The point at which to calculate the color.
-	 * @param ray      The ray that intersected with the geometry.
-	 * @return The color at the specified point.
+	 * @param geoPoint the point on geometry
+	 * @param ray      the ray that intersected with the geometry
+	 * @param level    the recursive level
+	 * @param k        the reduced attenuation factor
+	 * @return the color at the specified point
 	 */
 	private Color calcColor(GeoPoint geoPoint, Ray ray, int level, Double3 k) {
 		Vector directionAxis = ray.getDirection();
@@ -77,12 +78,14 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	/**
-	 * Calculates the local effects at an intersection point, such as diffuse and
-	 * specular reflections.
+	 * Calculates the local effects of light on a point.
 	 *
-	 * @param geoPoint The intersection point and associated geometry.
-	 * @param ray      The ray that intersected with the geometry.
-	 * @return The color due to local effects.
+	 * @param geoPoint         the point on geometry
+	 * @param directionAxis    the direction of the ray
+	 * @param normalOfGeometry the normal of the geometry
+	 * @param verticalFactor1  the dot product of the normal and the direction
+	 * @param k                the reduced attenuation factor
+	 * @return the Color of the local effects on the point
 	 */
 	private Color calcLocalEffects(GeoPoint geoPoint, Vector directionAxis, Vector normalOfGeometry,
 			double verticalFactor1, Double3 k) {
@@ -157,8 +160,10 @@ public class SimpleRayTracer extends RayTracerBase {
 	/**
 	 * calculate the ray of reflection
 	 *
-	 * @param geoPoint the point on geometry
-	 * @param ray      The ray that intersected with the geometry.
+	 * @param geoPoint        the point on geometry
+	 * @param direction       the direction of the ray
+	 * @param normal          the normal of the geometry
+	 * @param verticalFactor1 the dot product of the normal and the direction
 	 * @return the reflection ray
 	 */
 	private Ray constructReflectedRay(GeoPoint geoPoint, Vector direction, Vector normal, double verticalFactor1) {

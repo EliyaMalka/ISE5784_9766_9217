@@ -64,8 +64,17 @@ class PlaneTests {
 				"getNormal(Point) does not return the correct normal vector");
 	}
 
+	/**
+	 * point of the plane
+	 */
 	private final Point p200 = new Point(2, 0, 0);
+	/**
+	 * point of the plane
+	 */
 	private final Point p002 = new Point(0, 0, 2);
+	/**
+	 * point of the plane
+	 */
 	private final Point p100 = new Point(1, 0, 0);
 
 	/**

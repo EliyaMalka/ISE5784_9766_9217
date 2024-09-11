@@ -13,6 +13,7 @@ import primitives.Vector;
 
 class PointTests {
 
+	/** The delta for comparing double numbers */
 	private final double DELTA = 0.000001;
 
 	/**
