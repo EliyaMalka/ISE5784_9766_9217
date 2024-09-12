@@ -68,9 +68,9 @@ public class Camera implements Cloneable {
 	// -----------------------------------------------------
 
 	/**
-	 * The aperture size for depth of field effects.
+	 * The aperture radius size for depth of field effects.
 	 */
-	private double apertureSize = 0.0;
+	private double apertureSizeRadius = 0.0;
 
 	/**
 	 * The number of rays for depth of field effects.
@@ -182,7 +182,7 @@ public class Camera implements Cloneable {
 		 * @return the camera builder
 		 */
 		public Builder setApertureSize(double aperture) {
-			camera.apertureSize = aperture;
+			camera.apertureSizeRadius = aperture;
 			return this;
 		}
 
@@ -442,14 +442,14 @@ public class Camera implements Cloneable {
 
 		Point focusPoint = rayCamera.getPoint(highFocusPoint);
 
-		double pixelSize = alignZero((apertureSize * 2) / numberRaysGrid);
+		double pixelSize = (apertureSizeRadius * 2) / numberRaysGrid;
 
 		for (int i = 0; i < numberRaysGrid; i++) {
 			for (int j = 0; j < numberRaysGrid; j++) {
 				Point tmpPoint = constructShiftedPoint(numberRaysGrid, numberRaysGrid, j, i, pixelSize);
 				Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint));
 
-				if (tmpRay.getHead().distanceSquared(p0) <= apertureSize * apertureSize)
+				if (tmpRay.getHead().distanceSquared(p0) <= apertureSizeRadius * apertureSizeRadius)
 					raysOfGrid.add(tmpRay);
 			}
 		}
@@ -472,7 +472,7 @@ public class Camera implements Cloneable {
 		imageWriter.writePixel(column, row, color);
 
 		// Depth of field
-		if (apertureSize > 0 && focalPlaneDistance > 0 && numOfRaysDOF > 0) {
+		if (apertureSizeRadius > 0 && focalPlaneDistance > 0 && numOfRaysDOF > 0) {
 			Color accumulatedColor = Color.BLACK;
 			List<Ray> rays = constructRaysGridFromCamera(numOfRaysDOF, ray);
 			for (Ray rayFromList : rays) {

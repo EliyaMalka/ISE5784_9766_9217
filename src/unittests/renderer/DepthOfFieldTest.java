@@ -68,7 +68,7 @@ public class DepthOfFieldTest {
 	public void focusFarSphere() {
 
 		Camera.Builder camera = Camera.getBuilder().setDirection(new Vector(0, 350, -100), new Vector(1, 6, 21))
-				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(100).setApertureSize(1).setfocalPlaneDistance(440);
+				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(100).setApertureSize(1).setfocalPlaneDistance(565);
 
 		scene.geometries.add(
 				new Triangle(new Point(-660, -440, 0), new Point(-660, 440, 0), new Point(660, 440, 0))
