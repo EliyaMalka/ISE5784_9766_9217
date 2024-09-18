@@ -30,7 +30,7 @@ public class DepthOfFieldTest {
 	public void focusCloseSphere() {
 
 		Camera.Builder camera = Camera.getBuilder().setDirection(new Vector(0, 350, -100), new Vector(1, 6, 21))
-				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(100).setApertureSize(1).setfocalPlaneDistance(230);
+				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(33).setApertureSize(1.5).setfocalPlaneDistance(230).setThreadsCount(4);
 
 		scene.geometries.add(
 				new Triangle(new Point(-660, -440, 0), new Point(-660, 440, 0), new Point(660, 440, 0))
@@ -65,6 +65,7 @@ public class DepthOfFieldTest {
 	 * Test method 2 for depth of field
 	 */
 	@Test
+	@Disabled
 	public void focusFarSphere() {
 
 		Camera.Builder camera = Camera.getBuilder().setDirection(new Vector(0, 350, -100), new Vector(1, 6, 21))

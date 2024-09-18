@@ -1,6 +1,7 @@
 package renderer;
 
 import java.util.LinkedList;
+import java.util.stream.*;
 import java.util.List;
 import java.util.MissingResourceException;
 import primitives.*;
@@ -81,6 +82,24 @@ public class Camera implements Cloneable {
 	 * The distance between the camera and the focal plane.
 	 */
 	private double focalPlaneDistance = 0;
+
+	// -------------------- Objects for multi-threading
+	// -----------------------------------------------------
+
+	/**
+	 * Pixel manager for supporting multi-threading
+	 */
+	private PixelManager pixelManager;
+
+	/**
+	 * print time interval in seconds, 0 if printing is not required
+	 */
+	double interval = 5;
+
+	/**
+	 * number of threads
+	 */
+	int threadsCount = 0;
 
 	// -------------------- Builder
 	// -----------------------------------------------------
@@ -205,6 +224,28 @@ public class Camera implements Cloneable {
 		 */
 		public Builder setfocalPlaneDistance(double distanceFocal) {
 			camera.focalPlaneDistance = distanceFocal;
+			return this;
+		}
+
+		/**
+		 * Set the interval for printing progress
+		 *
+		 * @param interval the interval for printing progress
+		 * @return the camera builder
+		 */
+		public Builder setInterval(double interval) {
+			camera.interval = interval;
+			return this;
+		}
+
+		/**
+		 * Set the number of threads for rendering
+		 * 
+		 * @param threadsCount the number of threads for rendering
+		 * @return the camera builder
+		 */
+		public Builder setThreadsCount(int threadsCount) {
+			camera.threadsCount = threadsCount;
 			return this;
 		}
 
@@ -340,19 +381,19 @@ public class Camera implements Cloneable {
 	 * @return the constructed ray
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {
-		double rY = height / nY; 
-		double rX = width / nX; 
+		double rY = height / nY;
+		double rX = width / nX;
 
 		double yI = (((nY - 1) / 2.0) - i) * rY;
 		double xJ = (j - (nX - 1) / 2.0) * rX;
 
-		Point pIJ = p0.add(vTo.scale(distance)); 
+		Point pIJ = p0.add(vTo.scale(distance));
 		if (!isZero(xJ))
 			pIJ = pIJ.add(vRight.scale(xJ));
 		if (!isZero(yI))
 			pIJ = pIJ.add(vUp.scale(yI));
 
-		return new Ray(p0, pIJ.subtract(p0)); 
+		return new Ray(p0, pIJ.subtract(p0));
 	}
 
 	/**
@@ -362,13 +403,19 @@ public class Camera implements Cloneable {
 	 * @return the current Camera instance
 	 */
 	public Camera renderImage() {
-		int nX = imageWriter.getNx();
-		int nY = imageWriter.getNy();
+		final int nX = imageWriter.getNx();
+		final int nY = imageWriter.getNy();
 
-		for (int j = 0; j < nY; j++) {
-			for (int i = 0; i < nX; i++) {
-				castRay(nX, nY, j, i);
+		pixelManager = new PixelManager(nY, nX, interval);
+		if (threadsCount == 0) {
+			for (int j = 0; j < nY; j++) {
+				for (int i = 0; i < nX; i++) {
+					castRay(nX, nY, j, i);
+				}
 			}
+		} else {
+			IntStream.range(0, nY).parallel().forEach(i -> IntStream.range(0, nX).parallel() // for each row:
+					.forEach(j -> castRay(nX, nY, j, i))); // for each column:
 		}
 		return this;
 	}
@@ -468,8 +515,6 @@ public class Camera implements Cloneable {
 	 */
 	private void castRay(int nX, int nY, int column, int row) {
 		Ray ray = constructRay(nX, nY, column, row);
-		Color color = rayTracer.traceRay(ray);
-		imageWriter.writePixel(column, row, color);
 
 		// Depth of field
 		if (apertureSizeRadius > 0 && focalPlaneDistance > 0 && numOfRaysDOF > 0) {
@@ -480,6 +525,10 @@ public class Camera implements Cloneable {
 			}
 			accumulatedColor = accumulatedColor.scale(1d / rays.size());
 			imageWriter.writePixel(column, row, accumulatedColor);
+			pixelManager.pixelDone();
+		} else {
+			imageWriter.writePixel(column, row, rayTracer.traceRay(ray));
+			pixelManager.pixelDone();
 		}
 	}
 }
