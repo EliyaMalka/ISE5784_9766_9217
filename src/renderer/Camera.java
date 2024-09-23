@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.MissingResourceException;
 import primitives.*;
 import static primitives.Util.*;
-
 /**
  * The Camera class represents a camera used for rendering a 3D image. The
  * camera is defined by its position, direction vectors, and the size of the
@@ -65,9 +64,8 @@ public class Camera implements Cloneable {
 	 */
 	private RayTracerBase rayTracer;
 
-	// -------------------- Objects for DOF
+	// -------------------- Depth of field objects
 	// -----------------------------------------------------
-
 	/**
 	 * The aperture radius size for depth of field effects.
 	 */
@@ -100,6 +98,19 @@ public class Camera implements Cloneable {
 	 * number of threads
 	 */
 	int threadsCount = 0;
+
+	// -------------------- Objects for adaptive super sampling
+	// -----------------------------------------------------
+
+	/**
+	 * number of max depth of recursion
+	 */
+	int max = 5;
+
+	/**
+	 * flag if use adaptive super sampling
+	 */
+	boolean useAdaptive = true;
 
 	// -------------------- Builder
 	// -----------------------------------------------------
@@ -246,6 +257,28 @@ public class Camera implements Cloneable {
 		 */
 		public Builder setThreadsCount(int threadsCount) {
 			camera.threadsCount = threadsCount;
+			return this;
+		}
+
+		/**
+		 * Set the number of max depth of recursion
+		 * 
+		 * @param max the number of max depth of recursion
+		 * @return the camera builder
+		 */
+		public Builder setMax(int max) {
+			camera.max = max;
+			return this;
+		}
+
+		/**
+		 * Set the flag if use adaptive super sampling
+		 * 
+		 * @param useAdaptive the flag if use adaptive super sampling
+		 * @return the camera builder
+		 */
+		public Builder setUseAdaptive(boolean useAdaptive) {
+			camera.useAdaptive = useAdaptive;
 			return this;
 		}
 
@@ -450,6 +483,39 @@ public class Camera implements Cloneable {
 	}
 
 	/**
+	 * Casts a ray through a specific pixel and writes the traced color to the
+	 * image.
+	 *
+	 * @param nX     the number of pixels in the x-axis
+	 * @param nY     the number of pixels in the y-axis
+	 * @param column the column index of the pixel
+	 * @param row    the row index of the pixel
+	 */
+	private void castRay(int nX, int nY, int column, int row) {
+		Ray ray = constructRay(nX, nY, column, row);
+
+		// Depth of field
+		if (apertureSizeRadius > 0 && focalPlaneDistance > 0 && numOfRaysDOF > 0) {
+			if (useAdaptive) {
+				imageWriter.writePixel(column, row, nonRecursive(ray, nX, nY, column, row));
+				pixelManager.pixelDone();
+			} else {
+				Color accumulatedColor = Color.BLACK;
+				List<Ray> rays = constructRaysGridFromCamera(numOfRaysDOF, ray);
+				for (Ray rayFromList : rays) {
+					accumulatedColor = accumulatedColor.add(rayTracer.traceRay(rayFromList));
+				}
+				accumulatedColor = accumulatedColor.scale(1d / rays.size());
+				imageWriter.writePixel(column, row, accumulatedColor);
+				pixelManager.pixelDone();
+			}
+		} else {
+			imageWriter.writePixel(column, row, rayTracer.traceRay(ray));
+			pixelManager.pixelDone();
+		}
+	}
+
+	/**
 	 * Construct a shifted point from a pixel
 	 *
 	 * @param nX        the number of pixels in the x direction
@@ -504,31 +570,44 @@ public class Camera implements Cloneable {
 		return raysOfGrid;
 	}
 
-	/**
-	 * Casts a ray through a specific pixel and writes the traced color to the
-	 * image.
-	 *
-	 * @param nX     the number of pixels in the x-axis
-	 * @param nY     the number of pixels in the y-axis
-	 * @param column the column index of the pixel
-	 * @param row    the row index of the pixel
-	 */
-	private void castRay(int nX, int nY, int column, int row) {
-		Ray ray = constructRay(nX, nY, column, row);
+	public void recursive(Ray ray, int depth, List<Ray> colorRays, int nX, int nY, int column, int row) {
+		if (depth == max)
+			return;
+		else {
+			Ray upRight = constructRay(nX * 2, nY * 2, column * 2, row * 2 - 1);
+			Ray upLeft = constructRay(nX * 2, nY * 2, column * 2 - 1, row * 2 - 1);
+			Ray downRight = constructRay(nX * 2, nY * 2, column * 2, row * 2);
+			Ray downLeft = constructRay(nX * 2, nY * 2, column * 2 - 1, row * 2);
 
-		// Depth of field
-		if (apertureSizeRadius > 0 && focalPlaneDistance > 0 && numOfRaysDOF > 0) {
-			Color accumulatedColor = Color.BLACK;
-			List<Ray> rays = constructRaysGridFromCamera(numOfRaysDOF, ray);
-			for (Ray rayFromList : rays) {
-				accumulatedColor = accumulatedColor.add(rayTracer.traceRay(rayFromList));
+			if ((rayTracer.traceRay(upRight)) == rayTracer.traceRay(upLeft)
+					&& rayTracer.traceRay(upRight) == rayTracer.traceRay(downRight)
+					&& rayTracer.traceRay(upRight) == rayTracer.traceRay(downLeft)) {
+				return;
 			}
-			accumulatedColor = accumulatedColor.scale(1d / rays.size());
-			imageWriter.writePixel(column, row, accumulatedColor);
-			pixelManager.pixelDone();
-		} else {
-			imageWriter.writePixel(column, row, rayTracer.traceRay(ray));
-			pixelManager.pixelDone();
+
+			else {
+				colorRays.add(upRight);
+				colorRays.add(downRight);
+				colorRays.add(upLeft);
+				colorRays.add(downLeft);
+				recursive(upRight, depth + 1, colorRays, nX * 2, nY * 2, column * 2, row * 2 - 1);
+				recursive(upLeft, depth + 1, colorRays, nX * 2, nY * 2, column * 2 - 1, row * 2 - 1);
+				recursive(downRight, depth + 1, colorRays, nX * 2, nY * 2, column * 2, row * 2);
+				recursive(downLeft, depth + 1, colorRays, nX * 2, nY * 2, column * 2 - 1, row * 2);
+			}
 		}
+	}
+
+	public Color nonRecursive(Ray ray, int nX, int nY, int column, int row) {
+		Color color = Color.BLACK;
+		int depth = 0;
+		List<Ray> rays = new LinkedList<>();
+		rays.add(ray);
+		recursive(ray, depth, rays, nX, nY, column, row);
+		for (Ray tmpray : rays) {
+			color = color.add(rayTracer.traceRay(tmpray));
+		}
+		color = color.scale(1d / rays.size());
+		return color;
 	}
 }

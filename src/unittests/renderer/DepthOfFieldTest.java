@@ -22,15 +22,16 @@ import scene.Scene;
 public class DepthOfFieldTest {
 	/** Scene for the tests */
 	private final Scene scene = new Scene("Test scene");
-	
+
 	/**
-	 * Test method 1 for depth of field 
+	 * Test method 1 for depth of field
 	 */
 	@Test
 	public void focusCloseSphere() {
 
 		Camera.Builder camera = Camera.getBuilder().setDirection(new Vector(0, 350, -100), new Vector(1, 6, 21))
-				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(33).setApertureSize(1.5).setfocalPlaneDistance(230).setThreadsCount(4);
+				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(33).setApertureSize(1.5)
+				.setfocalPlaneDistance(230).setThreadsCount(4).setMax(5).setUseAdaptive(true);
 
 		scene.geometries.add(
 				new Triangle(new Point(-660, -440, 0), new Point(-660, 440, 0), new Point(660, 440, 0))
@@ -56,11 +57,10 @@ public class DepthOfFieldTest {
 				.setKl(0.0004).setKq(0.0000006));
 
 		camera.setLocation(new Point(0, -400, 130)).setVpDistance(1000).setVpSize(350, 350)
-				.setImageWriter(new ImageWriter("focusCloseSphere", 500, 500)).build().renderImage()
-				.writeToImage();
+				.setImageWriter(new ImageWriter("focusCloseSphere", 500, 500)).build().renderImage().writeToImage();
 
 	}
-	
+
 	/**
 	 * Test method 2 for depth of field
 	 */
@@ -69,7 +69,8 @@ public class DepthOfFieldTest {
 	public void focusFarSphere() {
 
 		Camera.Builder camera = Camera.getBuilder().setDirection(new Vector(0, 350, -100), new Vector(1, 6, 21))
-				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(100).setApertureSize(1).setfocalPlaneDistance(565);
+				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(100).setApertureSize(1)
+				.setfocalPlaneDistance(565);
 
 		scene.geometries.add(
 				new Triangle(new Point(-660, -440, 0), new Point(-660, 440, 0), new Point(660, 440, 0))
@@ -95,8 +96,7 @@ public class DepthOfFieldTest {
 				.setKl(0.0004).setKq(0.0000006));
 
 		camera.setLocation(new Point(0, -400, 130)).setVpDistance(1000).setVpSize(350, 350)
-				.setImageWriter(new ImageWriter("focusFarSphere", 500, 500)).build().renderImage()
-				.writeToImage();
+				.setImageWriter(new ImageWriter("focusFarSphere", 500, 500)).build().renderImage().writeToImage();
 
 	}
 

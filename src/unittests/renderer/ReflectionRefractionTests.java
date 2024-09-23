@@ -90,7 +90,7 @@ public class ReflectionRefractionTests {
 	 * Produce a picture of a two triangles lighted by a spot light with a partially
 	 * transparent Sphere producing partial shadow
 	 */
-	
+
 	@Test
 	public void tableWithSphere() {
 
