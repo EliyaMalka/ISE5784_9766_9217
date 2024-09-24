@@ -417,6 +417,7 @@ public class Camera implements Cloneable {
 		double rY = height / nY;
 		double rX = width / nX;
 
+		
 		double yI = (((nY - 1) / 2.0) - i) * rY;
 		double xJ = (j - (nX - 1) / 2.0) * rX;
 
