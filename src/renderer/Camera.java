@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.MissingResourceException;
 import primitives.*;
 import static primitives.Util.*;
+
 /**
  * The Camera class represents a camera used for rendering a 3D image. The
  * camera is defined by its position, direction vectors, and the size of the
@@ -417,7 +418,6 @@ public class Camera implements Cloneable {
 		double rY = height / nY;
 		double rX = width / nX;
 
-		
 		double yI = (((nY - 1) / 2.0) - i) * rY;
 		double xJ = (j - (nX - 1) / 2.0) * rX;
 
@@ -498,7 +498,8 @@ public class Camera implements Cloneable {
 		// Depth of field
 		if (apertureSizeRadius > 0 && focalPlaneDistance > 0 && numOfRaysDOF > 0) {
 			if (useAdaptive) {
-				imageWriter.writePixel(column, row, nonRecursive(ray, nX, nY, column, row));
+				int depth = 0;
+				imageWriter.writePixel(column, row, recursive(ray, depth, nX, nY, column, row));
 				pixelManager.pixelDone();
 			} else {
 				Color accumulatedColor = Color.BLACK;
@@ -571,44 +572,43 @@ public class Camera implements Cloneable {
 		return raysOfGrid;
 	}
 
-	public void recursive(Ray ray, int depth, List<Ray> colorRays, int nX, int nY, int column, int row) {
+	public Color recursive(Ray ray, int depth, int nX, int nY, int column, int row) {
+		Color upRight = rayTracer.traceRay(constructRayForASS(nX, nY, column - 1, row, ray));
+		Color upLeft = rayTracer.traceRay(constructRayForASS(nX, nY, column - 1, row - 1, ray));
+		Color downRight = rayTracer.traceRay(constructRayForASS(nX, nY, column, row, ray));
+		Color downLeft = rayTracer.traceRay(constructRayForASS(nX, nY, column, row - 1, ray));
+
 		if (depth == max)
-			return;
-		else {
-			Ray upRight = constructRay(nX * 2, nY * 2, column * 2, row * 2 - 1);
-			Ray upLeft = constructRay(nX * 2, nY * 2, column * 2 - 1, row * 2 - 1);
-			Ray downRight = constructRay(nX * 2, nY * 2, column * 2, row * 2);
-			Ray downLeft = constructRay(nX * 2, nY * 2, column * 2 - 1, row * 2);
+			return upRight.add(upLeft).add(downRight).add(downLeft).scale(0.25);
+		else if (upRight.equals(upLeft) && upRight.equals(downRight) && upRight.equals(downLeft)) {
+			return upRight;
+		} else {
 
-			if ((rayTracer.traceRay(upRight)) == rayTracer.traceRay(upLeft)
-					&& rayTracer.traceRay(upRight) == rayTracer.traceRay(downRight)
-					&& rayTracer.traceRay(upRight) == rayTracer.traceRay(downLeft)) {
-				return;
-			}
+			upRight = recursive(ray, depth + 1, nX * 2, nY * 2, column * 2, row * 2 - 1);
+			upLeft = recursive(ray, depth + 1, nX * 2, nY * 2, column * 2 - 1, row * 2 - 1);
+			downRight = recursive(ray, depth + 1, nX * 2, nY * 2, column * 2, row * 2);
+			downLeft = recursive(ray, depth + 1, nX * 2, nY * 2, column * 2 - 1, row * 2);
 
-			else {
-				colorRays.add(upRight);
-				colorRays.add(downRight);
-				colorRays.add(upLeft);
-				colorRays.add(downLeft);
-				recursive(upRight, depth + 1, colorRays, nX * 2, nY * 2, column * 2, row * 2 - 1);
-				recursive(upLeft, depth + 1, colorRays, nX * 2, nY * 2, column * 2 - 1, row * 2 - 1);
-				recursive(downRight, depth + 1, colorRays, nX * 2, nY * 2, column * 2, row * 2);
-				recursive(downLeft, depth + 1, colorRays, nX * 2, nY * 2, column * 2 - 1, row * 2);
-			}
+			return upRight.add(upLeft).add(downRight).add(downLeft).scale(0.25);
 		}
+
 	}
 
-	public Color nonRecursive(Ray ray, int nX, int nY, int column, int row) {
-		Color color = Color.BLACK;
-		int depth = 0;
-		List<Ray> rays = new LinkedList<>();
-		rays.add(ray);
-		recursive(ray, depth, rays, nX, nY, column, row);
-		for (Ray tmpray : rays) {
-			color = color.add(rayTracer.traceRay(tmpray));
-		}
-		color = color.scale(1d / rays.size());
-		return color;
+	/**
+	 * build the ray from the camera and pass on focal plane
+	 * 
+	 * @param nX the number of pixels in the x direction
+	 * @param nY the number of pixels in the y direction
+	 * @param j  the x index of the pixel
+	 * @param i  the y index of the pixel
+	 * @return the ray on edge of pixel
+	 */
+	public Ray constructRayForASS(int nX, int nY, int j, int i, Ray rayCamera) {
+		double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(rayCamera.getDirection()));
+
+		Point focusPoint = rayCamera.getPoint(highFocusPoint);
+		double pixelSize = (apertureSizeRadius * 2) / ((nY + nX) / 2);
+		Point tmpPoint = constructShiftedPoint(nX, nY, j, i, pixelSize);
+		return new Ray(tmpPoint, focusPoint.subtract(tmpPoint));
 	}
 }

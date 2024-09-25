@@ -16,8 +16,8 @@ class ImageWriterTest {
 	 */
 	@Test
 	void imageTest() {
-		final Color gridColor = new Color(1, 57, 183);
-		final Color bgColor = new Color(WHITE);
+		Color gridColor = new Color(1, 57, 183);
+		Color bgColor = new Color(WHITE);
 		final int nX = 801, ny = 501, step = 50;
 		// Create an ImageWriter object with a name "test" and dimensions 800x500
 		final ImageWriter imageWriter = new ImageWriter("test", nX, ny);
