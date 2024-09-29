@@ -57,7 +57,7 @@ public class DepthOfFieldTest {
 				.setKl(0.0004).setKq(0.0000006));
 
 		camera.setLocation(new Point(0, -400, 130)).setVpDistance(1000).setVpSize(350, 350)
-				.setImageWriter(new ImageWriter("focusCloseSphere", 500, 500)).build().renderImage().writeToImage();
+				.setImageWriter(new ImageWriter("focusCloseSphereWithASS", 500, 500)).build().renderImage().writeToImage();
 
 	}
 

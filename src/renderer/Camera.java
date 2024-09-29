@@ -500,7 +500,6 @@ public class Camera implements Cloneable {
 			if (useAdaptive) {
 				int depth = 0;
 				imageWriter.writePixel(column, row, recursive(ray, depth, nX, nY, column, row));
-				pixelManager.pixelDone();
 			} else {
 				Color accumulatedColor = Color.BLACK;
 				List<Ray> rays = constructRaysGridFromCamera(numOfRaysDOF, ray);
@@ -509,12 +508,11 @@ public class Camera implements Cloneable {
 				}
 				accumulatedColor = accumulatedColor.scale(1d / rays.size());
 				imageWriter.writePixel(column, row, accumulatedColor);
-				pixelManager.pixelDone();
 			}
 		} else {
 			imageWriter.writePixel(column, row, rayTracer.traceRay(ray));
-			pixelManager.pixelDone();
 		}
+		pixelManager.pixelDone();
 	}
 
 	/**
@@ -573,23 +571,25 @@ public class Camera implements Cloneable {
 	}
 
 	public Color recursive(Ray ray, int depth, int nX, int nY, int column, int row) {
-		Color upRight = rayTracer.traceRay(constructRayForASS(nX, nY, column - 1, row, ray));
-		Color upLeft = rayTracer.traceRay(constructRayForASS(nX, nY, column - 1, row - 1, ray));
-		Color downRight = rayTracer.traceRay(constructRayForASS(nX, nY, column, row, ray));
-		Color downLeft = rayTracer.traceRay(constructRayForASS(nX, nY, column, row - 1, ray));
+		Ray upRightRay = constructRayForASS(nX, nY, column - 1, row, ray, depth);
+		Ray upLeftRay = constructRayForASS(nX, nY, column - 1, row - 1, ray, depth);
+		Ray downRightRay = constructRayForASS(nX, nY, column, row, ray, depth);
+		Ray downLeftRay = constructRayForASS(nX, nY, column, row - 1, ray, depth);
+
+		Color upRight = rayTracer.traceRay(upRightRay);
+		Color upLeft = rayTracer.traceRay(upLeftRay);
+		Color downRight = rayTracer.traceRay(downRightRay);
+		Color downLeft = rayTracer.traceRay(downLeftRay);
 
 		if (depth == max)
 			return upRight.add(upLeft).add(downRight).add(downLeft).scale(0.25);
 		else if (upRight.equals(upLeft) && upRight.equals(downRight) && upRight.equals(downLeft)) {
 			return upRight;
 		} else {
-
-			upRight = recursive(ray, depth + 1, nX * 2, nY * 2, column * 2, row * 2 - 1);
-			upLeft = recursive(ray, depth + 1, nX * 2, nY * 2, column * 2 - 1, row * 2 - 1);
-			downRight = recursive(ray, depth + 1, nX * 2, nY * 2, column * 2, row * 2);
-			downLeft = recursive(ray, depth + 1, nX * 2, nY * 2, column * 2 - 1, row * 2);
-
-			return upRight.add(upLeft).add(downRight).add(downLeft).scale(0.25);
+			return recursive(upRightRay, depth + 1, nX * 2, nY * 2, column * 2, row * 2 - 1)
+					.add(recursive(upLeftRay, depth + 1, nX * 2, nY * 2, column * 2 - 1, row * 2 - 1))
+					.add(recursive(downRightRay, depth + 1, nX * 2, nY * 2, column * 2, row * 2))
+					.add(recursive(downLeftRay, depth + 1, nX * 2, nY * 2, column * 2 - 1, row * 2)).scale(0.25);
 		}
 
 	}
@@ -603,12 +603,13 @@ public class Camera implements Cloneable {
 	 * @param i  the y index of the pixel
 	 * @return the ray on edge of pixel
 	 */
-	public Ray constructRayForASS(int nX, int nY, int j, int i, Ray rayCamera) {
+	public Ray constructRayForASS(int nX, int nY, int j, int i, Ray rayCamera, int depth) {
 		double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(rayCamera.getDirection()));
 
 		Point focusPoint = rayCamera.getPoint(highFocusPoint);
-		double pixelSize = (apertureSizeRadius * 2) / ((nY + nX) / 2);
+		double pixelSize = (apertureSizeRadius * 2) / (4*(depth+1));
 		Point tmpPoint = constructShiftedPoint(nX, nY, j, i, pixelSize);
-		return new Ray(tmpPoint, focusPoint.subtract(tmpPoint));
+		Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint));
+		return tmpRay;
 	}
 }
