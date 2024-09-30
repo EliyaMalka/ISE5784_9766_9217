@@ -583,7 +583,8 @@ public class Camera implements Cloneable {
 
 		if (depth == max)
 			return upRight.add(upLeft).add(downRight).add(downLeft).scale(0.25);
-		else if (upRight.equals(upLeft) && upRight.equals(downRight) && upRight.equals(downLeft)) {
+		
+		else if (upRight.isEquals(upLeft) && upRight.isEquals(downRight) && upRight.isEquals(downLeft)) {
 			return upRight;
 		} else {
 			return recursive(upRightRay, depth + 1, nX * 2, nY * 2, column * 2, row * 2 - 1)
@@ -607,7 +608,7 @@ public class Camera implements Cloneable {
 		double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(rayCamera.getDirection()));
 
 		Point focusPoint = rayCamera.getPoint(highFocusPoint);
-		double pixelSize = (apertureSizeRadius * 2) / (4*(depth+1));
+		double pixelSize = (apertureSizeRadius * 2) / nX;
 		Point tmpPoint = constructShiftedPoint(nX, nY, j, i, pixelSize);
 		Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint));
 		return tmpRay;

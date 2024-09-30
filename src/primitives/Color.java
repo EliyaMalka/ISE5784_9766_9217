@@ -1,6 +1,5 @@
 package primitives;
 
-import static primitives.Util.isZero;
 
 /**
  * Wrapper class for java.jwt.Color The constructors operate with any
@@ -19,6 +18,8 @@ public class Color {
 
 	/** Black color = (0,0,0) */
 	public static final Color BLACK = new Color();
+	
+	public static final double DIFFERENT = 0.25;
 
 	/** Default constructor - to generate Black Color (privately) */
 	private Color() {
@@ -141,8 +142,8 @@ public class Color {
 	 * @author eliya and neria
 	 */
 	public boolean isEquals(Color other) {
-		return (isZero(rgb.d1 - other.rgb.d1) && isZero(rgb.d2 - other.rgb.d2)
-				&& isZero(rgb.d3 - other.rgb.d3));
+		return (smallDifferent(Math.max(rgb.d1, other.rgb.d1) - Math.min(rgb.d1, other.rgb.d1)) && smallDifferent(Math.max(rgb.d2, other.rgb.d2) - Math.min(rgb.d2, other.rgb.d2))
+				&& smallDifferent(Math.max(rgb.d3, other.rgb.d3) - Math.min(rgb.d3, other.rgb.d3)));
 	}
 
 	/**
@@ -155,5 +156,9 @@ public class Color {
 	 */
 	public Color subtract(Color other) {
 		return new Color(rgb.subtract(other.rgb));
+	}
+	
+	public boolean smallDifferent(double different) {
+		return different <= DIFFERENT;
 	}
 }
