@@ -605,11 +605,12 @@ public class Camera implements Cloneable {
 	 * @return the ray on edge of pixel
 	 */
 	public Ray constructRayForASS(int nX, int nY, int j, int i, Ray rayCamera, int depth) {
+		
 		double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(rayCamera.getDirection()));
-
 		Point focusPoint = rayCamera.getPoint(highFocusPoint);
+		
 		double pixelSize = (apertureSizeRadius * 2) / nX;
-		Point tmpPoint = constructShiftedPoint(nX, nY, j, i, pixelSize);
+		Point tmpPoint =  constructShiftedPoint(nX, nY, j, i, pixelSize);
 		Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint));
 		return tmpRay;
 	}
