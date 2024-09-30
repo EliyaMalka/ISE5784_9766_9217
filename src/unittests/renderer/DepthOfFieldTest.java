@@ -98,6 +98,7 @@ public class DepthOfFieldTest {
 		camera.setLocation(new Point(0, -400, 130)).setVpDistance(1000).setVpSize(350, 350)
 				.setImageWriter(new ImageWriter("focusFarSphere", 500, 500)).build().renderImage().writeToImage();
 
+		
 	}
 
 }
