@@ -509,8 +509,7 @@ public class Camera implements Cloneable {
 		if (apertureSizeRadius > 0 && focalPlaneDistance > 0 && numOfRaysDOF > 0) {
 			if (useAdaptive) {
 				Color color = Color.BLACK;
-				double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(ray.getDirection()));
-				Point focusPoint = ray.getPoint(highFocusPoint); 
+				Point focusPoint = calculateFocusPoint(ray);
 				imageWriter.writePixel(column, row, adaptingSuperSamplingRecursive(0, 0, 0, color, focusPoint));
 			} else {
 				Color accumulatedColor = Color.BLACK;
@@ -562,9 +561,7 @@ public class Camera implements Cloneable {
 	public List<Ray> constructRaysGridFromCamera(Ray rayCamera) {
 		List<Ray> raysOfGrid = new LinkedList<>();
 
-		double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(rayCamera.getDirection()));
-
-		Point focusPoint = rayCamera.getPoint(highFocusPoint);
+		Point focusPoint = calculateFocusPoint(rayCamera);
 
 		double pixelSize = (apertureSizeRadius * 2) / numOfRaysDOF;
 
@@ -629,17 +626,22 @@ public class Camera implements Cloneable {
 	 * @return the ray on edge of pixel
 	 */
 	public Ray constructRayForASS(int j, int i, int depth, Point focusPoint) {
-		Point pIJ = p0;// .add(vTo.scale(focalPlaneDistance * 0.1));
+		Point pIJ = p0;
 
-		double yI = (i) * (apertureSizeRadius * 2 / Math.pow(2, depth));
-		double xJ = (j) * (apertureSizeRadius * 2 / Math.pow(2, depth));
+		double pixleSize = apertureSizeRadius * 2 / Math.pow(2, depth);
+		double yI = (i) * pixleSize;
+		double xJ = (j) * pixleSize;
 		if (!isZero(xJ))
 			pIJ = pIJ.add(vRight.scale(xJ));
 		if (!isZero(yI))
 			pIJ = pIJ.add(vUp.scale(yI));
-		// Point pIJ = constructShiftedPoint(2, 2, j, i, apertureSizeRadius * 2 /
-		// Math.pow(2, depth));
 		Ray tmpRay = new Ray(pIJ, focusPoint.subtract(pIJ));
 		return tmpRay;
+	}
+	
+	public Point calculateFocusPoint(Ray ray) {
+		double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(ray.getDirection()));
+		Point focusPoint = ray.getPoint(highFocusPoint);
+		return focusPoint;
 	}
 }
