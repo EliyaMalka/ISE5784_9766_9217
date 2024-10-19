@@ -30,8 +30,8 @@ public class DepthOfFieldTest {
 	public void focusCloseSphere() {
 
 		Camera.Builder camera = Camera.getBuilder().setDirection(new Vector(0, 350, -100), new Vector(1, 6, 21))
-				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(33).setApertureSize(1.5)
-				.setfocalPlaneDistance(230).setThreadsCount(4).setMax(5).setUseAdaptive(true);
+				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(15).setApertureSize(1.5)
+				.setfocalPlaneDistance(230).setThreadsCount(4).setMaxDepth(4).setUseAdaptive(true);
 
 		scene.geometries.add(
 				new Triangle(new Point(-660, -440, 0), new Point(-660, 440, 0), new Point(660, 440, 0))
@@ -57,7 +57,8 @@ public class DepthOfFieldTest {
 				.setKl(0.0004).setKq(0.0000006));
 
 		camera.setLocation(new Point(0, -400, 130)).setVpDistance(1000).setVpSize(350, 350)
-				.setImageWriter(new ImageWriter("focusCloseSphereWithASS", 500, 500)).build().renderImage().writeToImage();
+				.setImageWriter(new ImageWriter("focusCloseSphereWithASS2", 500, 500)).build().renderImage()
+				.writeToImage();
 
 	}
 
@@ -70,7 +71,7 @@ public class DepthOfFieldTest {
 
 		Camera.Builder camera = Camera.getBuilder().setDirection(new Vector(0, 350, -100), new Vector(1, 6, 21))
 				.setRayTracer(new SimpleRayTracer(scene)).setNumOfRaysDOF(100).setApertureSize(1)
-				.setfocalPlaneDistance(565);
+				.setfocalPlaneDistance(565).setThreadsCount(4).setMaxDepth(4).setUseAdaptive(true);
 
 		scene.geometries.add(
 				new Triangle(new Point(-660, -440, 0), new Point(-660, 440, 0), new Point(660, 440, 0))
@@ -98,7 +99,6 @@ public class DepthOfFieldTest {
 		camera.setLocation(new Point(0, -400, 130)).setVpDistance(1000).setVpSize(350, 350)
 				.setImageWriter(new ImageWriter("focusFarSphere", 500, 500)).build().renderImage().writeToImage();
 
-		
 	}
 
 }

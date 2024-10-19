@@ -1,6 +1,5 @@
 package primitives;
 
-
 /**
  * Wrapper class for java.jwt.Color The constructors operate with any
  * non-negative RGB values. The colors are maintained without upper limit of
@@ -18,8 +17,9 @@ public class Color {
 
 	/** Black color = (0,0,0) */
 	public static final Color BLACK = new Color();
-	
-	public static final double DIFFERENT = 0.25;
+
+	/** the different between three RGB  */
+	public static final double DIFFERENT = 1;
 
 	/** Default constructor - to generate Black Color (privately) */
 	private Color() {
@@ -139,26 +139,14 @@ public class Color {
 	 * @param other color to compare
 	 * @return true if the colors are equal, false otherwise
 	 * 
-	 * @author eliya and neria
 	 */
 	public boolean isEquals(Color other) {
-		return (smallDifferent(Math.max(rgb.d1, other.rgb.d1) - Math.min(rgb.d1, other.rgb.d1)) && smallDifferent(Math.max(rgb.d2, other.rgb.d2) - Math.min(rgb.d2, other.rgb.d2))
-				&& smallDifferent(Math.max(rgb.d3, other.rgb.d3) - Math.min(rgb.d3, other.rgb.d3)));
-	}
+		double deltaR = this.rgb.d1 - other.rgb.d1;
+		double deltaG = this.rgb.d2 - other.rgb.d2;
+		double deltaB = this.rgb.d3 - other.rgb.d3;
 
-	/**
-	 * subtract the colors
-	 * 
-	 * @param other color to subtract
-	 * @return the new color after the subtraction
-	 * 
-	 * @author eliya and neria
-	 */
-	public Color subtract(Color other) {
-		return new Color(rgb.subtract(other.rgb));
-	}
-	
-	public boolean smallDifferent(double different) {
-		return different <= DIFFERENT;
+		double distanceSquared = deltaR * deltaR + deltaG * deltaG + deltaB * deltaB;
+
+		return distanceSquared <= DIFFERENT * DIFFERENT;
 	}
 }

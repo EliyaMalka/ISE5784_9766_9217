@@ -67,6 +67,7 @@ public class Camera implements Cloneable {
 
 	// -------------------- Depth of field objects
 	// -----------------------------------------------------
+
 	/**
 	 * The aperture radius size for depth of field effects.
 	 */
@@ -267,7 +268,7 @@ public class Camera implements Cloneable {
 		 * @param max the number of max depth of recursion
 		 * @return the camera builder
 		 */
-		public Builder setMax(int max) {
+		public Builder setMaxDepth(int max) {
 			camera.max = max;
 			return this;
 		}
@@ -391,6 +392,15 @@ public class Camera implements Cloneable {
 	}
 
 	/**
+	 * Returns the rayTracer for the camera.
+	 *
+	 * @return the rayTracer for the camera
+	 */
+	public RayTracerBase getRayTracer() {
+		return rayTracer;
+	}
+
+	/**
 	 * Returns a new Builder instance for constructing a Camera.
 	 *
 	 * @return a new Builder instance
@@ -498,11 +508,13 @@ public class Camera implements Cloneable {
 		// Depth of field
 		if (apertureSizeRadius > 0 && focalPlaneDistance > 0 && numOfRaysDOF > 0) {
 			if (useAdaptive) {
-				int depth = 0;
-				imageWriter.writePixel(column, row, recursive(ray, depth, nX, nY, column, row));
+				Color color = Color.BLACK;
+				double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(ray.getDirection()));
+				Point focusPoint = ray.getPoint(highFocusPoint);
+				imageWriter.writePixel(column, row, adaptingSuperSamplingRecursive(0, 0, 0, color, focusPoint));
 			} else {
 				Color accumulatedColor = Color.BLACK;
-				List<Ray> rays = constructRaysGridFromCamera(numOfRaysDOF, ray);
+				List<Ray> rays = constructRaysGridFromCamera(ray);
 				for (Ray rayFromList : rays) {
 					accumulatedColor = accumulatedColor.add(rayTracer.traceRay(rayFromList));
 				}
@@ -544,25 +556,26 @@ public class Camera implements Cloneable {
 	/**
 	 * Construct a grid of rays from the camera
 	 *
-	 * @param numberRaysGrid the number of rays in the grid
-	 * @param rayCamera      the ray from the camera
+	 * @param rayCamera the ray from the camera
 	 * @return the list of rays in the circle
 	 */
-	public List<Ray> constructRaysGridFromCamera(int numberRaysGrid, Ray rayCamera) {
+	public List<Ray> constructRaysGridFromCamera(Ray rayCamera) {
 		List<Ray> raysOfGrid = new LinkedList<>();
 
 		double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(rayCamera.getDirection()));
 
 		Point focusPoint = rayCamera.getPoint(highFocusPoint);
 
-		double pixelSize = (apertureSizeRadius * 2) / numberRaysGrid;
+		double pixelSize = (apertureSizeRadius * 2) / numOfRaysDOF;
 
-		for (int i = 0; i < numberRaysGrid; i++) {
-			for (int j = 0; j < numberRaysGrid; j++) {
-				Point tmpPoint = constructShiftedPoint(numberRaysGrid, numberRaysGrid, j, i, pixelSize);
+		double squaredRadius = apertureSizeRadius * apertureSizeRadius;
+
+		for (int i = 0; i < numOfRaysDOF; i++) {
+			for (int j = 0; j < numOfRaysDOF; j++) {
+				Point tmpPoint = constructShiftedPoint(numOfRaysDOF, numOfRaysDOF, j, i, pixelSize);
 				Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint));
 
-				if (tmpRay.getHead().distanceSquared(p0) <= apertureSizeRadius * apertureSizeRadius)
+				if (tmpRay.getHead().distanceSquared(p0) <= squaredRadius)
 					raysOfGrid.add(tmpRay);
 			}
 		}
@@ -570,11 +583,21 @@ public class Camera implements Cloneable {
 		return raysOfGrid;
 	}
 
-	public Color recursive(Ray ray, int depth, int nX, int nY, int column, int row) {
-		Ray upRightRay = constructRayForASS(nX, nY, column - 1, row, ray, depth);
-		Ray upLeftRay = constructRayForASS(nX, nY, column - 1, row - 1, ray, depth);
-		Ray downRightRay = constructRayForASS(nX, nY, column, row, ray, depth);
-		Ray downLeftRay = constructRayForASS(nX, nY, column, row - 1, ray, depth);
+	/**
+	 * Recursive function for adaptive super sampling
+	 * 
+	 * @param depth      the depth of the recursion
+	 * @param i          the x index of the pixel
+	 * @param j          the y index of the pixel
+	 * @param color      the color of the pixel
+	 * @param focusPoint the focus point on the focal plane
+	 * @return the color of the pixel
+	 */
+	public Color adaptingSuperSamplingRecursive(int depth, int i, int j, Color color, Point focusPoint) {
+		Ray upRightRay = constructRayForASS(i + 1, j, depth, focusPoint);
+		Ray upLeftRay = constructRayForASS(i, j, depth, focusPoint);
+		Ray downRightRay = constructRayForASS(i + 1, j + 1, depth, focusPoint);
+		Ray downLeftRay = constructRayForASS(i, j + 1, depth, focusPoint);
 
 		Color upRight = rayTracer.traceRay(upRightRay);
 		Color upLeft = rayTracer.traceRay(upLeftRay);
@@ -583,14 +606,15 @@ public class Camera implements Cloneable {
 
 		if (depth == max)
 			return upRight.add(upLeft).add(downRight).add(downLeft).scale(0.25);
-		
+
 		else if (upRight.isEquals(upLeft) && upRight.isEquals(downRight) && upRight.isEquals(downLeft)) {
 			return upRight;
 		} else {
-			return recursive(upRightRay, depth + 1, nX * 2, nY * 2, column * 2, row * 2 - 1)
-					.add(recursive(upLeftRay, depth + 1, nX * 2, nY * 2, column * 2 - 1, row * 2 - 1))
-					.add(recursive(downRightRay, depth + 1, nX * 2, nY * 2, column * 2, row * 2))
-					.add(recursive(downLeftRay, depth + 1, nX * 2, nY * 2, column * 2 - 1, row * 2)).scale(0.25);
+
+			return color.add(adaptingSuperSamplingRecursive(depth + 1, i * 2 + 1, j * 2, color, focusPoint))
+					.add(adaptingSuperSamplingRecursive(depth + 1, i * 2, j * 2, color, focusPoint))
+					.add(adaptingSuperSamplingRecursive(depth + 1, i * 2 + 1, j * 2 + 1, color, focusPoint))
+					.add(adaptingSuperSamplingRecursive(depth + 1, i * 2, j * 2 + 1, color, focusPoint)).scale(0.25);
 		}
 
 	}
@@ -598,20 +622,24 @@ public class Camera implements Cloneable {
 	/**
 	 * build the ray from the camera and pass on focal plane
 	 * 
-	 * @param nX the number of pixels in the x direction
-	 * @param nY the number of pixels in the y direction
 	 * @param j  the x index of the pixel
 	 * @param i  the y index of the pixel
+	 * @param depth the depth of the recursion
+	 * @param focusPoint the focus point on the focal plane
 	 * @return the ray on edge of pixel
 	 */
-	public Ray constructRayForASS(int nX, int nY, int j, int i, Ray rayCamera, int depth) {
-		
-		double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(rayCamera.getDirection()));
-		Point focusPoint = rayCamera.getPoint(highFocusPoint);
-		
-		double pixelSize = (apertureSizeRadius * 2) / nX;
-		Point tmpPoint =  constructShiftedPoint(nX, nY, j, i, pixelSize);
-		Ray tmpRay = new Ray(tmpPoint, focusPoint.subtract(tmpPoint));
+	public Ray constructRayForASS(int j, int i, int depth, Point focusPoint) {
+		Point pIJ = p0;// .add(vTo.scale(focalPlaneDistance * 0.1));
+
+		double yI = (i) * (apertureSizeRadius * 2 / Math.pow(2, depth));
+		double xJ = (j) * (apertureSizeRadius * 2 / Math.pow(2, depth));
+		if (!isZero(xJ))
+			pIJ = pIJ.add(vRight.scale(xJ));
+		if (!isZero(yI))
+			pIJ = pIJ.add(vUp.scale(yI));
+		// Point pIJ = constructShiftedPoint(2, 2, j, i, apertureSizeRadius * 2 /
+		// Math.pow(2, depth));
+		Ray tmpRay = new Ray(pIJ, focusPoint.subtract(pIJ));
 		return tmpRay;
 	}
 }
