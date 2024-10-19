@@ -510,7 +510,7 @@ public class Camera implements Cloneable {
 			if (useAdaptive) {
 				Color color = Color.BLACK;
 				double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(ray.getDirection()));
-				Point focusPoint = ray.getPoint(highFocusPoint);
+				Point focusPoint = ray.getPoint(highFocusPoint); 
 				imageWriter.writePixel(column, row, adaptingSuperSamplingRecursive(0, 0, 0, color, focusPoint));
 			} else {
 				Color accumulatedColor = Color.BLACK;
