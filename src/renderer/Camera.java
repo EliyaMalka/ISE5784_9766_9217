@@ -619,9 +619,9 @@ public class Camera implements Cloneable {
 	/**
 	 * build the ray from the camera and pass on focal plane
 	 * 
-	 * @param j  the x index of the pixel
-	 * @param i  the y index of the pixel
-	 * @param depth the depth of the recursion
+	 * @param j          the x index of the pixel
+	 * @param i          the y index of the pixel
+	 * @param depth      the depth of the recursion
 	 * @param focusPoint the focus point on the focal plane
 	 * @return the ray on edge of pixel
 	 */
@@ -638,7 +638,13 @@ public class Camera implements Cloneable {
 		Ray tmpRay = new Ray(pIJ, focusPoint.subtract(pIJ));
 		return tmpRay;
 	}
-	
+
+	/**
+	 * Calculate the focus point on the focal plane
+	 * 
+	 * @param ray the ray from the camera
+	 * @return the focus point on the focal plane
+	 */
 	public Point calculateFocusPoint(Ray ray) {
 		double highFocusPoint = focalPlaneDistance / (vTo.dotProduct(ray.getDirection()));
 		Point focusPoint = ray.getPoint(highFocusPoint);

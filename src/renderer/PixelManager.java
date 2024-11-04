@@ -12,6 +12,7 @@ class PixelManager {
 	/**
 	 * Immutable class for object containing allocated pixel (with its row and
 	 * column numbers)
+	 * 
 	 * @param col the column number of the pixel
 	 * @param row the row number of the pixel
 	 */

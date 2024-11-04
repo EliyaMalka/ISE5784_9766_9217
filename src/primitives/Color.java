@@ -18,7 +18,7 @@ public class Color {
 	/** Black color = (0,0,0) */
 	public static final Color BLACK = new Color();
 
-	/** the different between three RGB  */
+	/** the different between three RGB */
 	public static final double DIFFERENT = 1;
 
 	/** Default constructor - to generate Black Color (privately) */
