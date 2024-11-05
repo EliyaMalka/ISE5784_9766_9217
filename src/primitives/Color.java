@@ -19,7 +19,7 @@ public class Color {
 	public static final Color BLACK = new Color();
 
 	/** the different between three RGB */
-	public static final double DIFFERENT = 1;
+	public static final double DIFFERENTSQUARED = 1;
 
 	/** Default constructor - to generate Black Color (privately) */
 	private Color() {
@@ -147,6 +147,6 @@ public class Color {
 
 		double distanceSquared = deltaR * deltaR + deltaG * deltaG + deltaB * deltaB;
 
-		return distanceSquared <= DIFFERENT * DIFFERENT;
+		return distanceSquared <= DIFFERENTSQUARED;
 	}
 }
