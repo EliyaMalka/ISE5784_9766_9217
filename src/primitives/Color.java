@@ -147,6 +147,6 @@ public class Color {
 
 		double distanceSquared = deltaR * deltaR + deltaG * deltaG + deltaB * deltaB;
 
-		return distanceSquared <= DIFFERENTSQUARED;
+		return distanceSquared <= DIFFERENTSQUARED; 
 	}
 }
